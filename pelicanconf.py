@@ -24,6 +24,7 @@ MENUITEMS = (
     ('首页', SITEURL),
     ('关于我', SITEURL+'/pages/about-me.html')
 )
+
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
          ('Python.org', 'http://python.org/'),
@@ -35,7 +36,7 @@ SOCIAL = (('我的笔记', '#'),
 
 DEFAULT_PAGINATION = 10
 
-PLUGIN_PATH = u"pelican-plugins"
+PLUGIN_PATHS = ["pelican-plugins"]
 PLUGINS = ["sitemap"]
 SITEMAP = {
     "format": "xml",
