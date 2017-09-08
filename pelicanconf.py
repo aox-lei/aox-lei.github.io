@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Docker'
 SITENAME = "Docker's Blog"
-SITEURL = ''
+# SITEURL = 'http://www.phpue.com'
+SITEURL = 'http://127.0.0.1:8888'
 
 PATH = 'content'
 
@@ -18,7 +19,10 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-
+MENUITEMS = (
+    ('首页', SITEURL),
+    ('关于我', SITEURL+'/about-me.html')
+)
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
          ('Python.org', 'http://python.org/'),
