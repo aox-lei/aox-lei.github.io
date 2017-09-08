@@ -4,91 +4,91 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>/</loc>
-<lastmod>2017-09-08T23:18:53-00:00</lastmod>
+<loc>http://127.0.0.1:8000/</loc>
+<lastmod>2017-09-08T23:22:32-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/archives.html</loc>
-<lastmod>2017-09-08T23:18:53-00:00</lastmod>
+<loc>http://127.0.0.1:8000/archives.html</loc>
+<lastmod>2017-09-08T23:22:32-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tags.html</loc>
-<lastmod>2017-09-08T23:18:53-00:00</lastmod>
+<loc>http://127.0.0.1:8000/tags.html</loc>
+<lastmod>2017-09-08T23:22:32-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/categories.html</loc>
-<lastmod>2017-09-08T23:18:53-00:00</lastmod>
+<loc>http://127.0.0.1:8000/categories.html</loc>
+<lastmod>2017-09-08T23:22:32-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/pages/about-me.html</loc>
+<loc>http://127.0.0.1:8000/pages/about-me.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
 
 <url>
-<loc>/php/2.html</loc>
+<loc>http://127.0.0.1:8000/php/2.html</loc>
 <lastmod>2017-10-10T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/mysql/1.html</loc>
+<loc>http://127.0.0.1:8000/mysql/1.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/php/1.html</loc>
+<loc>http://127.0.0.1:8000/php/1.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/python/1.html</loc>
+<loc>http://127.0.0.1:8000/python/1.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/category/mysql.html</loc>
+<loc>http://127.0.0.1:8000/category/mysql.html</loc>
 <lastmod>2017-09-09T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/php.html</loc>
+<loc>http://127.0.0.1:8000/category/php.html</loc>
 <lastmod>2017-10-10T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/python.html</loc>
+<loc>http://127.0.0.1:8000/category/python.html</loc>
 <lastmod>2017-09-09T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/author/docker.html</loc>
+<loc>http://127.0.0.1:8000/author/docker.html</loc>
 <lastmod>2017-10-10T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
