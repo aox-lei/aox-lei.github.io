@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Docker's Blog - Python</title>
+    <title>Docker's Blog - wechat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Docker">
@@ -75,12 +75,12 @@
 						<i class="icon-folder-open icon-large"></i>PHP
 					</a>
                   </li>
-                  <li class="active">
+                  <li >
                     <a href="/category/python.html">
 						<i class="icon-folder-open icon-large"></i>Python
 					</a>
                   </li>
-                  <li >
+                  <li class="active">
                     <a href="/category/wechat.html">
 						<i class="icon-folder-open icon-large"></i>wechat
 					</a>
@@ -101,7 +101,7 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
-                <h1><a href="/python/1.html">这是第一篇php的文章</a></h1>
+                <h1><a href="/wechat/wechat1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-09-09T00:00:00+08:00">
@@ -110,12 +110,36 @@
 <span class="label">By</span>
 <a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
 <span class="label">Category</span>
-<a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
+<a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>这是第一篇php的文章</p>
-                        <a class="btn primary xsmall" href="/python/1.html">more ...</a>
+                <div class="summary"><h2>一: 查看历史消息</h2>
+<h3>1. 请求转发到实际的页面</h3>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
+<strong>作用</strong>
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+<strong>请求方式</strong>: GET
+<strong>请求参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__biz</td>
+<td>MzI2NjA3NTc4Ng==</td>
+<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>iOS10 …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="/wechat/wechat1.html">more ...</a>
                 </div>
         </div>
         <hr />
