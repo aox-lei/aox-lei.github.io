@@ -63,8 +63,8 @@
           <a class="brand" href="/index.html">Docker's Blog </a>
           <div class="nav-collapse">
             <ul class="nav">
-                  <li><a href="http://127.0.0.1:8000">首页</a></li>
-                  <li><a href="http://127.0.0.1:8000/pages/about-me.html">关于我</a></li>
+                  <li><a href="http://www.phpue.com">首页</a></li>
+                  <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
                   <li >
                     <a href="/category/mysql.html">
 						<i class="icon-folder-open icon-large"></i>Mysql
@@ -78,11 +78,6 @@
                   <li >
                     <a href="/category/python.html">
 						<i class="icon-folder-open icon-large"></i>Python
-					</a>
-                  </li>
-                  <li >
-                    <a href="/category/wechat.html">
-						<i class="icon-folder-open icon-large"></i>wechat
 					</a>
                   </li>
 
@@ -116,6 +111,42 @@
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>测试一下子</p>
                         <a class="btn primary xsmall" href="/php/2.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="/python/1.html">ProxyTool代理池功能, 免费获取ip代理</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-09-21T00:00:00+08:00">
+        <i class="icon-calendar"></i>四 21 九月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<span class="label">Category</span>
+<a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><p>这是第一篇php的文章</p>
+<p>在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。</p>
+<p>项目地址:https://github.com/mm333444/ProxyTool/</p>
+<h1>ProxyTool</h1>
+<p>python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
+环境: python3.6.2</p>
+<h2>一、安装方法</h2>
+<div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+
+
+<h2>二、使用方法</h2>
+<p>-env 指定环境, 会读取app.config下指定的配置文件</p>
+<div class="highlight"><pre><span></span>python run.py -env online
+</pre></div>
+
+
+<h2>三、 基本逻辑 …</h2>
+                        <a class="btn primary xsmall" href="/python/1.html">more ...</a>
                 </div>
         </div>
         <hr />
@@ -157,68 +188,6 @@
                 </div>
         </div>
         <hr />
-        <div class="article">
-                <h1><a href="/python/1.html">这是第一篇php的文章</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-09-09T00:00:00+08:00">
-        <i class="icon-calendar"></i>六 09 九月 2017
-</abbr>
-<span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
-<span class="label">Category</span>
-<a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
-
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>这是第一篇php的文章</p>
-                        <a class="btn primary xsmall" href="/python/1.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="/wechat/wechat1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-09-09T00:00:00+08:00">
-        <i class="icon-calendar"></i>六 09 九月 2017
-</abbr>
-<span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
-<span class="label">Category</span>
-<a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
-
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一: 查看历史消息</h2>
-<h3>1. 请求转发到实际的页面</h3>
-<p><strong>URL</strong>
-https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
-<strong>作用</strong>
-猜测是为了设置cookie等一些信息, 不经过则cookie无效
-<strong>请求方式</strong>: GET
-<strong>请求参数</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>参数值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__biz</td>
-<td>MzI2NjA3NTc4Ng==</td>
-<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
-</tr>
-<tr>
-<td>devicetype</td>
-<td>iOS10 …</td></tr></tbody></table>
-                        <a class="btn primary xsmall" href="/wechat/wechat1.html">more ...</a>
-                </div>
-        </div>
-        <hr />
 
                 <section id="content" class="body">
                 <h1>Pages</h1>
@@ -251,11 +220,6 @@ https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype
 <li>
 <a href="/category/python.html">
     <i class="icon-folder-open icon-large"></i>Python
-</a>
-</li>
-<li>
-<a href="/category/wechat.html">
-    <i class="icon-folder-open icon-large"></i>wechat
 </a>
 </li>
 
