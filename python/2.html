@@ -110,7 +110,157 @@
 
 
 </footer><!-- /.post-info -->                </div>
-                
+                <h2>一、进程</h2>
+<p>对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程</p>
+<h2>二、线程</h2>
+<p>线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。</p>
+<h2>三、多任务的模式</h2>
+<h3>一、多进程模式</h3>
+<p>启动多个进程, 每个进程有一个线程去完成。因为python的多线程有GIL锁(全局锁), 在CPU密集型的情况下, 效率可能还不如单线程。
+CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。</p>
+<h3>二、多线程模式</h3>
+<p>单个进程下, 多个进程去完成。这种情况下只推荐做IO密集型的操作, 比如爬虫</p>
+<h3>三、多进程+多线程模式</h3>
+<p>启动多个进程, 每个进程下再启动多个线程去完成, 这种在一般项目中都有可能采用, 比如一个项目有多个脚本, 分别启动进程去管理, 而在单个脚本任务中, 又启动多个线程去抓取数据等</p>
+<h2>四、Python 多进程的方式</h2>
+<p>Python 多进程采用的是multiprocessing, 兼容性好, 可以兼容windows平台</p>
+<h3>一、基本使用</h3>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;bob&#39;</span><span class="p">,))</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lis&#39;</span><span class="p">,))</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="err">以上</span><span class="n">demo会输出</span>
+<span class="n">hello</span> <span class="n">bob</span>
+<span class="n">hello</span> <span class="n">lis</span>
+</pre></div>
+
+
+<h3>二、 join的作用</h3>
+<p>join的作用是用来阻塞, 增加了time.sleep()来暂停几秒</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;bob&#39;</span><span class="p">,))</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lis&#39;</span><span class="p">,))</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="err">以上</span><span class="n">demo会输出</span>
+<span class="n">hello</span> <span class="n">bob</span>
+<span class="n">hello</span> <span class="n">lis</span>
+<span class="err">停留</span><span class="mi">5</span><span class="err">秒以后退出脚本</span>
+</pre></div>
+
+
+<p>更改脚本以后再看一下效果</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;bob&#39;</span><span class="p">,))</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;lis&#39;</span><span class="p">,))</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="err">以上</span><span class="n">demo会输出</span>
+<span class="n">hello</span> <span class="n">bob</span>
+<span class="err">停留</span><span class="mi">5</span><span class="err">秒</span>
+<span class="n">hello</span> <span class="n">lis</span>
+<span class="err">停留</span><span class="mi">5</span><span class="err">秒以后退出脚本</span>
+</pre></div>
+
+
+<p>会发现先输出hello bob后停留了5秒, 才输出hello lis,之后又停留5秒, 才退出脚本。如果没有join, 则出现失误时, 可能会启动了无数个脚本, 而join可以保证, 无论何时, 都同时是这几个脚本。</p>
+<h3>三、进程池(Pool)</h3>
+<p>需要运行大量的进程时使用, 在使用时指定一个运行的进程数量, 当有进程退出的时候, 再启动进程池。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">def</span> <span class="nf">fun1</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;this is fun1&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">())</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;fun1 finish&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">fun2</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;this is fun2&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">())</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;fun2 finish&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">())</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># 同时可以启动三个进程</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">fun1</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+
+    <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># close()以后, 就不可以加入新的进程</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span> <span class="c1"># 进程池阻塞</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;finish&#39;</span><span class="p">,</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>五、多线程的方式</h2>
+<p>python的多线程用的是threading模块</p>
+<h3>一、基本使用</h3>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+
+<span class="n">_thread</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">_thread</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">run</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,)))</span>
+
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">_thread</span><span class="p">:</span>
+    <span class="n">_t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">_thread</span><span class="p">:</span>
+    <span class="n">_t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="err">以上</span><span class="n">demo输出</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+<span class="mi">5</span>
+</pre></div>
                 </div><!-- /.entry-content -->
         </article>
 </section>
