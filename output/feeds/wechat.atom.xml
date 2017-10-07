@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Docker's Blog - wechat</title><link href="/" rel="alternate"></link><link href="/feeds/wechat.atom.xml" rel="self"></link><id>/</id><updated>2017-09-09T00:00:00+08:00</updated><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="/wechat/wechat1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Docker</name></author><id>tag:None,2017-09-09:/wechat/wechat1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
+&lt;strong&gt;作用&lt;/strong&gt;
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+&lt;strong&gt;请求方式&lt;/strong&gt;: GET
+&lt;strong&gt;请求参数&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;参数值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;__biz&lt;/td&gt;
+&lt;td&gt;MzI2NjA3NTc4Ng==&lt;/td&gt;
+&lt;td&gt;公众号标识,每个公众号值不变,base64加密,解密后是数字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;devicetype&lt;/td&gt;
+&lt;td&gt;iOS10 …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
+&lt;strong&gt;作用&lt;/strong&gt;
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+&lt;strong&gt;请求方式&lt;/strong&gt;: GET
+&lt;strong&gt;请求参数&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;参数值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;__biz&lt;/td&gt;
+&lt;td&gt;MzI2NjA3NTc4Ng==&lt;/td&gt;
+&lt;td&gt;公众号标识,每个公众号值不变,base64加密,解密后是数字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;devicetype&lt;/td&gt;
+&lt;td&gt;iOS10.3.2&lt;/td&gt;
+&lt;td&gt;设备型号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;version&lt;/td&gt;
+&lt;td&gt;16050c20&lt;/td&gt;
+&lt;td&gt;版本(不知道是啥)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lang&lt;/td&gt;
+&lt;td&gt;zh_CN&lt;/td&gt;
+&lt;td&gt;微信语言&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ascene&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;(不确定作用)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fontScale&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;字体规模(不清楚作用)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pass_ticket&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;验证ticket&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;wx_header&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;固定值(不清楚作用)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Header&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;参数值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;X-WECHAT-KEY&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;验证的key,每次访问都会变, 有效期大约2小时,原来的key不会失效&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;X-WECHAT-UIN&lt;/td&gt;
+&lt;td&gt;MjY2NDk1NTMyMA%3D%3D&lt;/td&gt;
+&lt;td&gt;客户端的uin,每个客户端是固定的，不会变&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;User-Agent&lt;/td&gt;
+&lt;td&gt;Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Mobile/14F89 MicroMessenger/6.5.12 NetType/WIFI Language/zh_CN&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Cookie&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;参数值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;pass_ticket&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;wap_sid2&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;猜测应该是根据key,uin等计算后得到的验证值,保存在Cookie直接验证, 有效期和key有关,每次请求都会变,原来的不失效&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;wxuin&lt;/td&gt;
+&lt;td&gt;2664955320&lt;/td&gt;
+&lt;td&gt;客户端id&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;wxtokenkey&lt;/td&gt;
+&lt;td&gt;ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83&lt;/td&gt;
+&lt;td&gt;微信请求的一个key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pgv_pvid&lt;/td&gt;
+&lt;td&gt;2885910680&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;eas_sid&lt;/td&gt;
+&lt;td&gt;5144i9T9L8n345w5i2L2G5A3E8&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pgv_pvi&lt;/td&gt;
+&lt;td&gt;5673884672&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g_ut&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;news_commid&lt;/td&gt;
+&lt;td&gt;oDOGxv8dGvIVz2BAUA4ANY_SQh3I&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sd_cookie_crttime&lt;/td&gt;
+&lt;td&gt;1498009878512&lt;/td&gt;
+&lt;td&gt;cookie创建的毫秒数(猜测)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sd_userid&lt;/td&gt;
+&lt;td&gt;70901498009878512&lt;/td&gt;
+&lt;td&gt;(不清楚)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;2. 历史消息第一页&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
+https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;amp;__biz=MzI2NjA3NTc4Ng==&amp;amp;scene=124&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;a8scene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Method&lt;/strong&gt; GET/POST
+&lt;strong&gt;模拟请求的参数&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# 可直接返回结果
+url:https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;amp;__biz=MzI2NjA3NTc4Ng==
+headers:
+&amp;#39;User-Agent&amp;#39;=&amp;gt;&amp;#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&amp;#39;,
+&amp;#39;Cookie&amp;#39;=&amp;gt;&amp;#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pubDFsY1o0OF8yUC1kR2ZrdWw3RE9fYlppUDBwblFKUTI5b2FSZVZVWnFnT25fRE5heTVSeXhlRWVMTXh3RFRjWHQyTEpfYTlSdG9lMmxPakIzRVpXdVNBd0FBMNDGwMsFOA1AlU4=; wxuin=2664955320; wxtokenkey=ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&amp;#39;,
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;3. 获取历史消息第二页&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
+https://mp.weixin.qq.com/mp/profile_ext?action=getmsg&amp;amp;__biz=MzI2NjA3NTc4Ng==&amp;amp;f=json&amp;amp;offset=10&amp;amp;count=10&amp;amp;is_ok=1&amp;amp;scene=124&amp;amp;uin=777&amp;amp;key=777&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wxtoken=&amp;amp;x5=0&amp;amp;f=json&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;METHOD&lt;/strong&gt; GET/POST
+&lt;strong&gt;模拟请求的参数&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# offset=0则可以获取到第一页的数据, 则没必要用获取首页页面数据分析
+# 访问别的公众号, 不影响当前公众号接口请求
+# 但是当前cookie不能用于别的公众号, 必须通过历史消息第一页拿到cookie
+url:https://mp.weixin.qq.com/mp/profile_ext?action=getmsg&amp;amp;__biz=MzI2NjA3NTc4Ng==&amp;amp;f=json&amp;amp;offset=10&amp;amp;count=10
+
+headers:
+&amp;#39;User-Agent&amp;#39;=&amp;gt;&amp;#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&amp;#39;,
+        &amp;#39;Cookie&amp;#39;=&amp;gt;&amp;#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pubDFsY1o0OF8yUC1kR2ZrdWw3RE9fYlppUDBwblFKUTI5b2FSZVZVWnFnT25fRE5heTVSeXhlRWVMTXh3RFRjWHQyTEpfYTlSdG9lMmxPakIzRVpXdVNBd0FBMNDGwMsFOA1AlU4=; wxuin=2664955320; wxtokenkey=ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&amp;#39;,
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;二、获取点赞数和阅读数&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;:
+https://mp.weixin.qq.com/mp/getappmsgext?__biz=MjM5Nzg0MTQ3OQ==&amp;amp;appmsg_type=9&amp;amp;mid=2660617942&amp;amp;sn=ec05841f9675c74a5f630f5993d25cc2&amp;amp;idx=1&amp;amp;is_need_ad=0&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;sn: 可能是文章的唯一编码
+&lt;strong&gt;模拟请求的参数&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;#39;headers&amp;#39;=&amp;gt;[
+        &amp;#39;User-Agent&amp;#39;=&amp;gt;&amp;#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&amp;#39;,
+        &amp;#39;Cookie&amp;#39;=&amp;gt;&amp;#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZKTWdHWUs1OVZ1Ykwxa2M0UmFURzdFV0NTLVRYaUEyVG5VOUtRMVRZXzIxYW5vTDBJVlFXWG0xVUhpMWpGQXF5NlNBd0FBMLvWwMsFOAxAlE4=; wxuin=2664955320; wxtokenkey=48b756518ff8c26ff9600411ab07e3da21930909adb6a449a70282559e0c21b0; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&amp;#39;,
+    ],
+    &amp;#39;form_params&amp;#39;=&amp;gt;[
+        &amp;#39;is_only_read&amp;#39;=&amp;gt;1,
+    ],
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、获取评论数据&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;url&lt;/strong&gt;:
+https://mp.weixin.qq.com/mp/appmsg_comment?action=getcomment&amp;amp;scene=0&amp;amp;__biz=MjM5Nzg0MTQ3OQ==&amp;amp;appmsgid=2660617942&amp;amp;idx=1&amp;amp;comment_id=4070344972&amp;amp;offset=0&amp;amp;limit=100
+&lt;strong&gt;请求方式&lt;/strong&gt;
+get
+&lt;strong&gt;模拟数据&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;#39;headers&amp;#39;=&amp;gt;[
+        &amp;#39;User-Agent&amp;#39;=&amp;gt;&amp;#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&amp;#39;,
+        &amp;#39;Cookie&amp;#39;=&amp;gt;&amp;#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZMRm1aTnRzZDhmY1cwNHVXaHRyOC1EaDdtbjdhUldxV0tLQ1VOWllVT2N1NmY3LTlWTjFpNmFDNTBTUXV6SllkT1NBd0FBMKHYwMsFOA1AAQ==; wxtokenkey=33c19f4f0ced3c0f2ae0c96b7a5a794920998c44247b642c5f3b665840ad8272; wxuin=2664955320; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&amp;#39;,
+    ],
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;四、获取主体信息&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;url&lt;/strong&gt;
+https://mp.weixin.qq.com/mp/getverifyinfo?__biz=MjM5MDI5MjAyMA==&amp;amp;type=reg_info
+&lt;strong&gt;模拟请求数据&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;#39;headers&amp;#39;=&amp;gt;[
+        &amp;#39;User-Agent&amp;#39;=&amp;gt;&amp;#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&amp;#39;,
+        &amp;#39;Cookie&amp;#39;=&amp;gt;&amp;#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZMRm1aTnRzZDhmY1cwNHVXaHRyOC1EaDdtbjdhUldxV0tLQ1VOWllVT2N1NmY3LTlWTjFpNmFDNTBTUXV6SllkT1NBd0FBMKHYwMsFOA1AAQ==; wxtokenkey=33c19f4f0ced3c0f2ae0c96b7a5a794920998c44247b642c5f3b665840ad8272; wxuin=2664955320; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&amp;#39;,
+    ],
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;cookie可以通用&lt;/h1&gt;
+&lt;h2&gt;备注&lt;/h2&gt;
+&lt;p&gt;cookie每个公众号不通用(部分公众号是通用的,规律暂时未找到)
+cookie中的有效期待定&lt;/p&gt;</content></entry></feed>
