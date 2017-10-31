@@ -75,6 +75,11 @@
 						<i class="icon-folder-open icon-large"></i>Python
 					</a>
                   </li>
+                  <li >
+                    <a href="/category/wechat.html">
+						<i class="icon-folder-open icon-large"></i>wechat
+					</a>
+                  </li>
 
                           <ul class="nav pull-right">
                                 <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
@@ -90,6 +95,56 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
+        <div class="article">
+                <h1><a href="/python/3.html">supervisor python的进程管理工具 使用教程 【持续更新】</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-31T00:00:00+08:00">
+        <i class="icon-calendar"></i>二 31 十月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<span class="label">Category</span>
+<a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>一、安装配置</h2>
+<p><a href="http://www.supervisord.org/">文档地址</a></p>
+<h3>1. 安装</h3>
+<div class="highlight"><pre><span></span>easy_install supervisor
+pip install supervisor
+</pre></div>
+
+
+<h3>2. 生成配置文件</h3>
+<div class="highlight"><pre><span></span>sudo echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf
+</pre></div>
+
+
+<h3>3.修改配置项</h3>
+<div class="highlight"><pre><span></span><span class="c1"># 找到</span>
+<span class="p">;[</span><span class="n">include</span><span class="p">]</span>
+<span class="p">;</span><span class="n">files</span> <span class="o">=</span> <span class="n">relative</span><span class="o">/</span><span class="n">directory</span><span class="o">/*.</span><span class="n">ini</span>
+
+<span class="c1"># 改为</span>
+<span class="p">[</span><span class="n">include</span><span class="p">]</span>
+<span class="n">files</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">supervisor</span><span class="o">/</span><span class="n">conf</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">cnf</span>
+</pre></div>
+
+
+<h3>4. 启动</h3>
+<div class="highlight"><pre><span></span>supervisord -c /etc/supervisor/supervisord.conf
+</pre></div>
+
+
+<h2>二、基本使用</h2>
+<h3>1. 创建脚本</h3>
+<div class="highlight"><pre><span></span># vim /etc/supervisor/conf …</pre></div>
+                        <a class="btn primary xsmall" href="/python/3.html">more ...</a>
+                </div>
+        </div>
+        <hr />
         <div class="article">
                 <h1><a href="/python/2.html">Python 多进程和多线程的方案</a></h1>
                 <div class="well small"><footer class="post-info">
@@ -186,6 +241,11 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 <li>
 <a href="/category/python.html">
     <i class="icon-folder-open icon-large"></i>Python
+</a>
+</li>
+<li>
+<a href="/category/wechat.html">
+    <i class="icon-folder-open icon-large"></i>wechat
 </a>
 </li>
 

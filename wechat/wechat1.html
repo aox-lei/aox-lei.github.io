@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>微信公众号历史记录以及文章内容接口数据分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Docker">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="/" type="application/atom+xml" rel="alternate" title="Docker's Blog ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/index.html">Docker's Blog </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                  <li><a href="http://www.phpue.com">首页</a></li>
+                  <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+                  <li >
+                    <a href="/category/linux.html">
+						<i class="icon-folder-open icon-large"></i>linux
+					</a>
+                  </li>
+                  <li >
+                    <a href="/category/python.html">
+						<i class="icon-folder-open icon-large"></i>Python
+					</a>
+                  </li>
+                  <li class="active">
+                    <a href="/category/wechat.html">
+						<i class="icon-folder-open icon-large"></i>wechat
+					</a>
+                  </li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to 微信公众号历史记录以及文章内容接口数据分析">
+                                        微信公众号历史记录以及文章内容接口数据分析
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-09-09T00:00:00+08:00">
+        <i class="icon-calendar"></i>六 09 九月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<span class="label">Category</span>
+<a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
+
+
+</footer><!-- /.post-info -->                </div>
+                <h2>一: 查看历史消息</h2>
+<h3>1. 请求转发到实际的页面</h3>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
+<strong>作用</strong>
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+<strong>请求方式</strong>: GET
+<strong>请求参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__biz</td>
+<td>MzI2NjA3NTc4Ng==</td>
+<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>iOS10.3.2</td>
+<td>设备型号</td>
+</tr>
+<tr>
+<td>version</td>
+<td>16050c20</td>
+<td>版本(不知道是啥)</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>zh_CN</td>
+<td>微信语言</td>
+</tr>
+<tr>
+<td>ascene</td>
+<td>3</td>
+<td>(不确定作用)</td>
+</tr>
+<tr>
+<td>fontScale</td>
+<td>100</td>
+<td>字体规模(不清楚作用)</td>
+</tr>
+<tr>
+<td>pass_ticket</td>
+<td></td>
+<td>验证ticket</td>
+</tr>
+<tr>
+<td>wx_header</td>
+<td>1</td>
+<td>固定值(不清楚作用)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Header</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X-WECHAT-KEY</td>
+<td></td>
+<td>验证的key,每次访问都会变, 有效期大约2小时,原来的key不会失效</td>
+</tr>
+<tr>
+<td>X-WECHAT-UIN</td>
+<td>MjY2NDk1NTMyMA%3D%3D</td>
+<td>客户端的uin,每个客户端是固定的，不会变</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Mobile/14F89 MicroMessenger/6.5.12 NetType/WIFI Language/zh_CN</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cookie</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pass_ticket</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>wap_sid2</td>
+<td></td>
+<td>猜测应该是根据key,uin等计算后得到的验证值,保存在Cookie直接验证, 有效期和key有关,每次请求都会变,原来的不失效</td>
+</tr>
+<tr>
+<td>wxuin</td>
+<td>2664955320</td>
+<td>客户端id</td>
+</tr>
+<tr>
+<td>wxtokenkey</td>
+<td>ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83</td>
+<td>微信请求的一个key</td>
+</tr>
+<tr>
+<td>pgv_pvid</td>
+<td>2885910680</td>
+<td>(不清楚)</td>
+</tr>
+<tr>
+<td>eas_sid</td>
+<td>5144i9T9L8n345w5i2L2G5A3E8</td>
+<td>(不清楚)</td>
+</tr>
+<tr>
+<td>pgv_pvi</td>
+<td>5673884672</td>
+<td>(不清楚)</td>
+</tr>
+<tr>
+<td>g_ut</td>
+<td>2</td>
+<td>(不清楚)</td>
+</tr>
+<tr>
+<td>news_commid</td>
+<td>oDOGxv8dGvIVz2BAUA4ANY_SQh3I</td>
+<td>(不清楚)</td>
+</tr>
+<tr>
+<td>sd_cookie_crttime</td>
+<td>1498009878512</td>
+<td>cookie创建的毫秒数(猜测)</td>
+</tr>
+<tr>
+<td>sd_userid</td>
+<td>70901498009878512</td>
+<td>(不清楚)</td>
+</tr>
+</tbody>
+</table>
+<h2>2. 历史消息第一页</h2>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzI2NjA3NTc4Ng==&amp;scene=124&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;a8scene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1</p>
+<p><strong>Method</strong> GET/POST
+<strong>模拟请求的参数</strong></p>
+<div class="highlight"><pre><span></span># 可直接返回结果
+url:https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=MzI2NjA3NTc4Ng==
+headers:
+&#39;User-Agent&#39;=&gt;&#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&#39;,
+&#39;Cookie&#39;=&gt;&#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pubDFsY1o0OF8yUC1kR2ZrdWw3RE9fYlppUDBwblFKUTI5b2FSZVZVWnFnT25fRE5heTVSeXhlRWVMTXh3RFRjWHQyTEpfYTlSdG9lMmxPakIzRVpXdVNBd0FBMNDGwMsFOA1AlU4=; wxuin=2664955320; wxtokenkey=ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&#39;,
+</pre></div>
+
+
+<h2>3. 获取历史消息第二页</h2>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/profile_ext?action=getmsg&amp;__biz=MzI2NjA3NTc4Ng==&amp;f=json&amp;offset=10&amp;count=10&amp;is_ok=1&amp;scene=124&amp;uin=777&amp;key=777&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wxtoken=&amp;x5=0&amp;f=json</p>
+<p><strong>METHOD</strong> GET/POST
+<strong>模拟请求的参数</strong></p>
+<div class="highlight"><pre><span></span># offset=0则可以获取到第一页的数据, 则没必要用获取首页页面数据分析
+# 访问别的公众号, 不影响当前公众号接口请求
+# 但是当前cookie不能用于别的公众号, 必须通过历史消息第一页拿到cookie
+url:https://mp.weixin.qq.com/mp/profile_ext?action=getmsg&amp;__biz=MzI2NjA3NTc4Ng==&amp;f=json&amp;offset=10&amp;count=10
+
+headers:
+&#39;User-Agent&#39;=&gt;&#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&#39;,
+        &#39;Cookie&#39;=&gt;&#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pubDFsY1o0OF8yUC1kR2ZrdWw3RE9fYlppUDBwblFKUTI5b2FSZVZVWnFnT25fRE5heTVSeXhlRWVMTXh3RFRjWHQyTEpfYTlSdG9lMmxPakIzRVpXdVNBd0FBMNDGwMsFOA1AlU4=; wxuin=2664955320; wxtokenkey=ce2fb7cff8175db8bbe1284d8ea309c974a4d393f3c0e7ddcf0f3e1925aa6d83; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&#39;,
+</pre></div>
+
+
+<h2>二、获取点赞数和阅读数</h2>
+<p><strong>URL</strong>:
+https://mp.weixin.qq.com/mp/getappmsgext?__biz=MjM5Nzg0MTQ3OQ==&amp;appmsg_type=9&amp;mid=2660617942&amp;sn=ec05841f9675c74a5f630f5993d25cc2&amp;idx=1&amp;is_need_ad=0</p>
+<ul>
+<li>sn: 可能是文章的唯一编码
+<strong>模拟请求的参数</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>&#39;headers&#39;=&gt;[
+        &#39;User-Agent&#39;=&gt;&#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&#39;,
+        &#39;Cookie&#39;=&gt;&#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZKTWdHWUs1OVZ1Ykwxa2M0UmFURzdFV0NTLVRYaUEyVG5VOUtRMVRZXzIxYW5vTDBJVlFXWG0xVUhpMWpGQXF5NlNBd0FBMLvWwMsFOAxAlE4=; wxuin=2664955320; wxtokenkey=48b756518ff8c26ff9600411ab07e3da21930909adb6a449a70282559e0c21b0; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&#39;,
+    ],
+    &#39;form_params&#39;=&gt;[
+        &#39;is_only_read&#39;=&gt;1,
+    ],
+</pre></div>
+
+
+<h2>三、获取评论数据</h2>
+<p><strong>url</strong>:
+https://mp.weixin.qq.com/mp/appmsg_comment?action=getcomment&amp;scene=0&amp;__biz=MjM5Nzg0MTQ3OQ==&amp;appmsgid=2660617942&amp;idx=1&amp;comment_id=4070344972&amp;offset=0&amp;limit=100
+<strong>请求方式</strong>
+get
+<strong>模拟数据</strong></p>
+<div class="highlight"><pre><span></span>&#39;headers&#39;=&gt;[
+        &#39;User-Agent&#39;=&gt;&#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&#39;,
+        &#39;Cookie&#39;=&gt;&#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZMRm1aTnRzZDhmY1cwNHVXaHRyOC1EaDdtbjdhUldxV0tLQ1VOWllVT2N1NmY3LTlWTjFpNmFDNTBTUXV6SllkT1NBd0FBMKHYwMsFOA1AAQ==; wxtokenkey=33c19f4f0ced3c0f2ae0c96b7a5a794920998c44247b642c5f3b665840ad8272; wxuin=2664955320; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&#39;,
+    ],
+</pre></div>
+
+
+<h1>四、获取主体信息</h1>
+<p><strong>url</strong>
+https://mp.weixin.qq.com/mp/getverifyinfo?__biz=MjM5MDI5MjAyMA==&amp;type=reg_info
+<strong>模拟请求数据</strong></p>
+<div class="highlight"><pre><span></span>&#39;headers&#39;=&gt;[
+        &#39;User-Agent&#39;=&gt;&#39;Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257 MicroMessenger/6.0.1 NetType/WIFI&#39;,
+        &#39;Cookie&#39;=&gt;&#39;pass_ticket=M9BUVH+J9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t; wap_sid2=CLj73/YJEnA4VnFXMkc2RGZxYlNxTy1XZS1US1pnd3phR1FLN0VPQjBHOFR4SkRYLTZMRm1aTnRzZDhmY1cwNHVXaHRyOC1EaDdtbjdhUldxV0tLQ1VOWllVT2N1NmY3LTlWTjFpNmFDNTBTUXV6SllkT1NBd0FBMKHYwMsFOA1AAQ==; wxtokenkey=33c19f4f0ced3c0f2ae0c96b7a5a794920998c44247b642c5f3b665840ad8272; wxuin=2664955320; pgv_pvid=2885910680; eas_sid=5144i9T9L8n345w5i2L2G5A3E8; pgv_pvi=5673884672; g_ut=2; news_commid=oDOGxv8dGvIVz2BAUA4ANY_SQh3I; sd_cookie_crttime=1498009878512; sd_userid=70901498009878512&#39;,
+    ],
+</pre></div>
+
+
+<h1>cookie可以通用</h1>
+<h2>备注</h2>
+<p>cookie每个公众号不通用(部分公众号是通用的,规律暂时未找到)
+cookie中的有效期待定</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
+    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
+    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
+    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<li><a href="/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="#"><i class="icon-我的笔记-sign icon-large"></i>我的笔记</a></li>
+    <li><a href="#"><i class="icon-我的博客-sign icon-large"></i>我的博客</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="/category/linux.html">
+    <i class="icon-folder-open icon-large"></i>linux
+</a>
+</li>
+<li>
+<a href="/category/python.html">
+    <i class="icon-folder-open icon-large"></i>Python
+</a>
+</li>
+<li>
+<a href="/category/wechat.html">
+    <i class="icon-folder-open icon-large"></i>wechat
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
