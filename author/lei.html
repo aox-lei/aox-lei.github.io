@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Docker's Blog - Docker</title>
+    <title>Lei's Blog - Lei</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="Docker">
+    <meta name="author" content="Lei">
 
     <!-- Le styles -->
     <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
@@ -46,7 +46,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
 
-    <link href="/" type="application/atom+xml" rel="alternate" title="Docker's Blog ATOM Feed" />
+    <link href="/" type="application/atom+xml" rel="alternate" title="Lei's Blog ATOM Feed" />
 
   </head>
 
@@ -60,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/index.html">Docker's Blog </a>
+          <a class="brand" href="/index.html">Lei's Blog </a>
           <div class="nav-collapse">
             <ul class="nav">
                   <li><a href="http://www.phpue.com">首页</a></li>
@@ -96,6 +96,55 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
+                <h1><a href="/python/4.html">dnspod动态域名提交, 类似花生壳实现的功能</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-10T00:00:00+08:00">
+        <i class="icon-calendar"></i>五 10 十一月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
+<span class="label">Category</span>
+<a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><p>Powered by Lei</p>
+<h2>1. dnspod动态提交域名解析记录</h2>
+<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
+<h2>一、dnspod动态提交域名解析记录</h2>
+<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
+<p>程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod</p>
+<h3>1. 安装</h3>
+<div class="highlight"><pre><span></span>pip install requests apscheduler argparse
+</pre></div>
+
+
+<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/">如何获取自己的api_token</a></p>
+<div class="highlight"><pre><span></span>修改文件, 打开dnspod.py,
+修改 API_TOKEN = &#39;登录的token&#39; 为你的API_TOKEN, 方法是id, api_token
+</pre></div>
+
+
+<h3>2. 使用</h3>
+<ol>
+<li>获取你的域名列表</li>
+</ol>
+<div class="highlight"><pre><span></span>python dnspod.py -d
+</pre></div>
+
+
+<ol>
+<li>获取指定域名的记录信息</li>
+</ol>
+<div class="highlight"><pre><span></span>python dnspod.py -r …</pre></div>
+                        <a class="btn primary xsmall" href="/python/4.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="/python/3.html">supervisor python的进程管理工具 使用教程 【持续更新】</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
@@ -103,7 +152,7 @@
         <i class="icon-calendar"></i>二 31 十月 2017
 </abbr>
 <span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
 <span class="label">Category</span>
 <a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
@@ -153,7 +202,7 @@ pip install supervisor
         <i class="icon-calendar"></i>一 25 九月 2017
 </abbr>
 <span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
 <span class="label">Category</span>
 <a href="/category/linux.html"><i class="icon-folder-open"></i>linux</a>.
 
@@ -200,7 +249,7 @@ awk &#39;$1==1 {print $1}&#39;
         <i class="icon-calendar"></i>五 22 九月 2017
 </abbr>
 <span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
 <span class="label">Category</span>
 <a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
@@ -233,7 +282,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
         <i class="icon-calendar"></i>四 21 九月 2017
 </abbr>
 <span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
 <span class="label">Category</span>
 <a href="/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
@@ -269,7 +318,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
         <i class="icon-calendar"></i>六 09 九月 2017
 </abbr>
 <span class="label">By</span>
-<a href="/author/docker.html"><i class="icon-user"></i>Docker</a>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
 <span class="label">Category</span>
 <a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
