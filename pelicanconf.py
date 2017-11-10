@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Docker'
-SITENAME = "Docker's Blog"
+AUTHOR = 'Lei'
+SITENAME = "Lei's Blog"
 SITEURL = 'http://www.phpue.com'
 # SITEURL = 'http://127.0.0.1:8000'
 THEME = 'bootstrap2'
