@@ -176,6 +176,7 @@ pip install requests
 <div class="highlight"><pre><span></span><span class="c1"># rule.py</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">mitmproxy</span> <span class="kn">import</span> <span class="n">http</span>
+<span class="kn">from</span> <span class="nn">content</span> <span class="kn">import</span> <span class="n">content</span>
 
 <span class="n">content_list_url_redirect</span> <span class="o">=</span> <span class="s1">&#39;https://mp.weixin.qq.com/mp/profile_ext?action=home&amp;__biz=</span><span class="si">%s</span><span class="s1">#wechat_redirect&#39;</span>
 
@@ -189,7 +190,7 @@ pip install requests
     <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="n">mp</span>\<span class="o">.</span><span class="n">weixin</span>\<span class="o">.</span><span class="n">qq</span>\<span class="o">.</span><span class="n">com</span>\<span class="o">/</span><span class="n">mp</span>\<span class="o">/</span><span class="n">profile_ext</span>\<span class="err">?</span><span class="n">action</span><span class="o">=</span><span class="n">home</span><span class="s1">&#39;, re.I).findall(self.req_url):</span>
             <span class="sd">&#39;&#39;&#39;启动一个线程去抓取到的页面中获取到文章列表的处理&#39;&#39;&#39;</span>
-
+            <span class="n">_thread</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">content</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">body</span><span class="p">)))</span>
             <span class="n">body</span> <span class="o">=</span> <span class="n">get_next_body</span><span class="p">()</span>
 
             <span class="n">flow</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">HTTPResponse</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
@@ -226,6 +227,12 @@ pip install requests
 
 <span class="k">def</span> <span class="nf">get_next_url</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;这部分写要跳转到下一页的url&#39;&#39;&#39;</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span># content.py
+分析内容中的文章列表并保存
+以及将cookie保存起来, 假设保存到redis中
 </pre></div>
                 </div><!-- /.entry-content -->
         </article>

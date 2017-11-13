@@ -183,6 +183,39 @@
         </div>
         <hr />
         <div class="article">
+                <h1><a href="/wechat/3.html">微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-10T00:00:00+08:00">
+        <i class="icon-calendar"></i>五 10 十一月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
+<span class="label">Category</span>
+<a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><p>上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据</p>
+<div class="highlight"><pre><span></span><span class="c1"># crawl_like.py</span>
+<span class="c1"># -*- coding:utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39; 抓取文章点赞和评论&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">from</span> <span class="nn">app.config</span> <span class="kn">import</span> <span class="n">redis_key</span>
+<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span>
+<span class="kn">from</span> <span class="nn">app.model.Article</span> <span class="kn">import</span> <span class="n">Article …</span></pre></div>
+                        <a class="btn primary xsmall" href="/wechat/3.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="/python/3.html">supervisor python的进程管理工具 使用教程 【持续更新】</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
