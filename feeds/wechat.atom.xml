@@ -412,7 +412,39 @@ pip install requests
             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
 
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="/wechat/wechat1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-09:/wechat/wechat1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="/wechat/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-11-10:/wechat/4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;wx\.qlogo\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;short\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;minorshort\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;www\.microvirt\.com&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 请求 &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretty_url&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;not_allow_domain&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;re …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;wx\.qlogo\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;short\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;minorshort\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;www\.microvirt\.com&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 请求 &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretty_url&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;not_allow_domain&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;I&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;findall&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_url&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HTTPResponse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                &lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;hello world&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;text/html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;break&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="/wechat/wechat1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-09:/wechat/wechat1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
 &lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
 https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
