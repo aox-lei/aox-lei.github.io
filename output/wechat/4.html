@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Lei's Blog</title>
+    <title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Lei">
@@ -75,7 +75,7 @@
 						<i class="icon-folder-open icon-large"></i>Python
 					</a>
                   </li>
-                  <li >
+                  <li class="active">
                     <a href="/category/wechat.html">
 						<i class="icon-folder-open icon-large"></i>wechat
 					</a>
@@ -96,28 +96,53 @@
       <div class="row">
         <div class="span9" id="content">
 <section id="content">
-<h1>Archives for Lei's Blog</h1>
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to 微信公众号信息抓取方法(三)——增加微信抓取稳定性">
+                                        微信公众号信息抓取方法(三)——增加微信抓取稳定性
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-10T00:00:00+08:00">
+        <i class="icon-calendar"></i>五 10 十一月 2017
+</abbr>
+<span class="label">By</span>
+<a href="/author/lei.html"><i class="icon-user"></i>Lei</a>
+<span class="label">Category</span>
+<a href="/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
-<dl>
-	<dt>五 10 十一月 2017</dt>
-	<dd><a href='python/4.html'>dnspod动态域名提交, 类似花生壳实现的功能</a></dd>
-	<dt>五 10 十一月 2017</dt>
-	<dd><a href='wechat/2.html'>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</a></dd>
-	<dt>五 10 十一月 2017</dt>
-	<dd><a href='wechat/3.html'>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</a></dd>
-	<dt>五 10 十一月 2017</dt>
-	<dd><a href='wechat/4.html'>微信公众号信息抓取方法(三)——增加微信抓取稳定性</a></dd>
-	<dt>二 31 十月 2017</dt>
-	<dd><a href='python/3.html'>supervisor python的进程管理工具 使用教程 【持续更新】</a></dd>
-	<dt>一 25 九月 2017</dt>
-	<dd><a href='linux/1.html'>awk的使用方法(慢慢记录完善)</a></dd>
-	<dt>五 22 九月 2017</dt>
-	<dd><a href='python/2.html'>Python 多进程和多线程的方案</a></dd>
-	<dt>四 21 九月 2017</dt>
-	<dd><a href='python/1.html'>ProxyTool代理池功能, 免费获取ip代理</a></dd>
-	<dt>六 09 九月 2017</dt>
-	<dd><a href='wechat/wechat1.html'>微信公众号历史记录以及文章内容接口数据分析</a></dd>
-</dl>
+
+</footer><!-- /.post-info -->                </div>
+                <p>在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow</span><span class="p">):</span>
+    <span class="n">not_allow_domain</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">r</span><span class="s1">&#39;mmbiz\.qpic\.cn&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;wx\.qlogo\.cn&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;short\.weixin\.qq\.com&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;minorshort\.weixin\.qq\.com&#39;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s1">&#39;www\.microvirt\.com&#39;</span>
+    <span class="p">]</span>
+    <span class="sd">&#39;&#39;&#39; 请求 &#39;&#39;&#39;</span>
+    <span class="n">_url</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">pretty_url</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">not_allow_domain</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">_url</span><span class="p">):</span>
+            <span class="n">flow</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">HTTPResponse</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+                <span class="mi">200</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;hello world&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">break</span>
+</pre></div>
+
+
+<p>在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 <a href="http://www.phpue.com/python/3.html">supervisor 使用教程</a></p>
+                </div><!-- /.entry-content -->
+        </article>
 </section>
         </div><!--/span-->
 
