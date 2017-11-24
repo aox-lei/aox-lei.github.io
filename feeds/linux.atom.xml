@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - linux</title><link href="/" rel="alternate"></link><link href="/feeds/linux.atom.xml" rel="self"></link><id>/</id><updated>2017-09-25T00:00:00+08:00</updated><entry><title>awk的使用方法(慢慢记录完善)</title><link href="/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - linux</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/linux.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-09-25T00:00:00+08:00</updated><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
 &lt;p&gt;$0 代表整行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk &amp;#39;{print $1}&amp;#39; # 输出第一行
 &lt;/pre&gt;&lt;/div&gt;

@@ -4,140 +4,140 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>/</loc>
-<lastmod>2017-11-24T16:09:59-00:00</lastmod>
+<loc>http://www.phpue.com/</loc>
+<lastmod>2017-11-24T16:10:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/archives.html</loc>
-<lastmod>2017-11-24T16:09:59-00:00</lastmod>
+<loc>http://www.phpue.com/archives.html</loc>
+<lastmod>2017-11-24T16:10:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tags.html</loc>
-<lastmod>2017-11-24T16:09:59-00:00</lastmod>
+<loc>http://www.phpue.com/tags.html</loc>
+<lastmod>2017-11-24T16:10:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/categories.html</loc>
-<lastmod>2017-11-24T16:09:59-00:00</lastmod>
+<loc>http://www.phpue.com/categories.html</loc>
+<lastmod>2017-11-24T16:10:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/pages/about-me.html</loc>
+<loc>http://www.phpue.com/pages/about-me.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
 </url>
 
 <url>
-<loc>/php/1.html</loc>
+<loc>http://www.phpue.com/php/1.html</loc>
 <lastmod>2017-11-22T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/python/4.html</loc>
+<loc>http://www.phpue.com/python/4.html</loc>
 <lastmod>2017-11-10T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/wechat/2.html</loc>
+<loc>http://www.phpue.com/wechat/2.html</loc>
 <lastmod>2017-11-10T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/wechat/3.html</loc>
+<loc>http://www.phpue.com/wechat/3.html</loc>
 <lastmod>2017-11-10T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/wechat/4.html</loc>
+<loc>http://www.phpue.com/wechat/4.html</loc>
 <lastmod>2017-11-10T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/python/3.html</loc>
+<loc>http://www.phpue.com/python/3.html</loc>
 <lastmod>2017-10-31T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/linux/1.html</loc>
+<loc>http://www.phpue.com/linux/1.html</loc>
 <lastmod>2017-09-25T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/python/2.html</loc>
+<loc>http://www.phpue.com/python/2.html</loc>
 <lastmod>2017-09-22T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/python/1.html</loc>
+<loc>http://www.phpue.com/python/1.html</loc>
 <lastmod>2017-09-21T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/wechat/1.html</loc>
+<loc>http://www.phpue.com/wechat/1.html</loc>
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/category/linux.html</loc>
+<loc>http://www.phpue.com/category/linux.html</loc>
 <lastmod>2017-09-25T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/php.html</loc>
+<loc>http://www.phpue.com/category/php.html</loc>
 <lastmod>2017-11-22T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/python.html</loc>
+<loc>http://www.phpue.com/category/python.html</loc>
 <lastmod>2017-11-10T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/wechat.html</loc>
+<loc>http://www.phpue.com/category/wechat.html</loc>
 <lastmod>2017-11-10T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/author/lei.html</loc>
+<loc>http://www.phpue.com/author/lei.html</loc>
 <lastmod>2017-11-22T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
