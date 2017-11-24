@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - Python</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/python.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/python/4.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - Python</title><link href="/" rel="alternate"></link><link href="/feeds/python.atom.xml" rel="self"></link><id>/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="/python/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-11-10:/python/4.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
 &lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
 &lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
 然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
@@ -83,7 +83,7 @@ RECORD_IDS = [ # 记录id
 
 
 &lt;p&gt;有问题可以提交到这里: &lt;a href="https://github.com/mm333444/python_script/issues/new"&gt;ISSUE&lt;/a&gt;
-qq群:252799167&lt;/p&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/3.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-10-31:/python/3.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
+qq群:252799167&lt;/p&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="/python/3.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-10-31:/python/3.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;1. 安装&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
@@ -385,7 +385,7 @@ stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志
 &lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
 &lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
 &lt;h5&gt;6. crashsms&lt;/h5&gt;
-&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/2.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-22:/python/2.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>Python 多进程和多线程的方案</title><link href="/python/2.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-22:/python/2.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
 &lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
 &lt;h2&gt;二、线程&lt;/h2&gt;
 &lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
@@ -549,7 +549,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;span class="mi"&gt;3&lt;/span&gt;
 &lt;span class="mi"&gt;4&lt;/span&gt;
 &lt;span class="mi"&gt;5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/1.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-21:/python/1.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="/python/1.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-21:/python/1.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
 &lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
 &lt;h1&gt;ProxyTool&lt;/h1&gt;
 &lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - wechat</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/wechat.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog - wechat</title><link href="/" rel="alternate"></link><link href="/feeds/wechat.atom.xml" rel="self"></link><id>/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="/wechat/2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-11-10:/wechat/2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
 &lt;h2&gt;一、介绍&lt;/h2&gt;
 &lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
 &lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
@@ -131,7 +131,7 @@ pip install requests
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# content.py
 分析内容中的文章列表并保存
 以及将cookie保存起来, 假设保存到redis中
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="/wechat/3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-11-10:/wechat/3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
 &lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
@@ -412,7 +412,7 @@ pip install requests
             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
 
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="/wechat/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-11-10:/wechat/4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -444,7 +444,7 @@ pip install requests
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="/wechat/1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:None,2017-09-09:/wechat/1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
 &lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
 https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
