@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Lei's Blog</title>
+    <title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Lei">
@@ -70,7 +70,7 @@
 						<i class="icon-folder-open icon-large"></i>linux
 					</a>
                   </li>
-                  <li >
+                  <li class="active">
                     <a href="http://www.phpue.com/category/php.html">
 						<i class="icon-folder-open icon-large"></i>php
 					</a>
@@ -100,12 +100,63 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-<ul>
-	<li><a href="category/linux.html">linux</a></li>
-	<li><a href="category/php.html">php</a></li>
-	<li><a href="category/python.html">Python</a></li>
-	<li><a href="category/wechat.html">wechat</a></li>
-</ul>
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题">
+                                        php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-22T00:00:00+08:00">
+        <i class="icon-calendar"></i>三 22 十一月 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/lei.html"><i class="icon-user"></i>Lei</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/php.html"><i class="icon-folder-open"></i>php</a>.
+
+
+</footer><!-- /.post-info -->                </div>
+                <p>php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题</p>
+<p>基本环境:
+MAC OS X、php5.6</p>
+<p>phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)</p>
+<p>一、先查看系统的curl支持的协议</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; curl -V
+curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
+Release-Date: 2017-10-23
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
+Features: AsynchDNS IPv6 Largefile NTLM NTLM_WB SSL libz TLS-SRP UnixSockets HTTPS-proxy
+</pre></div>
+
+
+<p>如果返回的信息里没有OpenSSL, 则需要重新安装一个新的curl, 查看第二步, 如果有OpenSSL, 则直接看第三步</p>
+<p>二、重新安装curl</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; brew uninstall curl
+&gt;&gt;&gt; brew install curl --with-openssl
+&gt;&gt;&gt; brew link curl --force
+&gt;&gt;&gt; curl --version
+</pre></div>
+
+
+<p>三、重新安装php</p>
+<div class="highlight"><pre><span></span>&gt;&gt;&gt; brew uninstall php56
+&gt;&gt;&gt; brew install --with-homebrew-curl php56
+</pre></div>
+
+
+<p>四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL</p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
