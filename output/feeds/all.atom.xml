@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Lei's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-22T00:00:00+08:00</updated><entry><title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title><link href="http://www.phpue.com/php/1.html" rel="alternate"></link><published>2017-11-22T00:00:00+08:00</published><updated>2017-11-22T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-22:/php/1.html</id><summary type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Prince's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-22T00:00:00+08:00</updated><entry><title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title><link href="http://www.phpue.com/php/1.html" rel="alternate"></link><published>2017-11-22T00:00:00+08:00</published><updated>2017-11-22T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-11-22:/php/1.html</id><summary type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
 &lt;p&gt;基本环境:
 MAC OS X、php5.6&lt;/p&gt;
 &lt;p&gt;phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)&lt;/p&gt;
@@ -33,7 +33,7 @@ Features: AsynchDNS IPv6 Largefile NTLM NTLM_WB SSL libz TLS-SRP UnixSockets HTT
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL&lt;/p&gt;</content></entry><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/python/4.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
+&lt;p&gt;四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL&lt;/p&gt;</content></entry><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-11-10:/python/4.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
 &lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
 &lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
 然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
@@ -117,7 +117,7 @@ RECORD_IDS = [ # 记录id
 
 
 &lt;p&gt;有问题可以提交到这里: &lt;a href="https://github.com/mm333444/python_script/issues/new"&gt;ISSUE&lt;/a&gt;
-qq群:252799167&lt;/p&gt;</content></entry><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
+qq群:252799167&lt;/p&gt;</content></entry><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
 &lt;h2&gt;一、介绍&lt;/h2&gt;
 &lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
 &lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
@@ -249,7 +249,7 @@ pip install requests
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# content.py
 分析内容中的文章列表并保存
 以及将cookie保存起来, 假设保存到redis中
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
 &lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
@@ -530,7 +530,7 @@ pip install requests
             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
 
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -562,7 +562,7 @@ pip install requests
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/3.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-10-31:/python/3.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
+&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/3.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-10-31:/python/3.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;1. 安装&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
@@ -864,7 +864,7 @@ stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志
 &lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
 &lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
 &lt;h5&gt;6. crashsms&lt;/h5&gt;
-&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
 &lt;p&gt;$0 代表整行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk &amp;#39;{print $1}&amp;#39; # 输出第一行
 &lt;/pre&gt;&lt;/div&gt;
@@ -927,7 +927,7 @@ awk &amp;#39;$1==1 {print $1}&amp;#39;
 
 &lt;h3&gt;6. 拆分文件&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk -F : &amp;#39;$1 ~ /www/ {print &amp;gt; $2}&amp;#39; /etc/passwd
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/2.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-22:/python/2.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/2.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-22:/python/2.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
 &lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
 &lt;h2&gt;二、线程&lt;/h2&gt;
 &lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
@@ -1091,7 +1091,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;span class="mi"&gt;3&lt;/span&gt;
 &lt;span class="mi"&gt;4&lt;/span&gt;
 &lt;span class="mi"&gt;5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/1.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-21:/python/1.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/1.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-21:/python/1.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
 &lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
 &lt;h1&gt;ProxyTool&lt;/h1&gt;
 &lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
@@ -1171,7 +1171,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Lei</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
 &lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
 https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Lei'
-SITENAME = "Lei's Blog"
+AUTHOR = 'Prince'
+SITENAME = "Prince's Blog"
 SITEURL = 'http://www.phpue.com'
 # SITEURL = 'http://127.0.0.1:8000'
 THEME = 'bootstrap2'
