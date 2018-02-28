@@ -864,7 +864,338 @@ stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志
 &lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
 &lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
 &lt;h5&gt;6. crashsms&lt;/h5&gt;
-&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/1.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/1.html</id><summary type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;td&gt;字符编码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;D&lt;/td&gt;
+&lt;td&gt;库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F&lt;/td&gt;
+&lt;td&gt;从文件读取选项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;L&lt;/td&gt;
+&lt;td&gt;加载数据本地文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P&lt;/td&gt;
+&lt;td&gt;端口&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S&lt;/td&gt;
+&lt;td&gt;socket文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a&lt;/td&gt;
+&lt;td&gt;执行查询的数据库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;b&lt;/td&gt;
+&lt;td&gt;如果是true, 禁用SQL_LOG_BIN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;h&lt;/td&gt;
+&lt;td&gt;数据库地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;i&lt;/td&gt;
+&lt;td&gt;查询使用的索引&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;m&lt;/td&gt;
+&lt;td&gt;插件模块名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;p&lt;/td&gt;
+&lt;td&gt;数据库密码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;t&lt;/td&gt;
+&lt;td&gt;表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;u&lt;/td&gt;
+&lt;td&gt;用户名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;## 2. 常用参数&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;默认值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--limit 10000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--txn-size  1000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--where 'id&amp;lt;3000'&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--progress 5000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--statistics&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--charset=UTF8&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--bulk-delete …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;td&gt;字符编码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;D&lt;/td&gt;
+&lt;td&gt;库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F&lt;/td&gt;
+&lt;td&gt;从文件读取选项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;L&lt;/td&gt;
+&lt;td&gt;加载数据本地文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P&lt;/td&gt;
+&lt;td&gt;端口&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S&lt;/td&gt;
+&lt;td&gt;socket文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a&lt;/td&gt;
+&lt;td&gt;执行查询的数据库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;b&lt;/td&gt;
+&lt;td&gt;如果是true, 禁用SQL_LOG_BIN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;h&lt;/td&gt;
+&lt;td&gt;数据库地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;i&lt;/td&gt;
+&lt;td&gt;查询使用的索引&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;m&lt;/td&gt;
+&lt;td&gt;插件模块名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;p&lt;/td&gt;
+&lt;td&gt;数据库密码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;t&lt;/td&gt;
+&lt;td&gt;表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;u&lt;/td&gt;
+&lt;td&gt;用户名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;## 2. 常用参数&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;默认值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--limit 10000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--txn-size  1000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--where 'id&amp;lt;3000'&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--progress 5000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--statistics&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--charset=UTF8&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--bulk-delete&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--bulk-insert&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--replace&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--sleep 120&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--file '/root/test.txt'&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--purge&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--header&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-no-check-charset&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--check-columns&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--no-check-columns&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--chekc-interval&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--local&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--retries&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--no-version-check&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--analyze=ds&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;2. example&lt;/h2&gt;
+&lt;h3&gt;1. 删除老数据&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t \
+--no-check-charset --where ‘a&amp;lt;=376‘ --limit 10000 --txn-size 1000 --purge
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 复制数据到其他mysql实例，且不删除source的数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1\
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_bak \
+--progress 5000 --where &amp;#39;mc_id&amp;lt;=125&amp;#39; \
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 复制数据到其他mysql实例，并删source上的旧数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &amp;quot;CreateDate &amp;lt;‘2017-05-01 00:00:00‘ &amp;quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --bulk-delete
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 复制数据到其他mysql实例，不删除source数据，但是使用批量插入dest上新的数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=localhost,u=archiver,p=archiver,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &amp;quot;c &amp;lt;‘2017-05-01 00:00:00‘ &amp;quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete  --bulk-insert
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;5. 导出数据到文件&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&amp;lt;12000‘ \
+
+--no-delete --statistics --charset=UTF8 --limit=10000 --txn-size 1000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;6. 导出数据到文件并删除数据库的相关行：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&amp;lt;12000‘ \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --purge
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/1.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Prince</name></author><id>tag:www.phpue.com,2017-09-25:/linux/1.html</id><summary type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
 &lt;p&gt;$0 代表整行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk &amp;#39;{print $1}&amp;#39; # 输出第一行
 &lt;/pre&gt;&lt;/div&gt;
