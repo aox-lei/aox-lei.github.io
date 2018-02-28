@@ -71,6 +71,11 @@
 					</a>
                   </li>
                   <li >
+                    <a href="http://www.phpue.com/category/mysql.html">
+						<i class="icon-folder-open icon-large"></i>Mysql
+					</a>
+                  </li>
+                  <li >
                     <a href="http://www.phpue.com/category/php.html">
 						<i class="icon-folder-open icon-large"></i>php
 					</a>
@@ -105,7 +110,7 @@
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-11-22T00:00:00+08:00">
-        <i class="icon-calendar"></i>三 22 十一月 2017
+        <i class="icon-calendar"></i>Wed 22 November 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -130,7 +135,7 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-11-10T00:00:00+08:00">
-        <i class="icon-calendar"></i>五 10 十一月 2017
+        <i class="icon-calendar"></i>Fri 10 November 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -179,7 +184,7 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-11-10T00:00:00+08:00">
-        <i class="icon-calendar"></i>五 10 十一月 2017
+        <i class="icon-calendar"></i>Fri 10 November 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -217,7 +222,7 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-11-10T00:00:00+08:00">
-        <i class="icon-calendar"></i>五 10 十一月 2017
+        <i class="icon-calendar"></i>Fri 10 November 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -250,7 +255,7 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-11-10T00:00:00+08:00">
-        <i class="icon-calendar"></i>五 10 十一月 2017
+        <i class="icon-calendar"></i>Fri 10 November 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -281,7 +286,7 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-10-31T00:00:00+08:00">
-        <i class="icon-calendar"></i>二 31 十月 2017
+        <i class="icon-calendar"></i>Tue 31 October 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -327,11 +332,132 @@ pip install supervisor
         </div>
         <hr />
         <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/1.html">pt-archiver 数据删除、迁移工具使用</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-01T00:00:00+08:00">
+        <i class="icon-calendar"></i>Sun 01 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>1. 数据库连接参数</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>字符编码</td>
+</tr>
+<tr>
+<td>D</td>
+<td>库</td>
+</tr>
+<tr>
+<td>F</td>
+<td>从文件读取选项</td>
+</tr>
+<tr>
+<td>L</td>
+<td>加载数据本地文件</td>
+</tr>
+<tr>
+<td>P</td>
+<td>端口</td>
+</tr>
+<tr>
+<td>S</td>
+<td>socket文件</td>
+</tr>
+<tr>
+<td>a</td>
+<td>执行查询的数据库</td>
+</tr>
+<tr>
+<td>b</td>
+<td>如果是true, 禁用SQL_LOG_BIN</td>
+</tr>
+<tr>
+<td>h</td>
+<td>数据库地址</td>
+</tr>
+<tr>
+<td>i</td>
+<td>查询使用的索引</td>
+</tr>
+<tr>
+<td>m</td>
+<td>插件模块名称</td>
+</tr>
+<tr>
+<td>p</td>
+<td>数据库密码</td>
+</tr>
+<tr>
+<td>t</td>
+<td>表</td>
+</tr>
+<tr>
+<td>u</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>## 2. 常用参数</td>
+<td></td>
+</tr>
+<tr>
+<td>参数</td>
+<td>默认值</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>--limit 10000</td>
+<td></td>
+</tr>
+<tr>
+<td>--txn-size  1000</td>
+<td></td>
+</tr>
+<tr>
+<td>--where 'id&lt;3000'</td>
+<td></td>
+</tr>
+<tr>
+<td>--progress 5000</td>
+<td></td>
+</tr>
+<tr>
+<td>--statistics</td>
+<td></td>
+</tr>
+<tr>
+<td>--charset=UTF8</td>
+<td></td>
+</tr>
+<tr>
+<td>--bulk-delete …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/1.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="http://www.phpue.com/linux/1.html">awk的使用方法(慢慢记录完善)</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-09-25T00:00:00+08:00">
-        <i class="icon-calendar"></i>一 25 九月 2017
+        <i class="icon-calendar"></i>Mon 25 September 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -378,7 +504,7 @@ awk &#39;$1==1 {print $1}&#39;
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-09-22T00:00:00+08:00">
-        <i class="icon-calendar"></i>五 22 九月 2017
+        <i class="icon-calendar"></i>Fri 22 September 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -411,7 +537,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
 <abbr class="published" title="2017-09-21T00:00:00+08:00">
-        <i class="icon-calendar"></i>四 21 九月 2017
+        <i class="icon-calendar"></i>Thu 21 September 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
@@ -442,54 +568,16 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
                 </div>
         </div>
         <hr />
-        <div class="article">
-                <h1><a href="http://www.phpue.com/wechat/1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-09-09T00:00:00+08:00">
-        <i class="icon-calendar"></i>六 09 九月 2017
-</abbr>
-<span class="label">By</span>
-<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
-<span class="label">Category</span>
-<a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一: 查看历史消息</h2>
-<h3>1. 请求转发到实际的页面</h3>
-<p><strong>URL</strong>
-https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
-<strong>作用</strong>
-猜测是为了设置cookie等一些信息, 不经过则cookie无效
-<strong>请求方式</strong>: GET
-<strong>请求参数</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>参数值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__biz</td>
-<td>MzI2NjA3NTc4Ng==</td>
-<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
-</tr>
-<tr>
-<td>devicetype</td>
-<td>iOS10 …</td></tr></tbody></table>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/wechat/1.html">more ...</a>
-                </div>
+        <div class="pagination">
+        <ul>
+                        <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+                        <li class="active"><a href="http://www.phpue.com/index.html">1</a></li>
+                        <li class=""><a href="http://www.phpue.com/index2.html">2</a></li>
+                        <li class="next"><a href="http://www.phpue.com/index2.html">Next &rarr;</a></li>
+        </ul>
         </div>
-        <hr />
 
-                <section id="content" class="body">
-                <h1>Pages</h1>
-                        <li><a href="http://www.phpue.com/pages/about-me.html">关于Docker</a></li>
-                </section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
@@ -507,6 +595,11 @@ https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype
 <li>
 <a href="http://www.phpue.com/category/linux.html">
     <i class="icon-folder-open icon-large"></i>linux
+</a>
+</li>
+<li>
+<a href="http://www.phpue.com/category/mysql.html">
+    <i class="icon-folder-open icon-large"></i>Mysql
 </a>
 </li>
 <li>

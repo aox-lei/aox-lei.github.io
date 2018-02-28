@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Prince's Blog - linux</title>
+    <title>pt-archiver 数据删除、迁移工具使用</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Prince">
@@ -65,12 +65,12 @@
             <ul class="nav">
                   <li><a href="http://www.phpue.com">首页</a></li>
                   <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
-                  <li class="active">
+                  <li >
                     <a href="http://www.phpue.com/category/linux.html">
 						<i class="icon-folder-open icon-large"></i>linux
 					</a>
                   </li>
-                  <li >
+                  <li class="active">
                     <a href="http://www.phpue.com/category/mysql.html">
 						<i class="icon-folder-open icon-large"></i>Mysql
 					</a>
@@ -105,58 +105,264 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-        <div class="article">
-                <h1><a href="http://www.phpue.com/linux/1.html">awk的使用方法(慢慢记录完善)</a></h1>
-                <div class="well small"><footer class="post-info">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to pt-archiver 数据删除、迁移工具使用">
+                                        pt-archiver 数据删除、迁移工具使用
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2017-09-25T00:00:00+08:00">
-        <i class="icon-calendar"></i>Mon 25 September 2017
+<abbr class="published" title="2017-10-01T00:00:00+08:00">
+        <i class="icon-calendar"></i>Sun 01 October 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
 <span class="label">Category</span>
-<a href="http://www.phpue.com/category/linux.html"><i class="icon-folder-open"></i>linux</a>.
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h3>1. 输出第几行</h3>
-<p>$0 代表整行</p>
-<div class="highlight"><pre><span></span>awk &#39;{print $1}&#39; # 输出第一行
+</footer><!-- /.post-info -->                </div>
+                <h2>1. 数据库连接参数</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>字符编码</td>
+</tr>
+<tr>
+<td>D</td>
+<td>库</td>
+</tr>
+<tr>
+<td>F</td>
+<td>从文件读取选项</td>
+</tr>
+<tr>
+<td>L</td>
+<td>加载数据本地文件</td>
+</tr>
+<tr>
+<td>P</td>
+<td>端口</td>
+</tr>
+<tr>
+<td>S</td>
+<td>socket文件</td>
+</tr>
+<tr>
+<td>a</td>
+<td>执行查询的数据库</td>
+</tr>
+<tr>
+<td>b</td>
+<td>如果是true, 禁用SQL_LOG_BIN</td>
+</tr>
+<tr>
+<td>h</td>
+<td>数据库地址</td>
+</tr>
+<tr>
+<td>i</td>
+<td>查询使用的索引</td>
+</tr>
+<tr>
+<td>m</td>
+<td>插件模块名称</td>
+</tr>
+<tr>
+<td>p</td>
+<td>数据库密码</td>
+</tr>
+<tr>
+<td>t</td>
+<td>表</td>
+</tr>
+<tr>
+<td>u</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>## 2. 常用参数</td>
+<td></td>
+</tr>
+<tr>
+<td>参数</td>
+<td>默认值</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>--limit 10000</td>
+<td></td>
+</tr>
+<tr>
+<td>--txn-size  1000</td>
+<td></td>
+</tr>
+<tr>
+<td>--where 'id&lt;3000'</td>
+<td></td>
+</tr>
+<tr>
+<td>--progress 5000</td>
+<td></td>
+</tr>
+<tr>
+<td>--statistics</td>
+<td></td>
+</tr>
+<tr>
+<td>--charset=UTF8</td>
+<td></td>
+</tr>
+<tr>
+<td>--bulk-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>--bulk-insert</td>
+<td></td>
+</tr>
+<tr>
+<td>--replace</td>
+<td></td>
+</tr>
+<tr>
+<td>--sleep 120</td>
+<td></td>
+</tr>
+<tr>
+<td>--file '/root/test.txt'</td>
+<td></td>
+</tr>
+<tr>
+<td>--purge</td>
+<td></td>
+</tr>
+<tr>
+<td>--header</td>
+<td></td>
+</tr>
+<tr>
+<td>-no-check-charset</td>
+<td></td>
+</tr>
+<tr>
+<td>--check-columns</td>
+<td></td>
+</tr>
+<tr>
+<td>--no-check-columns</td>
+<td></td>
+</tr>
+<tr>
+<td>--chekc-interval</td>
+<td></td>
+</tr>
+<tr>
+<td>--local</td>
+<td></td>
+</tr>
+<tr>
+<td>--retries</td>
+<td></td>
+</tr>
+<tr>
+<td>--no-version-check</td>
+<td></td>
+</tr>
+<tr>
+<td>--analyze=ds</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>2. example</h2>
+<h3>1. 删除老数据</h3>
+<div class="highlight"><pre><span></span>pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t \
+--no-check-charset --where ‘a&lt;=376‘ --limit 10000 --txn-size 1000 --purge
 </pre></div>
 
 
-<h3>2. 过滤数据</h3>
-<div class="highlight"><pre><span></span>awk &#39;$1==1&#39; # 第一列等于1的数据
+<h3>2. 复制数据到其他mysql实例，且不删除source的数据(指定字符集)：</h3>
+<div class="highlight"><pre><span></span>/usr/bin/pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1\
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_bak \
+--progress 5000 --where &#39;mc_id&lt;=125&#39; \
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete
 </pre></div>
 
 
-<p>其他计算符号 <strong>!=、&gt;、&lt;、&gt;=、&lt;=</strong></p>
-<div class="highlight"><pre><span></span># 过滤并输出指定列
-awk &#39;$1==1 {print $1}&#39;
+<h3>3. 复制数据到其他mysql实例，并删source上的旧数据(指定字符集)：</h3>
+<div class="highlight"><pre><span></span>/usr/bin/pt-archiver \
+
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &quot;CreateDate &lt;‘2017-05-01 00:00:00‘ &quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --bulk-delete
 </pre></div>
 
 
-<h3>3. 格式化输出</h3>
-<div class="highlight"><pre><span></span>awk &#39;{printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6}&#39; netstat.txt
+<h3>4. 复制数据到其他mysql实例，不删除source数据，但是使用批量插入dest上新的数据(指定字符集)：</h3>
+<div class="highlight"><pre><span></span>/usr/bin/pt-archiver \
+
+--source h=localhost,u=archiver,p=archiver,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &quot;c &lt;‘2017-05-01 00:00:00‘ &quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete  --bulk-insert
 </pre></div>
 
 
-<h3>4. 指定分隔符和指定输出分隔符</h3>
-<div class="highlight"><pre><span></span>awk -F 分隔符 -OFS 输出的分隔符
+<h3>5. 导出数据到文件</h3>
+<div class="highlight"><pre><span></span>/usr/bin/pt-archiver \
+
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&lt;12000‘ \
+
+--no-delete --statistics --charset=UTF8 --limit=10000 --txn-size 1000
 </pre></div>
 
 
-<h3>5. 字符串查找</h3>
-<p>模式取反用 …</p>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/linux/1.html">more ...</a>
-                </div>
-        </div>
-        <hr />
+<h3>6. 导出数据到文件并删除数据库的相关行：</h3>
+<div class="highlight"><pre><span></span>/usr/bin/pt-archiver \
 
-                <section id="content" class="body">
-                <h1>Pages</h1>
-                        <li><a href="http://www.phpue.com/pages/about-me.html">关于Docker</a></li>
-                </section>
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&lt;12000‘ \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --purge
+</pre></div>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">

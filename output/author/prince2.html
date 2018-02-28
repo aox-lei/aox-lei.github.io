@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Prince's Blog - linux</title>
+    <title>Prince's Blog - Prince</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Prince">
@@ -65,7 +65,7 @@
             <ul class="nav">
                   <li><a href="http://www.phpue.com">首页</a></li>
                   <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
-                  <li class="active">
+                  <li >
                     <a href="http://www.phpue.com/category/linux.html">
 						<i class="icon-folder-open icon-large"></i>linux
 					</a>
@@ -106,57 +106,58 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
-                <h1><a href="http://www.phpue.com/linux/1.html">awk的使用方法(慢慢记录完善)</a></h1>
+                <h1><a href="http://www.phpue.com/wechat/1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
-<abbr class="published" title="2017-09-25T00:00:00+08:00">
-        <i class="icon-calendar"></i>Mon 25 September 2017
+<abbr class="published" title="2017-09-09T00:00:00+08:00">
+        <i class="icon-calendar"></i>Sat 09 September 2017
 </abbr>
 <span class="label">By</span>
 <a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
 <span class="label">Category</span>
-<a href="http://www.phpue.com/category/linux.html"><i class="icon-folder-open"></i>linux</a>.
+<a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h3>1. 输出第几行</h3>
-<p>$0 代表整行</p>
-<div class="highlight"><pre><span></span>awk &#39;{print $1}&#39; # 输出第一行
-</pre></div>
-
-
-<h3>2. 过滤数据</h3>
-<div class="highlight"><pre><span></span>awk &#39;$1==1&#39; # 第一列等于1的数据
-</pre></div>
-
-
-<p>其他计算符号 <strong>!=、&gt;、&lt;、&gt;=、&lt;=</strong></p>
-<div class="highlight"><pre><span></span># 过滤并输出指定列
-awk &#39;$1==1 {print $1}&#39;
-</pre></div>
-
-
-<h3>3. 格式化输出</h3>
-<div class="highlight"><pre><span></span>awk &#39;{printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6}&#39; netstat.txt
-</pre></div>
-
-
-<h3>4. 指定分隔符和指定输出分隔符</h3>
-<div class="highlight"><pre><span></span>awk -F 分隔符 -OFS 输出的分隔符
-</pre></div>
-
-
-<h3>5. 字符串查找</h3>
-<p>模式取反用 …</p>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/linux/1.html">more ...</a>
+                <div class="summary"><h2>一: 查看历史消息</h2>
+<h3>1. 请求转发到实际的页面</h3>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
+<strong>作用</strong>
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+<strong>请求方式</strong>: GET
+<strong>请求参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__biz</td>
+<td>MzI2NjA3NTc4Ng==</td>
+<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>iOS10 …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/wechat/1.html">more ...</a>
                 </div>
         </div>
         <hr />
 
-                <section id="content" class="body">
-                <h1>Pages</h1>
-                        <li><a href="http://www.phpue.com/pages/about-me.html">关于Docker</a></li>
-                </section>
+        <div class="pagination">
+        <ul>
+                        <li class="prev"><a href="http://www.phpue.com/author/prince.html">&larr; Previous</a></li>
+                        <li class=""><a href="http://www.phpue.com/author/prince.html">1</a></li>
+                        <li class="active"><a href="http://www.phpue.com/author/prince2.html">2</a></li>
+                        <li class="next disabled"><a href="#">&rarr; Next</a></li>
+        </ul>
+        </div>
+
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">
