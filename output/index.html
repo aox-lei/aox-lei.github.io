@@ -282,6 +282,53 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
         </div>
         <hr />
         <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/pt-online-schema-change.html">pt-online-schema-change 在线修改表结构</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-01T00:00:00+08:00">
+        <i class="icon-calendar"></i>Wed 01 November 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>1. 参数</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--host=xxx --user=xxx --password=xxx</td>
+<td></td>
+<td>连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。</td>
+</tr>
+<tr>
+<td>--alter</td>
+<td></td>
+<td>结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。</td>
+</tr>
+<tr>
+<td>D=db_name,t=table_name</td>
+<td></td>
+<td>指定要ddl的数据库名和表名</td>
+</tr>
+<tr>
+<td>--max-load</td>
+<td></td>
+<td>默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/pt-online-schema-change.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="http://www.phpue.com/python/supervisor.html">supervisor python的进程管理工具 使用教程 【持续更新】</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
@@ -426,37 +473,6 @@ PARTITION BY KEY()
 PARTITIONS 2;
 </pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-key.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="http://www.phpue.com/mysql/mysql-partition-list.html">Mysql 分区介绍(三) —— LIST分区</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-10-02T00:00:00+08:00">
-        <i class="icon-calendar"></i>Mon 02 October 2017
-</abbr>
-<span class="label">By</span>
-<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
-<span class="label">Category</span>
-<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
-
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
-<div class="highlight"><pre><span></span>CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
-    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
-    job_code INT,
-    store_id INT
-)
-PARTITION BY LIST(store_id) (
-    PARTITION pNorth VALUES IN (3,5,6,9,17),
-    PARTITION pEast VALUES IN (1 …</pre></div>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list.html">more ...</a>
                 </div>
         </div>
         <hr />
