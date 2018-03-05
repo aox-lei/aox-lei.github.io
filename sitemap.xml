@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/</loc>
-<lastmod>2018-03-05T15:14:31-00:00</lastmod>
+<lastmod>2018-03-05T15:23:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/archives.html</loc>
-<lastmod>2018-03-05T15:14:31-00:00</lastmod>
+<lastmod>2018-03-05T15:23:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tags.html</loc>
-<lastmod>2018-03-05T15:14:31-00:00</lastmod>
+<lastmod>2018-03-05T15:23:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/categories.html</loc>
-<lastmod>2018-03-05T15:14:31-00:00</lastmod>
+<lastmod>2018-03-05T15:23:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -69,6 +69,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.phpue.com/wechat/wechat-account4.html</loc>
 <lastmod>2017-11-10T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/mysql/pt-online-schema-change.html</loc>
+<lastmod>2017-11-01T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -194,7 +201,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/category/mysql.html</loc>
-<lastmod>2017-10-02T00:00:00+08:06</lastmod>
+<lastmod>2017-11-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

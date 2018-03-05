@@ -106,6 +106,53 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/pt-online-schema-change.html">pt-online-schema-change 在线修改表结构</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-11-01T00:00:00+08:00">
+        <i class="icon-calendar"></i>Wed 01 November 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>1. 参数</h2>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--host=xxx --user=xxx --password=xxx</td>
+<td></td>
+<td>连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。</td>
+</tr>
+<tr>
+<td>--alter</td>
+<td></td>
+<td>结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。</td>
+</tr>
+<tr>
+<td>D=db_name,t=table_name</td>
+<td></td>
+<td>指定要ddl的数据库名和表名</td>
+</tr>
+<tr>
+<td>--max-load</td>
+<td></td>
+<td>默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/pt-online-schema-change.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="http://www.phpue.com/mysql/mysql-partition.html">Mysql 分区介绍(一) ——概述</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
@@ -402,39 +449,6 @@ value_list:
 <p>column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值</p>
 <div class="highlight"><pre><span></span>mysql&gt; CREATE …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range-columns.html">more ...</a>
-                </div>
-        </div>
-        <hr />
-        <div class="article">
-                <h1><a href="http://www.phpue.com/mysql/mysql-partition-subpartition.html">Mysql 分区介绍(八) —— 子分区</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-10-02T00:00:00+08:00">
-        <i class="icon-calendar"></i>Mon 02 October 2017
-</abbr>
-<span class="label">By</span>
-<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
-<span class="label">Category</span>
-<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
-
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区</p>
-<div class="highlight"><pre><span></span>CREATE TABLE ts (
-id INT, purchased DATE
-)
-PARTITION BY RANGE( YEAR(purchased) )
-SUBPARTITION BY HASH( TO_DAYS(purchased) )
-SUBPARTITIONS 2 (
-    PARTITION p0 VALUES LESS THAN (1990),
-    PARTITION p1 VALUES LESS THAN (2000),
-    PARTITION p2 VALUES LESS THAN MAXVALUE
-);
-</pre></div>
-
-
-<p>表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用 …</p>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-subpartition.html">more ...</a>
                 </div>
         </div>
         <hr />
