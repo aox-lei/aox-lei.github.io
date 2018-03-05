@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Prince'
-SITENAME = "Prince's Blog"
+AUTHOR = 'Andy Dufresne'
+SITENAME = "Andy Dufresne's Blog"
 SITEURL = 'http://www.phpue.com'
 # SITEURL = 'http://127.0.0.1:8000'
 THEME = 'bootstrap2'
@@ -20,19 +20,15 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-MENUITEMS = (
-    ('首页', SITEURL),
-    ('关于我', SITEURL+'/pages/about-me.html')
-)
+MENUITEMS = (('首页', SITEURL), ('关于我', SITEURL + '/pages/about-me.html'))
 
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'))
+         ('Python.org', 'http://python.org/'), ('Jinja2',
+                                                'http://jinja.pocoo.org/'))
 
 # Social widget
-SOCIAL = (('我的笔记', '#'),
-          ('我的博客', '#'))
+SOCIAL = (('我的笔记', '#'), ('我的博客', '#'))
 
 DEFAULT_PAGINATION = 10
 
