@@ -106,6 +106,189 @@
       <div class="row">
         <div class="span9" id="content">
         <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition.html">Mysql 分区介绍(一) ——概述</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>一、分区类型</h2>
+<h3>1. RANGE类型(范围分区)</h3>
+<blockquote>
+<p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
+</blockquote>
+<p>啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 <br /></p>
+<p>咱们看一个创建的例子</p>
+<div class="highlight"><pre><span></span>CREATE TABLE `t1` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT &#39;用户id&#39;,
+  `score` int(3) NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;分数&#39;,
+  PRIMARY KEY (`id`,`score`)
+) ENGINE …</pre></div>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-hash.html">Mysql 分区介绍(六) —— HASH分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-hash.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-key.html">Mysql 分区介绍(七) —— KEY分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-key.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-list.html">Mysql 分区介绍(三) —— LIST分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-list-columns.html">Mysql 分区介绍(五) —— LIST COLUMNS分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list-columns.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-manage.html">Mysql 分区介绍(九) —— 分区管理</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-manage.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-range.html">Mysql 分区介绍(二) —— RANGE分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-range-columns.html">Mysql 分区介绍(四) —— RANGE COLUMNS分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range-columns.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-subpartition.html">Mysql 分区介绍(八) —— 子分区</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary">
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-subpartition.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="http://www.phpue.com/mysql/1.html">pt-archiver 数据删除、迁移工具使用</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
