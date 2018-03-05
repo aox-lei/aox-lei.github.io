@@ -105,54 +105,60 @@
     <div class="container-fluid">
       <div class="row">
         <div class="span9" id="content">
-<section id="content">
-<h1>Archives for Andy Dufresne's Blog</h1>
+        <div class="article">
+                <h1><a href="http://www.phpue.com/wechat/wechat-account1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-09-09T00:00:00+08:00">
+        <i class="icon-calendar"></i>Sat 09 September 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
-<dl>
-	<dt>Wed 22 November 2017</dt>
-	<dd><a href='php/curl-osstatus-25299.html'>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</a></dd>
-	<dt>Fri 10 November 2017</dt>
-	<dd><a href='python/dnspod-dynamic.html'>dnspod动态域名提交, 类似花生壳实现的功能</a></dd>
-	<dt>Fri 10 November 2017</dt>
-	<dd><a href='wechat/wechat-account2.html'>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</a></dd>
-	<dt>Fri 10 November 2017</dt>
-	<dd><a href='wechat/wechat-account3.html'>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</a></dd>
-	<dt>Fri 10 November 2017</dt>
-	<dd><a href='wechat/wechat-account4.html'>微信公众号信息抓取方法(三)——增加微信抓取稳定性</a></dd>
-	<dt>Tue 31 October 2017</dt>
-	<dd><a href='python/supervisor.html'>supervisor python的进程管理工具 使用教程 【持续更新】</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition.html'>Mysql 分区介绍(一) ——概述</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-hash.html'>Mysql 分区介绍(六) —— HASH分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-key.html'>Mysql 分区介绍(七) —— KEY分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-list.html'>Mysql 分区介绍(三) —— LIST分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-list-columns.html'>Mysql 分区介绍(五) —— LIST COLUMNS分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-manage.html'>Mysql 分区介绍(九) —— 分区管理</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-null.html'>Mysql分区表如何处理null</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-range.html'>Mysql 分区介绍(二) —— RANGE分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-range-columns.html'>Mysql 分区介绍(四) —— RANGE COLUMNS分区</a></dd>
-	<dt>Mon 02 October 2017</dt>
-	<dd><a href='mysql/mysql-partition-subpartition.html'>Mysql 分区介绍(八) —— 子分区</a></dd>
-	<dt>Sun 01 October 2017</dt>
-	<dd><a href='mysql/pt-archiver.html'>pt-archiver 数据删除、迁移工具使用</a></dd>
-	<dt>Mon 25 September 2017</dt>
-	<dd><a href='linux/awk.html'>awk的使用方法(慢慢记录完善)</a></dd>
-	<dt>Fri 22 September 2017</dt>
-	<dd><a href='python/multiprocessing-threading.html'>Python 多进程和多线程的方案</a></dd>
-	<dt>Thu 21 September 2017</dt>
-	<dd><a href='python/proxy-tool.html'>ProxyTool代理池功能, 免费获取ip代理</a></dd>
-	<dt>Sat 09 September 2017</dt>
-	<dd><a href='wechat/wechat-account1.html'>微信公众号历史记录以及文章内容接口数据分析</a></dd>
-</dl>
-</section>
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><h2>一: 查看历史消息</h2>
+<h3>1. 请求转发到实际的页面</h3>
+<p><strong>URL</strong>
+https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
+<strong>作用</strong>
+猜测是为了设置cookie等一些信息, 不经过则cookie无效
+<strong>请求方式</strong>: GET
+<strong>请求参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>参数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__biz</td>
+<td>MzI2NjA3NTc4Ng==</td>
+<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>iOS10 …</td></tr></tbody></table>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/wechat/wechat-account1.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+
+        <div class="pagination">
+        <ul>
+                        <li class="prev"><a href="http://www.phpue.com/index2.html">&larr; Previous</a></li>
+                        <li class=""><a href="http://www.phpue.com/index.html">1</a></li>
+                        <li class=""><a href="http://www.phpue.com/index2.html">2</a></li>
+                        <li class="active"><a href="http://www.phpue.com/index3.html">3</a></li>
+                        <li class="next disabled"><a href="#">&rarr; Next</a></li>
+        </ul>
+        </div>
+
         </div><!--/span-->
 
                 <div class="span3 well sidebar-nav" id="sidebar">

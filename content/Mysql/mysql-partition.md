@@ -54,7 +54,7 @@ Range分区的详细介绍请看[Mysql 分区介绍(三) —— LIST分区](http
 COLUMNS和以上两种是很不一样的, 这个是可以用多个分区键确定分区的。有两种方式, RANGE COLUMNS 和 LIST COLUMNS
 
 #### 1. RANGE COLUMNS 分区
-> 类似RANGE 分区, 但是需要使用多个字段值定义
+> 类似RANGE 分区, 但是可以使用一个或多个字段值定义
 
 不太好理解... 还是看例子吧
 

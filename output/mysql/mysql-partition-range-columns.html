@@ -130,7 +130,125 @@
 
 
 </footer><!-- /.post-info -->                </div>
-                
+                <p>RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列</p>
+<p>基本定义:</p>
+<div class="highlight"><pre><span></span>CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+</pre></div>
+
+
+<p>column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE rcx (
+    -&gt;     a INT,
+    -&gt;     b INT,
+    -&gt;     c CHAR(3),
+    -&gt;     d INT
+    -&gt; )
+    -&gt; PARTITION BY RANGE COLUMNS(a,d,c) (
+    -&gt;     PARTITION p0 VALUES LESS THAN (5,10,&#39;ggg&#39;),
+    -&gt;     PARTITION p1 VALUES LESS THAN (10,20,&#39;mmm&#39;),
+    -&gt;     PARTITION p2 VALUES LESS THAN (15,30,&#39;sss&#39;),
+    -&gt;     PARTITION p3 VALUES LESS THAN (MAXVALUE,MAXVALUE,MAXVALUE)
+    -&gt; );
+Query OK, 0 rows affected (0.15 sec)
+</pre></div>
+
+
+<p>如果我们写入三条数据到这个表每个列的值是5, 三条数据都将存储在p1分区, 因为每个列的值都不小于5, 所以我们可以查询INFORMATION_SCHEMA.PARTITIONS:</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO r1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;r1&#39;;
++----------------+------------+
+| PARTITION_NAME | TABLE_ROWS |
++----------------+------------+
+| p0             |          0 |
+| p1             |          3 |
++----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>同样的, RANGE COLUMNS和RANGE分区一样, 也是支持MAXVALUE的。</p>
+<div class="highlight"><pre><span></span>CREATE TABLE rc1 (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS(a, b) (
+    PARTITION p0 VALUES LESS THAN (5, 12),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE, MAXVALUE)
+);
+</pre></div>
+
+
+<p>但是在此时, 写入的数据分布也会发生很大变化</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO rc1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;rc1&#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          2 |
+| p            | p1             |          1 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>因为我们比较的是行数据而非标量值</p>
+<div class="highlight"><pre><span></span>mysql&gt; SELECT (5,10) &lt; (5,12), (5,11) &lt; (5,12), (5,12) &lt; (5,12);
++-----------------+-----------------+-----------------+
+| (5,10) &lt; (5,12) | (5,11) &lt; (5,12) | (5,12) &lt; (5,12) |
++-----------------+-----------------+-----------------+
+|               1 |               1 |               0 |
++-----------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>如果是单个字段的RANGE COLUMNS分区, 那么和RANGE分区是一致的</p>
+<div class="highlight"><pre><span></span>CREATE TABLE rx (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS (a)  (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (MAXVALUE)
+);
+</pre></div>
+
+
+<p>如果我们新增行(5,10), (5, 11)和(5,12)到表中, 我们可以看到他们存储的位置是一样的</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO rx VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;rx&#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          0 |
+| p            | p1             |          3 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
                 </div><!-- /.entry-content -->
         </article>
 </section>

@@ -130,7 +130,49 @@
 
 
 </footer><!-- /.post-info -->                </div>
-                
+                <p>Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME</p>
+<p>你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
+针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:</p>
+<div class="highlight"><pre><span></span>CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&#39;Oskarshamn&#39;, &#39;Högsby&#39;, &#39;Mönsterås&#39;),
+    PARTITION pRegion_2 VALUES IN(&#39;Vimmerby&#39;, &#39;Hultsfred&#39;, &#39;Västervik&#39;),
+    PARTITION pRegion_3 VALUES IN(&#39;Nässjö&#39;, &#39;Eksjö&#39;, &#39;Vetlanda&#39;),
+    PARTITION pRegion_4 VALUES IN(&#39;Uppvidinge&#39;, &#39;Alvesta&#39;, &#39;Växjo&#39;)
+);
+</pre></div>
+
+
+<p><code>使用日期分区</code></p>
+<div class="highlight"><pre><span></span>CREATE TABLE customers_2 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(renewal) (
+    PARTITION pWeek_1 VALUES IN(&#39;2010-02-01&#39;, &#39;2010-02-02&#39;, &#39;2010-02-03&#39;,
+        &#39;2010-02-04&#39;, &#39;2010-02-05&#39;, &#39;2010-02-06&#39;, &#39;2010-02-07&#39;),
+    PARTITION pWeek_2 VALUES IN(&#39;2010-02-08&#39;, &#39;2010-02-09&#39;, &#39;2010-02-10&#39;,
+        &#39;2010-02-11&#39;, &#39;2010-02-12&#39;, &#39;2010-02-13&#39;, &#39;2010-02-14&#39;),
+    PARTITION pWeek_3 VALUES IN(&#39;2010-02-15&#39;, &#39;2010-02-16&#39;, &#39;2010-02-17&#39;,
+        &#39;2010-02-18&#39;, &#39;2010-02-19&#39;, &#39;2010-02-20&#39;, &#39;2010-02-21&#39;),
+    PARTITION pWeek_4 VALUES IN(&#39;2010-02-22&#39;, &#39;2010-02-23&#39;, &#39;2010-02-24&#39;,
+        &#39;2010-02-25&#39;, &#39;2010-02-26&#39;, &#39;2010-02-27&#39;, &#39;2010-02-28&#39;)
+);
+</pre></div>
+
+
+<p>但是这种情况在日期增长到非常大的时候是很复杂的, 所以这种还是使用RANGE 分区方式比较好。</p>
                 </div><!-- /.entry-content -->
         </article>
 </section>

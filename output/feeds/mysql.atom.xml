@@ -59,7 +59,7 @@ partition by list(uid) (
 &lt;p&gt;COLUMNS和以上两种是很不一样的, 这个是可以用多个分区键确定分区的。有两种方式, RANGE COLUMNS 和 LIST COLUMNS&lt;/p&gt;
 &lt;h4&gt;1. RANGE COLUMNS 分区&lt;/h4&gt;
 &lt;blockquote&gt;
-&lt;p&gt;类似RANGE 分区, 但是需要使用多个字段值定义&lt;/p&gt;
+&lt;p&gt;类似RANGE 分区, 但是可以使用一个或多个字段值定义&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;不太好理解... 还是看例子吧&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;create table t3 (
@@ -151,7 +151,642 @@ SUBPARTITIONS 2 (
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(三) —— LIST分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(五) —— LIST COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list-columns.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(九) —— 分区管理</title><link href="http://www.phpue.com/mysql/mysql-partition-manage.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-manage.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range-columns.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql 分区介绍(八) —— 子分区</title><link href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-subpartition.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/pt-archiver.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/pt-archiver.html</id><summary type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
+&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果不包含PARTITIONS, 那么默认为1个分区&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果不包含PARTITIONS, 那么默认为1个分区&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH( YEAR(hired) )
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;expr 必须是非恒量的数, 非随机的数, 就是数字是不同的, 但是是可以确定的。&lt;/p&gt;
+&lt;p&gt;如何确定一条数据的分区呢?先创建一个表&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE t1 (col1 INT, col2 CHAR(5), col3 DATE)
+    PARTITION BY HASH( YEAR(col3) )
+    PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果你插入一条记录到T1的col3值为“2005-09-15 '，然后分配其存储决定如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;MOD(YEAR(&amp;#39;2005-09-01&amp;#39;),4)
+=  MOD(2005,4)
+=  1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;1. 线性hash分区&lt;/h2&gt;
+&lt;p&gt;线性hash分区使用一个线性的2的幂运算法则&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;REATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LINEAR HASH( YEAR(hired) )
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;给定的一个表达式expr，分区中的记录存储在线性散列使用分区数n在Num的分区，其中n是根据下面的算法推导：
+1. 发现大于2的数我们称这种价值V下的力量；它可以计算为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;V = POWER(2, CEILING(LOG(2, num)))
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（假设数字为13）。然后LOG（2,13）是3.7004397181411。CEILING（3.7004397181411）是4，和V =功率（2,4），这是16。）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;N = F(column_list) &amp;amp; (V - 1).&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N &amp;gt;= num:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set V = V / 2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Set N = N &amp;amp; (V - 1)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
+&lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
+&lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(三) —— LIST分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list.html</id><summary type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LIST(store_id) (
+    PARTITION pNorth VALUES IN (3,5,6,9,17),
+    PARTITION pEast VALUES IN (1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LIST(store_id) (
+    PARTITION pNorth VALUES IN (3,5,6,9,17),
+    PARTITION pEast VALUES IN (1,2,10,11,19,20),
+    PARTITION pWest VALUES IN (4,12,13,14,18),
+    PARTITION pCentral VALUES IN (7,8,15,16)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果要删除一个分区的所有数据, 可以通过 ALTER TABLE员工表, TRUNCATE PARTITION pWest, 并且效率比DELETE高多了&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;如果一次性写入多条数据, 在INNODB中, 会将这个认为是单个事务, 如果存在不符合的值, 则不会写入成功, 在MYSIAM中, 因为没有事务处理, 符合条件的值会写入, 不符合的会被抛弃。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(五) —— LIST COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list-columns.html</id><summary type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
+&lt;p&gt;你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
+针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&amp;#39;Oskarshamn&amp;#39;, &amp;#39;Högsby&amp;#39;, &amp;#39;Mönsterås&amp;#39;),
+    PARTITION pRegion_2 VALUES IN …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
+&lt;p&gt;你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
+针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&amp;#39;Oskarshamn&amp;#39;, &amp;#39;Högsby&amp;#39;, &amp;#39;Mönsterås&amp;#39;),
+    PARTITION pRegion_2 VALUES IN(&amp;#39;Vimmerby&amp;#39;, &amp;#39;Hultsfred&amp;#39;, &amp;#39;Västervik&amp;#39;),
+    PARTITION pRegion_3 VALUES IN(&amp;#39;Nässjö&amp;#39;, &amp;#39;Eksjö&amp;#39;, &amp;#39;Vetlanda&amp;#39;),
+    PARTITION pRegion_4 VALUES IN(&amp;#39;Uppvidinge&amp;#39;, &amp;#39;Alvesta&amp;#39;, &amp;#39;Växjo&amp;#39;)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_2 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(renewal) (
+    PARTITION pWeek_1 VALUES IN(&amp;#39;2010-02-01&amp;#39;, &amp;#39;2010-02-02&amp;#39;, &amp;#39;2010-02-03&amp;#39;,
+        &amp;#39;2010-02-04&amp;#39;, &amp;#39;2010-02-05&amp;#39;, &amp;#39;2010-02-06&amp;#39;, &amp;#39;2010-02-07&amp;#39;),
+    PARTITION pWeek_2 VALUES IN(&amp;#39;2010-02-08&amp;#39;, &amp;#39;2010-02-09&amp;#39;, &amp;#39;2010-02-10&amp;#39;,
+        &amp;#39;2010-02-11&amp;#39;, &amp;#39;2010-02-12&amp;#39;, &amp;#39;2010-02-13&amp;#39;, &amp;#39;2010-02-14&amp;#39;),
+    PARTITION pWeek_3 VALUES IN(&amp;#39;2010-02-15&amp;#39;, &amp;#39;2010-02-16&amp;#39;, &amp;#39;2010-02-17&amp;#39;,
+        &amp;#39;2010-02-18&amp;#39;, &amp;#39;2010-02-19&amp;#39;, &amp;#39;2010-02-20&amp;#39;, &amp;#39;2010-02-21&amp;#39;),
+    PARTITION pWeek_4 VALUES IN(&amp;#39;2010-02-22&amp;#39;, &amp;#39;2010-02-23&amp;#39;, &amp;#39;2010-02-24&amp;#39;,
+        &amp;#39;2010-02-25&amp;#39;, &amp;#39;2010-02-26&amp;#39;, &amp;#39;2010-02-27&amp;#39;, &amp;#39;2010-02-28&amp;#39;)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是这种情况在日期增长到非常大的时候是很复杂的, 所以这种还是使用RANGE 分区方式比较好。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(九) —— 分区管理</title><link href="http://www.phpue.com/mysql/mysql-partition-manage.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-manage.html</id><summary type="html"></summary><content type="html"></content></entry><entry><title>Mysql分区表如何处理null</title><link href="http://www.phpue.com/mysql/mysql-partition-null.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-null.html</id><summary type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
+&lt;h2&gt;1. RANGE 分区如何处理null.&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE t1 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE(c1) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (0),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
+    -&amp;gt; );
+Query OK, 0 rows affected (0.09 sec …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
+&lt;h2&gt;1. RANGE 分区如何处理null.&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE t1 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE(c1) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (0),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
+    -&amp;gt; );
+Query OK, 0 rows affected (0.09 sec)
+mysql&amp;gt; CREATE TABLE t2 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE(c1) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (-5),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (0),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN (10),
+    -&amp;gt;     PARTITION p3 VALUES LESS THAN MAXVALUE
+    -&amp;gt; );
+Query OK, 0 rows affected (0.09 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;你可以看到创建的分区，这两个CREATE TABLE语句中使用下列查询在information_schema数据库分区表：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &amp;gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &amp;gt;   WHERE TABLE_SCHEMA = &amp;#39;p&amp;#39; AND TABLE_NAME LIKE &amp;#39;t_&amp;#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          0 |              0 |           0 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          0 |              0 |           0 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;写入测试数据&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO t1 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&amp;gt; INSERT INTO t2 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&amp;gt; SELECT * FROM t1;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+mysql&amp;gt; SELECT * FROM t2;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &amp;gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &amp;gt;   WHERE TABLE_SCHEMA = &amp;#39;p&amp;#39; AND TABLE_NAME LIKE &amp;#39;t_&amp;#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          1 |             20 |          20 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          1 |             20 |          20 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;所以, null会被写入第一个分区中。&lt;/p&gt;
+&lt;h2&gt;二、LIST分区如何处理null&lt;/h2&gt;
+&lt;p&gt;一个被列表分隔的表，如果且仅当其中一个分区是使用包含null的值列表定义的，则允许空值。与此相反的是，列表中没有显式使用空值的表拒绝了导致分区表达式空值的行。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE ts1 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&amp;gt; INSERT INTO ts1 VALUES (9, &amp;#39;mothra&amp;#39;);
+ERROR 1504 (HY000): Table has no partition for value 9
+mysql&amp;gt; INSERT INTO ts1 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+ERROR 1504 (HY000): Table has no partition for value NULL
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;只有行具有C1值0和8包括可插入TS1之间。null在这个范围之外，就像数字9。我们可以创建表TS2和TS3含有空值的列表，如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE ts2 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8),
+    -&amp;gt;     PARTITION p3 VALUES IN (NULL)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&amp;gt; CREATE TABLE ts3 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7, NULL),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、HASH和KEY如何处理null&lt;/h2&gt;
+&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6),
+    PARTITION p1 VALUES LESS THAN (11),
+    PARTITION p2 VALUES LESS THAN (16),
+    PARTITION p3 VALUES LESS THAN (21)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;store_id 小于6的, 会被放入第一个分区, 小于11的会放入第二个分区。&lt;br&gt;
+&lt;code&gt;如果我的store_id大于21怎么办呢？&lt;/code&gt;, 所以我们得修改一下这个创建分区的方式。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6),
+    PARTITION p1 VALUES LESS THAN (11),
+    PARTITION p2 VALUES LESS THAN (16),
+    PARTITION p3 VALUES LESS THAN (21),
+    PARTITION p4 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;增加了一个MAXVALUE, MAXVALUE的意思是, 大于21的数据都会放入这个分区, 当然, 还有另外一种方式去避免这个问题, 就是在INSERT的时候增加IGNORE关键字。&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;分区键类型为时间转时间戳&lt;/code&gt; &lt;br /&gt;
+可以使用UNIX-TIMESTAMP()&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE quarterly_report_status (
+    report_id INT NOT NULL,
+    report_status VARCHAR(20) NOT NULL,
+    report_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+PARTITION BY RANGE ( UNIX_TIMESTAMP(report_updated) ) (
+    PARTITION p0 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-01-01 00:00:00&amp;#39;) ),
+    PARTITION p1 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-04-01 00:00:00&amp;#39;) ),
+    PARTITION p2 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-07-01 00:00:00&amp;#39;) ),
+    PARTITION p3 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-10-01 00:00:00&amp;#39;) ),
+    PARTITION p4 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-01-01 00:00:00&amp;#39;) ),
+    PARTITION p5 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-04-01 00:00:00&amp;#39;) ),
+    PARTITION p6 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-07-01 00:00:00&amp;#39;) ),
+    PARTITION p7 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-10-01 00:00:00&amp;#39;) ),
+    PARTITION p8 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2010-01-01 00:00:00&amp;#39;) ),
+    PARTITION p9 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;除了UNIX_TIMESTAMP外,其他涉及到时间戳的表达式都是不被允许的&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;基于时间数字的分区&lt;/code&gt; &lt;br /&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE members (
+    firstname VARCHAR(25) NOT NULL,
+    lastname VARCHAR(25) NOT NULL,
+    username VARCHAR(16) NOT NULL,
+    email VARCHAR(35),
+    joined DATE NOT NULL
+)
+PARTITION BY RANGE(YEAR(joined) ) (
+    PARTITION p0 VALUES LESS THAN (1960),
+    PARTITION p1 VALUES LESS THAN (1970),
+    PARTITION p2 VALUES LESS THAN (1980),
+    PARTITION p3 VALUES LESS THAN (1990),
+    PARTITION p4 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range-columns.html</id><summary type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列&lt;/p&gt;
+&lt;p&gt;基本定义:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列&lt;/p&gt;
+&lt;p&gt;基本定义:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE rcx (
+    -&amp;gt;     a INT,
+    -&amp;gt;     b INT,
+    -&amp;gt;     c CHAR(3),
+    -&amp;gt;     d INT
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE COLUMNS(a,d,c) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (5,10,&amp;#39;ggg&amp;#39;),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10,20,&amp;#39;mmm&amp;#39;),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN (15,30,&amp;#39;sss&amp;#39;),
+    -&amp;gt;     PARTITION p3 VALUES LESS THAN (MAXVALUE,MAXVALUE,MAXVALUE)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.15 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们写入三条数据到这个表每个列的值是5, 三条数据都将存储在p1分区, 因为每个列的值都不小于5, 所以我们可以查询INFORMATION_SCHEMA.PARTITIONS:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO r1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;r1&amp;#39;;
++----------------+------------+
+| PARTITION_NAME | TABLE_ROWS |
++----------------+------------+
+| p0             |          0 |
+| p1             |          3 |
++----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;同样的, RANGE COLUMNS和RANGE分区一样, 也是支持MAXVALUE的。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE rc1 (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS(a, b) (
+    PARTITION p0 VALUES LESS THAN (5, 12),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE, MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是在此时, 写入的数据分布也会发生很大变化&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO rc1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;rc1&amp;#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          2 |
+| p            | p1             |          1 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;因为我们比较的是行数据而非标量值&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT (5,10) &amp;lt; (5,12), (5,11) &amp;lt; (5,12), (5,12) &amp;lt; (5,12);
++-----------------+-----------------+-----------------+
+| (5,10) &amp;lt; (5,12) | (5,11) &amp;lt; (5,12) | (5,12) &amp;lt; (5,12) |
++-----------------+-----------------+-----------------+
+|               1 |               1 |               0 |
++-----------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果是单个字段的RANGE COLUMNS分区, 那么和RANGE分区是一致的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE rx (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS (a)  (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们新增行(5,10), (5, 11)和(5,12)到表中, 我们可以看到他们存储的位置是一样的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO rx VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;rx&amp;#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          0 |
+| p            | p1             |          3 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(八) —— 子分区</title><link href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-subpartition.html</id><summary type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用，这些存储的前2个仅在列中的值小于1990的那些记录中存储。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;需要注意的是&lt;/strong&gt;:
+1. 每个分区必须有相同数量的子分区。
+2. 子分区的名称必须在整个表中是唯一的&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;为每个分区指定单独的磁盘&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (id INT, purchased DATE)
+    ENGINE = MYISAM
+    PARTITION BY RANGE(YEAR(purchased))
+    SUBPARTITION BY HASH( TO_DAYS(purchased) ) (
+        PARTITION p0 VALUES LESS THAN (1990) (
+            SUBPARTITION s0a
+                DATA DIRECTORY = &amp;#39;/disk0&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk1&amp;#39;,
+            SUBPARTITION s0b
+                DATA DIRECTORY = &amp;#39;/disk2&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk3&amp;#39;
+        ),
+        PARTITION p1 VALUES LESS THAN (2000) (
+            SUBPARTITION s1a
+                DATA DIRECTORY = &amp;#39;/disk4/data&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk4/idx&amp;#39;,
+            SUBPARTITION s1b
+                DATA DIRECTORY = &amp;#39;/disk5/data&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk5/idx&amp;#39;
+        ),
+        PARTITION p2 VALUES LESS THAN MAXVALUE (
+            SUBPARTITION s2a,
+            SUBPARTITION s2b
+        )
+    );
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/pt-archiver.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/pt-archiver.html</id><summary type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;

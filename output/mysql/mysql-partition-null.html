@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Mysql 分区介绍(三) —— LIST分区</title>
+    <title>Mysql分区表如何处理null</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Andy Dufresne">
@@ -111,8 +111,8 @@
                         <h1>
                                 <a href=""
                                         rel="bookmark"
-                                        title="Permalink to Mysql 分区介绍(三) —— LIST分区">
-                                        Mysql 分区介绍(三) —— LIST分区
+                                        title="Permalink to Mysql分区表如何处理null">
+                                        Mysql分区表如何处理null
                                 </a>
                         </h1>
                 </header>
@@ -130,27 +130,138 @@
 
 
 </footer><!-- /.post-info -->                </div>
-                <p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
-<div class="highlight"><pre><span></span>CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
-    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
-    job_code INT,
-    store_id INT
-)
-PARTITION BY LIST(store_id) (
-    PARTITION pNorth VALUES IN (3,5,6,9,17),
-    PARTITION pEast VALUES IN (1,2,10,11,19,20),
-    PARTITION pWest VALUES IN (4,12,13,14,18),
-    PARTITION pCentral VALUES IN (7,8,15,16)
-);
+                <p>分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。</p>
+<h2>1. RANGE 分区如何处理null.</h2>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE t1 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY RANGE(c1) (
+    -&gt;     PARTITION p0 VALUES LESS THAN (0),
+    -&gt;     PARTITION p1 VALUES LESS THAN (10),
+    -&gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
+    -&gt; );
+Query OK, 0 rows affected (0.09 sec)
+mysql&gt; CREATE TABLE t2 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY RANGE(c1) (
+    -&gt;     PARTITION p0 VALUES LESS THAN (-5),
+    -&gt;     PARTITION p1 VALUES LESS THAN (0),
+    -&gt;     PARTITION p2 VALUES LESS THAN (10),
+    -&gt;     PARTITION p3 VALUES LESS THAN MAXVALUE
+    -&gt; );
+Query OK, 0 rows affected (0.09 sec)
 </pre></div>
 
 
-<p>如果要删除一个分区的所有数据, 可以通过 ALTER TABLE员工表, TRUNCATE PARTITION pWest, 并且效率比DELETE高多了<br /></p>
-<p>如果一次性写入多条数据, 在INNODB中, 会将这个认为是单个事务, 如果存在不符合的值, 则不会写入成功, 在MYSIAM中, 因为没有事务处理, 符合条件的值会写入, 不符合的会被抛弃。</p>
+<p>你可以看到创建的分区，这两个CREATE TABLE语句中使用下列查询在information_schema数据库分区表：</p>
+<div class="highlight"><pre><span></span>mysql&gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &gt;   WHERE TABLE_SCHEMA = &#39;p&#39; AND TABLE_NAME LIKE &#39;t_&#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          0 |              0 |           0 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          0 |              0 |           0 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>写入测试数据</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO t1 VALUES (NULL, &#39;mothra&#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&gt; INSERT INTO t2 VALUES (NULL, &#39;mothra&#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&gt; SELECT * FROM t1;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+mysql&gt; SELECT * FROM t2;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>mysql&gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &gt;   WHERE TABLE_SCHEMA = &#39;p&#39; AND TABLE_NAME LIKE &#39;t_&#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          1 |             20 |          20 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          1 |             20 |          20 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.01 sec)
+</pre></div>
+
+
+<p>所以, null会被写入第一个分区中。</p>
+<h2>二、LIST分区如何处理null</h2>
+<p>一个被列表分隔的表，如果且仅当其中一个分区是使用包含null的值列表定义的，则允许空值。与此相反的是，列表中没有显式使用空值的表拒绝了导致分区表达式空值的行。</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE ts1 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY LIST(c1) (
+    -&gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&gt; INSERT INTO ts1 VALUES (9, &#39;mothra&#39;);
+ERROR 1504 (HY000): Table has no partition for value 9
+mysql&gt; INSERT INTO ts1 VALUES (NULL, &#39;mothra&#39;);
+ERROR 1504 (HY000): Table has no partition for value NULL
+</pre></div>
+
+
+<p>只有行具有C1值0和8包括可插入TS1之间。null在这个范围之外，就像数字9。我们可以创建表TS2和TS3含有空值的列表，如下所示：</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE ts2 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY LIST(c1) (
+    -&gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&gt;     PARTITION p2 VALUES IN (2, 5, 8),
+    -&gt;     PARTITION p3 VALUES IN (NULL)
+    -&gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&gt; CREATE TABLE ts3 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY LIST(c1) (
+    -&gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&gt;     PARTITION p1 VALUES IN (1, 4, 7, NULL),
+    -&gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&gt; );
+Query OK, 0 rows affected (0.01 sec)
+</pre></div>
+
+
+<h2>三、HASH和KEY如何处理null</h2>
+<p>对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。</p>
                 </div><!-- /.entry-content -->
         </article>
 </section>
