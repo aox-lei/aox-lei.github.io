@@ -1,6 +1,6 @@
 title: pt-archiver 数据删除、迁移工具使用
 date: 2017-10-01
-slug:mysql/1
+slug:mysql/pt-archiver
 
 ## 1. 数据库连接参数
 |参数|说明|

@@ -1,6 +1,6 @@
 title: Python 多进程和多线程的方案
 date: 2017-09-22
-slug: python/2
+slug: python/multiprocessing-threading
 
 ## 一、进程
 对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程

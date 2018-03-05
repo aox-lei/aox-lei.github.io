@@ -1,6 +1,6 @@
 title: dnspod动态域名提交, 类似花生壳实现的功能
 date: 2017-11-10
-slug: python/4
+slug: python/dnspod-dynamic
 
 
 Powered by Lei

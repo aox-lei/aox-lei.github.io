@@ -1,6 +1,6 @@
 title: supervisor python的进程管理工具 使用教程 【持续更新】
 date: 2017-10-31
-slug: python/3
+slug: python/supervisor
 
 ## 一、安装配置
 [文档地址](http://www.supervisord.org/)
