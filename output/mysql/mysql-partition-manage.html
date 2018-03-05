@@ -130,7 +130,451 @@
 
 
 </footer><!-- /.post-info -->                </div>
-                
+                <h2>一、分区操作</h2>
+<h4>1. 将没有分区的表改为分区表</h4>
+<div class="highlight"><pre><span></span>ALTER TABLE trb3 PARTITION BY KEY(id) PARTITIONS 2;
+</pre></div>
+
+
+<h4>2. 删除分区</h4>
+<div class="highlight"><pre><span></span># 删除所有分区, 同时数据丢失
+ALTER TABLE es2 REMOVE PARTITIONING;
+
+# 删除指定分区, 数据丢失
+ALTER TABLE tr DROP PARTITION p2;
+</pre></div>
+
+
+<h4>3. SELECT指定分区查询</h4>
+<div class="highlight"><pre><span></span>select * from daily_rank_1_1 partition (p2015_04_24) limit 10;
+</pre></div>
+
+
+<h4>4. 添加分区</h4>
+<p>如果设置了MAXVALUE则无法添加新分区, 会提示 MAXVALUE can only be used in last partition definition, 这时可以使用修改分区来解决</p>
+<div class="highlight"><pre><span></span>ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
+</pre></div>
+
+
+<h4>5. 重新划分分区</h4>
+<div class="highlight"><pre><span></span>ALTER TABLE table1 REORGANIZE PARTITION 要修改的分区名(可以多个, 逗号分隔) INTO (
+    PARTITION 新分区1的名字 VALUES LESS THAN (值),
+    PARTITION 新分区2的名字 VALUES LESS THAN (值)
+    ...
+)
+</pre></div>
+
+
+<p>修改一个分区成两个分区</p>
+<div class="highlight"><pre><span></span>alter table daily_rank_1_1 reorganize partition p2015_04_28 into(
+partition p2015_04_28 values less than (to_days(&#39;2015-04-28&#39;)),
+partition pmax values less than(MAXVALUE)
+);
+</pre></div>
+
+
+<p>重新划分多个分区</p>
+<div class="highlight"><pre><span></span>ALTER TABLE members REORGANIZE PARTITION p0,p1,p2,p3 INTO (
+    PARTITION m0 VALUES LESS THAN (1980),
+    PARTITION m1 VALUES LESS THAN (2000)
+);
+</pre></div>
+
+
+<p><code>分区修改的原则</code>:<br />
+- 1. 不能与原方案有重叠
+- 2. 同时对多个分区划分必须是连续的分区
+- 3. 分区类型不可以更改, 可以通过ALTER TABLE ... PARTITION BY ...实现</p>
+<h4>6. 修改分区数量(HASH/Key分区)</h4>
+<div class="highlight"><pre><span></span>ALTER TABLE clients COALESCE PARTITION 4;
+</pre></div>
+
+
+<h2>二、交换分区和子分区</h2>
+<p><code>支持交换分区的条件</code>
+- 1. 表自身不是分区表
+- 2. 不是临时表
+- 3. 两个表的结构相同
+- 4. 表不包含外键
+- 5. 表的数据没有出界</p>
+<p>如果要执行操作, 必须具有DROP权限<br />
+- 1.  执行 ALTER TABLE ... EXCHANGE PARTITION不会在分区表或交换表上调用任何触发器
+- 2. auto_increment会发生重置</p>
+<p>具体操作:
+pt是分区表, p是分区或子分区</p>
+<h4>1. 与非分区表交换分区</h4>
+<div class="highlight"><pre><span></span>CREATE TABLE e (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30)
+)
+    PARTITION BY RANGE (id) (
+        PARTITION p0 VALUES LESS THAN (50),
+        PARTITION p1 VALUES LESS THAN (100),
+        PARTITION p2 VALUES LESS THAN (150),
+        PARTITION p3 VALUES LESS THAN (MAXVALUE)
+);
+INSERT INTO e VALUES
+    (1669, &quot;Jim&quot;, &quot;Smith&quot;),
+    (337, &quot;Mary&quot;, &quot;Jones&quot;),
+    (16, &quot;Frank&quot;, &quot;White&quot;),
+    (2005, &quot;Linda&quot;, &quot;Black&quot;);
+mysql&gt; CREATE TABLE e2 LIKE e;
+Query OK, 0 rows affected (1.34 sec)
+mysql&gt; ALTER TABLE e2 REMOVE PARTITIONING;
+Query OK, 0 rows affected (0.90 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+# 将p0分区的数据写入e2
+ALTER TABLE e EXCHANGE PARTITION p0 WITH TABLE e2;
+</pre></div>
+
+
+<p>如果没有匹配到数据, 则提示Found row that does not match the partition</p>
+<h4>2. 交换一个子分区到一个没有分区的表</h4>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE es (
+    -&gt;     id INT NOT NULL,
+    -&gt;     fname VARCHAR(30),
+    -&gt;     lname VARCHAR(30)
+    -&gt; )
+    -&gt;     PARTITION BY RANGE (id)
+    -&gt;     SUBPARTITION BY KEY (lname)
+    -&gt;     SUBPARTITIONS 2 (
+    -&gt;         PARTITION p0 VALUES LESS THAN (50),
+    -&gt;         PARTITION p1 VALUES LESS THAN (100),
+    -&gt;         PARTITION p2 VALUES LESS THAN (150),
+    -&gt;         PARTITION p3 VALUES LESS THAN (MAXVALUE)
+    -&gt;     );
+Query OK, 0 rows affected (2.76 sec)
+mysql&gt; INSERT INTO es VALUES
+    -&gt;     (1669, &quot;Jim&quot;, &quot;Smith&quot;),
+    -&gt;     (337, &quot;Mary&quot;, &quot;Jones&quot;),
+    -&gt;     (16, &quot;Frank&quot;, &quot;White&quot;),
+    -&gt;     (2005, &quot;Linda&quot;, &quot;Black&quot;);
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql&gt; CREATE TABLE es2 LIKE es;
+Query OK, 0 rows affected (1.27 sec)
+mysql&gt; ALTER TABLE es2 REMOVE PARTITIONING;
+Query OK, 0 rows affected (0.70 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+# 将p3sp0的数据交换到es2表
+mysql&gt; ALTER TABLE es EXCHANGE PARTITION p3sp0 WITH TABLE es2;
+Query OK, 0 rows affected (0.29 sec)
+</pre></div>
+
+
+<p>如果一个表拥有子分区, 则不能移动这个父分区到表中</p>
+<h2>三、分区维护</h2>
+<ol>
+<li>重建分区
+删除所有记录存储在分区，然后重新插入它们。整理碎片</li>
+</ol>
+<div class="highlight"><pre><span></span>ALTER TABLE t1 REBUILD PARTITION p0, p1;
+</pre></div>
+
+
+<ol>
+<li>优化分区
+优化分区来回收未使用的空间和整理的分区中的数据文件</li>
+</ol>
+<div class="highlight"><pre><span></span>ALTER TABLE t1 OPTIMIZE PARTITION p0, p1;
+</pre></div>
+
+
+<ol>
+<li>分析分区</li>
+</ol>
+<div class="highlight"><pre><span></span>ALTER TABLE t1 ANALYZE PARTITION p3;
+</pre></div>
+
+
+<ol>
+<li>检查分区</li>
+</ol>
+<div class="highlight"><pre><span></span>ALTER TABLE trb3 CHECK PARTITION p1;
+</pre></div>
+
+
+<ol>
+<li>修复分区</li>
+</ol>
+<div class="highlight"><pre><span></span>ALTER TABLE t1 REPAIR PARTITION p0,p1;
+</pre></div>
+
+
+<ol>
+<li>获取分区有效信息</li>
+</ol>
+<div class="highlight"><pre><span></span>mysql&gt; SHOW CREATE TABLE trb3\G
+*************************** 1. row ***************************
+       Table: trb3
+Create Table: CREATE TABLE `trb3` (
+  `id` int(11) default NULL,
+  `name` varchar(50) default NULL,
+  `purchased` date default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
+PARTITION BY RANGE (YEAR(purchased)) (
+  PARTITION p0 VALUES LESS THAN (1990) ENGINE = MyISAM,
+  PARTITION p1 VALUES LESS THAN (1995) ENGINE = MyISAM,
+  PARTITION p2 VALUES LESS THAN (2000) ENGINE = MyISAM,
+  PARTITION p3 VALUES LESS THAN (2005) ENGINE = MyISAM
+)
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>select *
+from INFORMATION_SCHEMA.PARTITIONS
+</pre></div>
+
+
+<h2>四、分区修剪</h2>
+<p>在执行sql时, 优化器会自动根据分区的条件, 进行分区选择来提高性能。</p>
+<p><code>分区修剪的条件</code>: <br />
+- 1. partition_column = constant
+- 2. partition_column IN (constant1, constant2, ..., constantN)
+where条件中包含&lt;，&gt;，&lt; =，&gt; =，和&lt; &gt; 等之间范围查询的时候, 就可以使用分区修剪
+SELECT、UPDATE和DELETE都可以修剪分区, 但是INSERT无法修剪分区</p>
+<h2>五、分区选择</h2>
+<p>在执行操作的时候优化器会根据语句自动进行修剪, 但是在有些时候是不同的:
+1. 要检查的分区由语句的发布者指定，与分区剪枝不同，它是自动的。
+2. 而分区修剪仅适用于查询，分区明确的选择是查询和多个DML语句支持。
+支持的语句: SELECT、DELETE、INSERT、REPLACE、UPDATE、LOAD DATA.、LOAD XML.</p>
+<p>具体的语句:</p>
+<div class="highlight"><pre><span></span>      PARTITION (partition_names)
+
+      partition_names:
+          partition_name, ...
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>SELECT * FROM employees PARTITION (p1);
+
+mysql&gt; SELECT * FROM employees PARTITION (p0, p2)
+    -&gt;     WHERE lname LIKE &#39;S%&#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+|  4 | Jim   | Smith |        2 |             4 |
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SELECT id, CONCAT(fname, &#39; &#39;, lname) AS name
+    -&gt;     FROM employees PARTITION (p0) ORDER BY lname;
++----+----------------+
+| id | name           |
++----+----------------+
+|  3 | Ellen Johnson  |
+|  4 | Jim Smith      |
+|  1 | Bob Taylor     |
+|  2 | Frank Williams |
++----+----------------+
+4 rows in set (0.06 sec)
+
+mysql&gt; SELECT store_id, COUNT(department_id) AS c
+    -&gt;     FROM employees PARTITION (p1,p2,p3)
+    -&gt;     GROUP BY store_id HAVING c &gt; 4;
++---+----------+
+| c | store_id |
++---+----------+
+| 5 |        2 |
+| 5 |        3 |
++---+----------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>你也可以使用PARTITION 在INSERT...SELECT语句上</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE employees_copy LIKE employees;
+Query OK, 0 rows affected (0.28 sec)
+
+mysql&gt; INSERT INTO employees_copy
+    -&gt;     SELECT * FROM employees PARTITION (p2);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql&gt; SELECT * FROM employees_copy;
++----+--------+----------+----------+---------------+
+| id | fname  | lname    | store_id | department_id |
++----+--------+----------+----------+---------------+
+| 10 | Lou    | Waters   |        2 |             4 |
+| 11 | Jill   | Stone    |        1 |             4 |
+| 12 | Roger  | White    |        3 |             2 |
+| 13 | Howard | Andrews  |        1 |             2 |
+| 14 | Fred   | Goldberg |        3 |             3 |
++----+--------+----------+----------+---------------+
+5 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>也可以在联表中使用</p>
+<div class="highlight"><pre><span></span>CREATE TABLE stores (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    city VARCHAR(30) NOT NULL
+)
+    PARTITION BY HASH(id)
+    PARTITIONS 2;
+
+INSERT INTO stores VALUES
+    (&#39;&#39;, &#39;Nambucca&#39;), (&#39;&#39;, &#39;Uranga&#39;),
+    (&#39;&#39;, &#39;Bellingen&#39;), (&#39;&#39;, &#39;Grafton&#39;);
+
+CREATE TABLE departments  (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
+)
+    PARTITION BY KEY(id)
+    PARTITIONS 2;
+
+INSERT INTO departments VALUES
+    (&#39;&#39;, &#39;Sales&#39;), (&#39;&#39;, &#39;Customer Service&#39;),
+    (&#39;&#39;, &#39;Delivery&#39;), (&#39;&#39;, &#39;Accounting&#39;);
+
+mysql&gt; SELECT
+    -&gt;     e.id AS &#39;Employee ID&#39;, CONCAT(e.fname, &#39; &#39;, e.lname) AS Name,
+    -&gt;     s.city AS City, d.name AS department
+    -&gt; FROM employees AS e
+    -&gt;     JOIN stores PARTITION (p1) AS s ON e.store_id=s.id
+    -&gt;     JOIN departments PARTITION (p0) AS d ON e.department_id=d.id
+    -&gt; ORDER BY e.lname;
++-------------+---------------+-----------+------------+
+| Employee ID | Name          | City      | department |
++-------------+---------------+-----------+------------+
+|          14 | Fred Goldberg | Bellingen | Delivery   |
+|           5 | Mary Jones    | Nambucca  | Sales      |
+|          17 | Mark Morgan   | Bellingen | Delivery   |
+|           9 | Andy Smith    | Nambucca  | Delivery   |
+|           8 | June Wilson   | Bellingen | Sales      |
++-------------+---------------+-----------+------------+
+5 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>删除中使用分区选择</p>
+<div class="highlight"><pre><span></span>mysql&gt; SELECT * FROM employees WHERE fname LIKE &#39;j%&#39;;
++----+-------+--------+----------+---------------+
+| id | fname | lname  | store_id | department_id |
++----+-------+--------+----------+---------------+
+|  4 | Jim   | Smith  |        2 |             4 |
+|  8 | June  | Wilson |        3 |             1 |
+| 11 | Jill  | Stone  |        1 |             4 |
++----+-------+--------+----------+---------------+
+3 rows in set (0.00 sec)
+
+mysql&gt; DELETE FROM employees PARTITION (p0, p1)
+    -&gt;     WHERE fname LIKE &#39;j%&#39;;
+Query OK, 2 rows affected (0.09 sec)
+
+mysql&gt; SELECT * FROM employees WHERE fname LIKE &#39;j%&#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>更新中使用分区选择</p>
+<div class="highlight"><pre><span></span>mysql&gt; UPDATE employees PARTITION (p0)
+    -&gt;     SET store_id = 2 WHERE fname = &#39;Jill&#39;;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql&gt; SELECT * FROM employees WHERE fname = &#39;Jill&#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+
+mysql&gt; UPDATE employees PARTITION (p2)
+    -&gt;     SET store_id = 2 WHERE fname = &#39;Jill&#39;;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; SELECT * FROM employees WHERE fname = &#39;Jill&#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        2 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>INSERT和REPLACE INTO使用分区选择</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO employees PARTITION (p2) VALUES (20, &#39;Jan&#39;, &#39;Jones&#39;, 1, 3);
+ERROR 1729 (HY000): Found a row not matching the given partition set
+mysql&gt; INSERT INTO employees PARTITION (p3) VALUES (20, &#39;Jan&#39;, &#39;Jones&#39;, 1, 3);
+Query OK, 1 row affected (0.07 sec)
+
+mysql&gt; REPLACE INTO employees PARTITION (p0) VALUES (20, &#39;Jan&#39;, &#39;Jones&#39;, 3, 2);
+ERROR 1729 (HY000): Found a row not matching the given partition set
+
+mysql&gt; REPLACE INTO employees PARTITION (p3) VALUES (20, &#39;Jan&#39;, &#39;Jones&#39;, 3, 2);
+Query OK, 2 rows affected (0.09 sec)
+</pre></div>
+
+
+<h2>六、分区的限制</h2>
+<ul>
+<li>
+<ol>
+<li>无法使用存储过程、存储功能、UDF和插件</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>无法用户变量或声明变量</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>不允许位操作</li>
+</ol>
+</li>
+</ul>
+<h2>七、性能影响</h2>
+<ul>
+<li>
+<ol>
+<li>分区的创建、修改、删除取决于文件系统。应该确保large_files_support启用，open_files_limit设置正确</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>在执行分区操作时需要上写锁, 但是不影响查询, 分区操作完成后会立即执行插入和更新操作</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>分区操作， 查询、更新往往是MYISAM比INNODB更快</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>使用索引可以在非分区表提高性能, 使用分区修剪也可以显著的提高性能</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>加载数据使用缓冲来提高性能。您应该知道缓冲区每分区使用130KB内存来实现这一点。</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>Mysql5.6.7之前, 分区最大数为1024个, 从5.6.7开始, 分区表的数最多是8192个, 包括子分区</li>
+</ol>
+</li>
+<li>
+<ol>
+<li>分区表不支持查询缓存</li>
+</ol>
+</li>
+</ul>
                 </div><!-- /.entry-content -->
         </article>
 </section>
