@@ -119,7 +119,20 @@
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME</p>
+<p>你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
+针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:</p>
+<div class="highlight"><pre><span></span>CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&#39;Oskarshamn&#39;, &#39;Högsby&#39;, &#39;Mönsterås&#39;),
+    PARTITION pRegion_2 VALUES IN …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list-columns.html">more ...</a>
                 </div>
         </div>
@@ -144,6 +157,36 @@
         </div>
         <hr />
         <div class="article">
+                <h1><a href="http://www.phpue.com/mysql/mysql-partition-null.html">Mysql分区表如何处理null</a></h1>
+                <div class="well small"><footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info --></div>
+                <div class="summary"><p>分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。</p>
+<h2>1. RANGE 分区如何处理null.</h2>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE t1 (
+    -&gt;     c1 INT,
+    -&gt;     c2 VARCHAR(20)
+    -&gt; )
+    -&gt; PARTITION BY RANGE(c1) (
+    -&gt;     PARTITION p0 VALUES LESS THAN (0),
+    -&gt;     PARTITION p1 VALUES LESS THAN (10),
+    -&gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
+    -&gt; );
+Query OK, 0 rows affected (0.09 sec …</pre></div>
+                        <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-null.html">more ...</a>
+                </div>
+        </div>
+        <hr />
+        <div class="article">
                 <h1><a href="http://www.phpue.com/mysql/mysql-partition-range.html">Mysql 分区介绍(二) —— RANGE分区</a></h1>
                 <div class="well small"><footer class="post-info">
 <span class="label">Date</span>
@@ -157,7 +200,19 @@
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符<br /></p>
+<p>让我们先来创建一个range分区的表</p>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
+    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6 …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range.html">more ...</a>
                 </div>
         </div>
@@ -176,7 +231,26 @@
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列</p>
+<p>基本定义:</p>
+<div class="highlight"><pre><span></span>CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+</pre></div>
+
+
+<p>column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range-columns.html">more ...</a>
                 </div>
         </div>
@@ -195,7 +269,21 @@
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区</p>
+<div class="highlight"><pre><span></span>CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+</pre></div>
+
+
+<p>表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用 …</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-subpartition.html">more ...</a>
                 </div>
         </div>
@@ -415,56 +503,14 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
                 </div>
         </div>
         <hr />
-        <div class="article">
-                <h1><a href="http://www.phpue.com/wechat/wechat-account1.html">微信公众号历史记录以及文章内容接口数据分析</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-09-09T00:00:00+08:00">
-        <i class="icon-calendar"></i>Sat 09 September 2017
-</abbr>
-<span class="label">By</span>
-<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
-<span class="label">Category</span>
-<a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
-
-
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一: 查看历史消息</h2>
-<h3>1. 请求转发到实际的页面</h3>
-<p><strong>URL</strong>
-https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;devicetype=iOS10.3.2&amp;version=16050c20&amp;lang=zh_CN&amp;nettype=WIFI&amp;ascene=3&amp;fontScale=100&amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;wx_header=1
-<strong>作用</strong>
-猜测是为了设置cookie等一些信息, 不经过则cookie无效
-<strong>请求方式</strong>: GET
-<strong>请求参数</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>参数值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>__biz</td>
-<td>MzI2NjA3NTc4Ng==</td>
-<td>公众号标识,每个公众号值不变,base64加密,解密后是数字</td>
-</tr>
-<tr>
-<td>devicetype</td>
-<td>iOS10 …</td></tr></tbody></table>
-                        <a class="btn primary xsmall" href="http://www.phpue.com/wechat/wechat-account1.html">more ...</a>
-                </div>
-        </div>
-        <hr />
 
         <div class="pagination">
         <ul>
                         <li class="prev"><a href="http://www.phpue.com/author/andy-dufresne.html">&larr; Previous</a></li>
                         <li class=""><a href="http://www.phpue.com/author/andy-dufresne.html">1</a></li>
                         <li class="active"><a href="http://www.phpue.com/author/andy-dufresne2.html">2</a></li>
-                        <li class="next disabled"><a href="#">&rarr; Next</a></li>
+                        <li class=""><a href="http://www.phpue.com/author/andy-dufresne3.html">3</a></li>
+                        <li class="next"><a href="http://www.phpue.com/author/andy-dufresne3.html">Next &rarr;</a></li>
         </ul>
         </div>
 

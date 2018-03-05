@@ -376,7 +376,25 @@ pip install supervisor
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.</p>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
+    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+</pre></div>
+
+
+<p>如果不包含PARTITIONS, 那么默认为1个分区</p>
+<p><code>使用日期分区</code></p>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-hash.html">more ...</a>
                 </div>
         </div>
@@ -395,7 +413,18 @@ pip install supervisor
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>Key分区和HASH分区非常类似。它们主要的区别在于:</p>
+<ol>
+<li>Key分区默认使用主键作为分区键</li>
+<li>key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。</li>
+</ol>
+<div class="highlight"><pre><span></span>CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-key.html">more ...</a>
                 </div>
         </div>
@@ -414,7 +443,19 @@ pip install supervisor
 
 
 </footer><!-- /.post-info --></div>
-                <div class="summary">
+                <div class="summary"><p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
+    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LIST(store_id) (
+    PARTITION pNorth VALUES IN (3,5,6,9,17),
+    PARTITION pEast VALUES IN (1 …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list.html">more ...</a>
                 </div>
         </div>
@@ -425,6 +466,7 @@ pip install supervisor
                         <li class="prev disabled"><a href="#">&larr; Previous</a></li>
                         <li class="active"><a href="http://www.phpue.com/author/andy-dufresne.html">1</a></li>
                         <li class=""><a href="http://www.phpue.com/author/andy-dufresne2.html">2</a></li>
+                        <li class=""><a href="http://www.phpue.com/author/andy-dufresne3.html">3</a></li>
                         <li class="next"><a href="http://www.phpue.com/author/andy-dufresne2.html">Next &rarr;</a></li>
         </ul>
         </div>
