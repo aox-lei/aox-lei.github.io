@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mysql 分区介绍(一) ——概述</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Prince">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="http://www.phpue.com/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="http://www.phpue.com/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="http://www.phpue.com/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="http://www.phpue.com/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="http://www.phpue.com/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="http://www.phpue.com/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://www.phpue.com/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://www.phpue.com/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="http://www.phpue.com/" type="application/atom+xml" rel="alternate" title="Prince's Blog ATOM Feed" />
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://www.phpue.com/index.html">Prince's Blog </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                  <li><a href="http://www.phpue.com">首页</a></li>
+                  <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+                  <li >
+                    <a href="http://www.phpue.com/category/linux.html">
+						<i class="icon-folder-open icon-large"></i>linux
+					</a>
+                  </li>
+                  <li class="active">
+                    <a href="http://www.phpue.com/category/mysql.html">
+						<i class="icon-folder-open icon-large"></i>Mysql
+					</a>
+                  </li>
+                  <li >
+                    <a href="http://www.phpue.com/category/php.html">
+						<i class="icon-folder-open icon-large"></i>php
+					</a>
+                  </li>
+                  <li >
+                    <a href="http://www.phpue.com/category/python.html">
+						<i class="icon-folder-open icon-large"></i>Python
+					</a>
+                  </li>
+                  <li >
+                    <a href="http://www.phpue.com/category/wechat.html">
+						<i class="icon-folder-open icon-large"></i>wechat
+					</a>
+                  </li>
+
+                          <ul class="nav pull-right">
+                                <li><a href="http://www.phpue.com/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+<section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Mysql 分区介绍(一) ——概述">
+                                        Mysql 分区介绍(一) ——概述
+                                </a>
+                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+<footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2017-10-02T00:00:00+08:00">
+        <i class="icon-calendar"></i>Mon 02 October 2017
+</abbr>
+<span class="label">By</span>
+<a href="http://www.phpue.com/author/prince.html"><i class="icon-user"></i>Prince</a>
+<span class="label">Category</span>
+<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
+
+
+</footer><!-- /.post-info -->                </div>
+                <h2>一、分区类型</h2>
+<h3>1. RANGE类型(范围分区)</h3>
+<blockquote>
+<p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
+</blockquote>
+<p>啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 <br /></p>
+<p>咱们看一个创建的例子</p>
+<div class="highlight"><pre><span></span>CREATE TABLE `t1` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT &#39;用户id&#39;,
+  `score` int(3) NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;分数&#39;,
+  PRIMARY KEY (`id`,`score`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+PARTITION BY RANGE (score)
+(PARTITION p0 VALUES LESS THAN (10) ENGINE = InnoDB,
+ PARTITION p1 VALUES LESS THAN (20) ENGINE = InnoDB,
+ PARTITION p2 VALUES LESS THAN (30) ENGINE = InnoDB,
+ PARTITION p3 VALUES LESS THAN (40) ENGINE = InnoDB)
+</pre></div>
+
+
+<p>创建了个t1表, 并且t1有四个分区, 第一个分区p0的范围是小于10的, 第二个是小于20的。这就是一个range分区的例子。 <br />
+<code>那为啥主键定义的是双主键呢?</code> 因为分区键(score) 必须也是主键或者唯一键的一部分。</p>
+<p>Range分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-range">Mysql 分区介绍(二) —— RANGE分区</a></p>
+<h3>2. LIST分区</h3>
+<blockquote>
+<p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
+</blockquote>
+<p>这说的有点乱, 还是直接看一个创建的例子吧</p>
+<div class="highlight"><pre><span></span>create table t2 (
+    id int not null,
+    uid int not null comment &#39;用户id&#39;,
+    score int(3) not null default 0 comment &#39;分数&#39;,
+    primary key(id, uid)
+)
+partition by list(uid) (
+    partition p0 values in (1,3,5,7,9),
+    partition p1 values in (2,4,6,8,10)
+)
+</pre></div>
+
+
+<p>t2的分区键是uid, 有两个分区(这个很明显嘛), 如果uid in (1,3,5,7,9), 那么这条数据就会保存在p0中, 如果是2,4,6,8,10的话, 就会在p1中, 这就是LIST 分区</p>
+<p>Range分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-list">Mysql 分区介绍(三) —— LIST分区</a></p>
+<h3>3. COLUMNS 分区</h3>
+<p>COLUMNS和以上两种是很不一样的, 这个是可以用多个分区键确定分区的。有两种方式, RANGE COLUMNS 和 LIST COLUMNS</p>
+<h4>1. RANGE COLUMNS 分区</h4>
+<blockquote>
+<p>类似RANGE 分区, 但是需要使用多个字段值定义</p>
+</blockquote>
+<p>不太好理解... 还是看例子吧</p>
+<div class="highlight"><pre><span></span>create table t3 (
+    a int,
+    b int,
+    c char(3),
+    d int
+)
+PARTITION BY RANGE COLUMNS(a,d,c) (
+PARTITION p0 VALUES LESS THAN (5,10,&#39;ggg&#39;),
+PARTITION p1 VALUES LESS THAN (10,20,&#39;mmm&#39;),
+PARTITION p2 VALUES LESS THAN (15,30,&#39;sss&#39;)
+)
+</pre></div>
+
+
+<p>分区键有多个, 并且都是范围的, 就是RANGE COLUMNS 分区</p>
+<p>RANGE COLUMNS分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-range-columns">Mysql 分区介绍(四) —— RANGE COLUMNS分区</a></p>
+<h4>2. LIST COLUMNS 分区</h4>
+<blockquote>
+<p>Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME</p>
+</blockquote>
+<p>还是看例子吧</p>
+<div class="highlight"><pre><span></span>CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&#39;Oskarshamn&#39;, &#39;Högsby&#39;, &#39;Mönsterås&#39;),
+    PARTITION pRegion_2 VALUES IN(&#39;Vimmerby&#39;, &#39;Hultsfred&#39;, &#39;Västervik&#39;),
+    PARTITION pRegion_3 VALUES IN(&#39;Nässjö&#39;, &#39;Eksjö&#39;, &#39;Vetlanda&#39;),
+    PARTITION pRegion_4 VALUES IN(&#39;Uppvidinge&#39;, &#39;Alvesta&#39;, &#39;Växjo&#39;)
+);
+</pre></div>
+
+
+<p>LIST COLUMNS分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-list-columns">Mysql 分区介绍(五) —— LIST COLUMNS分区</a></p>
+<h3>3. HASH分区</h3>
+<blockquote>
+<p>使用分区键去确保数据可以均匀的分布在一个预先确定数字的分区上, 在hash分区中, 无需显式的指定分区</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
+    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+</pre></div>
+
+
+<p>HASH分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-hash">Mysql 分区介绍(六) —— HASH分区</a></p>
+<h3>4. KEY分区</h3>
+<blockquote>
+<p>key分区类似hash分区, 接受0个或多个列名, key分区的哈希函数由MySQL服务器提供。NDB集群使用md5()；使用其他存储引擎的表，服务器采用自己的内部的哈希函数是基于相同的算法password()。</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+</pre></div>
+
+
+<p>KEY分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-key">Mysql 分区介绍(七) —— KEY分区</a></p>
+<h3>5. 子分区</h3>
+<blockquote>
+<p>子分区也称为复合分区, 在分区的基础上进一步进行分区的方式</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+</pre></div>
+
+
+<p>子分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-subpartition">Mysql 分区介绍(八) —— 子分区</a></p>
+                </div><!-- /.entry-content -->
+        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+<ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
+    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
+    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
+    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<li><a href="http://www.phpue.com/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="#"><i class="icon-我的笔记-sign icon-large"></i>我的笔记</a></li>
+    <li><a href="#"><i class="icon-我的博客-sign icon-large"></i>我的博客</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="http://www.phpue.com/category/linux.html">
+    <i class="icon-folder-open icon-large"></i>linux
+</a>
+</li>
+<li>
+<a href="http://www.phpue.com/category/mysql.html">
+    <i class="icon-folder-open icon-large"></i>Mysql
+</a>
+</li>
+<li>
+<a href="http://www.phpue.com/category/php.html">
+    <i class="icon-folder-open icon-large"></i>php
+</a>
+</li>
+<li>
+<a href="http://www.phpue.com/category/python.html">
+    <i class="icon-folder-open icon-large"></i>Python
+</a>
+</li>
+<li>
+<a href="http://www.phpue.com/category/wechat.html">
+    <i class="icon-folder-open icon-large"></i>wechat
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://www.phpue.com/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="http://www.phpue.com/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
