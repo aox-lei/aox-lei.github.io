@@ -118,14 +118,12 @@
 <a href="http://www.phpue.com/category/php.html"><i class="icon-folder-open"></i>php</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/curl-osstatus.html"><i class="icon-tag"></i>curl-osstatus</a>
+	<a href="http://www.phpue.com/tag/25299.html"><i class="icon-tag"></i>25299</a>
+	<a href="http://www.phpue.com/tag/curlcuo-wu.html"><i class="icon-tag"></i>curl错误</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题</p>
-<p>基本环境:
-MAC OS X、php5.6</p>
-<p>phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)</p>
-<p>一、先查看系统的curl支持的协议</p>
-<div class="highlight"><pre><span></span>&gt;&gt;&gt; curl -V
-curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5 …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/php/curl-osstatus-25299.html">more ...</a>
                 </div>
         </div>
@@ -143,38 +141,13 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/dnspod.html"><i class="icon-tag"></i>dnspod</a>
+	<a href="http://www.phpue.com/tag/dnspod-dong-tai-yu-ming.html"><i class="icon-tag"></i>dnspod 动态域名</a>
+	<a href="http://www.phpue.com/tag/dynamic-domain.html"><i class="icon-tag"></i>dynamic domain</a>
+	<a href="http://www.phpue.com/tag/ju-yu-wang-da-jian-wai-bu-fu-wu-qi.html"><i class="icon-tag"></i>局域网搭建外部服务器</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>Powered by Lei</p>
-<h2>1. dnspod动态提交域名解析记录</h2>
-<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
-<h2>一、dnspod动态提交域名解析记录</h2>
-<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
-<p>程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod</p>
-<h3>1. 安装</h3>
-<div class="highlight"><pre><span></span>pip install requests apscheduler argparse
-</pre></div>
-
-
-<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/">如何获取自己的api_token</a></p>
-<div class="highlight"><pre><span></span>修改文件, 打开dnspod.py,
-修改 API_TOKEN = &#39;登录的token&#39; 为你的API_TOKEN, 方法是id, api_token
-</pre></div>
-
-
-<h3>2. 使用</h3>
-<ol>
-<li>获取你的域名列表</li>
-</ol>
-<div class="highlight"><pre><span></span>python dnspod.py -d
-</pre></div>
-
-
-<ol>
-<li>获取指定域名的记录信息</li>
-</ol>
-<div class="highlight"><pre><span></span>python dnspod.py -r …</pre></div>
+                <div class="summary"><p>通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/dnspod-dynamic.html">more ...</a>
                 </div>
         </div>
@@ -192,27 +165,14 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/wei-xin-gong-zhong-hao.html"><i class="icon-tag"></i>微信公众号</a>
+	<a href="http://www.phpue.com/tag/wei-xin-shu-ju-zhua-qu.html"><i class="icon-tag"></i>微信数据抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-wen-zhang-zhua-qu.html"><i class="icon-tag"></i>微信文章抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-dian-zan-shu-zhua-qu.html"><i class="icon-tag"></i>微信点赞数抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-ping-lun-zhua-qu.html"><i class="icon-tag"></i>微信评论抓取</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章</p>
-<h2>一、介绍</h2>
-<p>研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
-<a href="https://zhuanlan.zhihu.com/c_65943221">微信公众号内容的批量采集与应用</a>
-微信抓取的难点:
-1. 无法获取到微信公众号的信息(微信并没有提供列表)
-2. 无法脱离客户端获取微信公众号历史消息页面
-3. 可以获取到文章内容页但是脱离客户端后无法获取到点赞、阅读数据</p>
-<p>所以, 流程中的一部分是依赖于手机客户端的, 如果要大量抓取微信公众号信息,就必须依靠大量客户端抓取(自己准备手机、微信号、电费、和人工)</p>
-<p>基本使用的方式是和知乎大神说的一样的, 都是中间人代理攻击的方式。</p>
-<h2>一、抓取要使用的工具</h2>
-<p>知乎大神用的是nodejs, post给php处理, 并且github上有的大部分也是用这个方式, 或者纯nodejs的方式, 个人觉得受限太大, 最主要的原因是我不会nodejs, 简单学过一些, 不过使用的anyproxy, 还是会出现一些无法解决的问题, 无法适用于长期采集</p>
-<ol>
-<li>python3.5+</li>
-<li>mitmproxy</li>
-<li>其他用到的包插件</li>
-</ol>
-<h2>二、微信抓取基本的应用规则</h2>
-<ol>
-<li>单个客户端公众号历史消息列表页, 一天访问次数不可以超过1300次 …</li></ol>
+                <div class="summary"><p>本文介绍如何通过中间人攻击, 抓取微信公众平台数据</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/wechat/wechat-account2.html">more ...</a>
                 </div>
         </div>
@@ -230,22 +190,14 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/wei-xin-gong-zhong-hao.html"><i class="icon-tag"></i>微信公众号</a>
+	<a href="http://www.phpue.com/tag/wei-xin-shu-ju-zhua-qu.html"><i class="icon-tag"></i>微信数据抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-wen-zhang-zhua-qu.html"><i class="icon-tag"></i>微信文章抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-dian-zan-shu-zhua-qu.html"><i class="icon-tag"></i>微信点赞数抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-ping-lun-zhua-qu.html"><i class="icon-tag"></i>微信评论抓取</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据</p>
-<div class="highlight"><pre><span></span><span class="c1"># crawl_like.py</span>
-<span class="c1"># -*- coding:utf-8 -*-</span>
-<span class="sd">&#39;&#39;&#39; 抓取文章点赞和评论&#39;&#39;&#39;</span>
-
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="kn">from</span> <span class="nn">app.config</span> <span class="kn">import</span> <span class="n">redis_key</span>
-<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span>
-<span class="kn">from</span> <span class="nn">app.model.Article</span> <span class="kn">import</span> <span class="n">Article …</span></pre></div>
+                <div class="summary"><p>本文介绍如何通过中间人攻击, 抓取微信公众平台数据</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/wechat/wechat-account3.html">more ...</a>
                 </div>
         </div>
@@ -263,20 +215,14 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/wechat.html"><i class="icon-folder-open"></i>wechat</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/wei-xin-gong-zhong-hao.html"><i class="icon-tag"></i>微信公众号</a>
+	<a href="http://www.phpue.com/tag/wei-xin-shu-ju-zhua-qu.html"><i class="icon-tag"></i>微信数据抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-wen-zhang-zhua-qu.html"><i class="icon-tag"></i>微信文章抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-dian-zan-shu-zhua-qu.html"><i class="icon-tag"></i>微信点赞数抓取</a>
+	<a href="http://www.phpue.com/tag/wei-xin-ping-lun-zhua-qu.html"><i class="icon-tag"></i>微信评论抓取</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow</span><span class="p">):</span>
-    <span class="n">not_allow_domain</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="sa">r</span><span class="s1">&#39;mmbiz\.qpic\.cn&#39;</span><span class="p">,</span>
-        <span class="sa">r</span><span class="s1">&#39;wx\.qlogo\.cn&#39;</span><span class="p">,</span>
-        <span class="sa">r</span><span class="s1">&#39;short\.weixin\.qq\.com&#39;</span><span class="p">,</span>
-        <span class="sa">r</span><span class="s1">&#39;minorshort\.weixin\.qq\.com&#39;</span><span class="p">,</span>
-        <span class="sa">r</span><span class="s1">&#39;www\.microvirt\.com&#39;</span>
-    <span class="p">]</span>
-    <span class="sd">&#39;&#39;&#39; 请求 &#39;&#39;&#39;</span>
-    <span class="n">_url</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">pretty_url</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">not_allow_domain</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">re …</span></pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/wechat/wechat-account4.html">more ...</a>
                 </div>
         </div>
@@ -294,36 +240,12 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/pt-online-schema-change.html"><i class="icon-tag"></i>pt-online-schema-change</a>
+	<a href="http://www.phpue.com/tag/percona-toolkit.html"><i class="icon-tag"></i>percona-toolkit</a>
+	<a href="http://www.phpue.com/tag/mysqlzai-xian-xiu-gai-biao-jie-gou-cao-zuo.html"><i class="icon-tag"></i>mysql在线修改表结构操作</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>1. 参数</h2>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>--host=xxx --user=xxx --password=xxx</td>
-<td></td>
-<td>连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。</td>
-</tr>
-<tr>
-<td>--alter</td>
-<td></td>
-<td>结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。</td>
-</tr>
-<tr>
-<td>D=db_name,t=table_name</td>
-<td></td>
-<td>指定要ddl的数据库名和表名</td>
-</tr>
-<tr>
-<td>--max-load</td>
-<td></td>
-<td>默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE …</td></tr></tbody></table>
+                <div class="summary"><p>pt-online-schema-change可以在不影响正常业务的情况下, 对数据库表结构进行修改, 修改的速度根据数据量大小决定。是一个很值得学习的工具</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/pt-online-schema-change.html">more ...</a>
                 </div>
         </div>
@@ -341,39 +263,12 @@ curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/supervisor.html"><i class="icon-tag"></i>supervisor</a>
+	<a href="http://www.phpue.com/tag/supervisord.html"><i class="icon-tag"></i>supervisord</a>
+	<a href="http://www.phpue.com/tag/python-jin-cheng-guan-li.html"><i class="icon-tag"></i>python 进程管理</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、安装配置</h2>
-<p><a href="http://www.supervisord.org/">文档地址</a></p>
-<h3>1. 安装</h3>
-<div class="highlight"><pre><span></span>easy_install supervisor
-pip install supervisor
-</pre></div>
-
-
-<h3>2. 生成配置文件</h3>
-<div class="highlight"><pre><span></span>sudo echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf
-</pre></div>
-
-
-<h3>3.修改配置项</h3>
-<div class="highlight"><pre><span></span><span class="c1"># 找到</span>
-<span class="p">;[</span><span class="n">include</span><span class="p">]</span>
-<span class="p">;</span><span class="n">files</span> <span class="o">=</span> <span class="n">relative</span><span class="o">/</span><span class="n">directory</span><span class="o">/*.</span><span class="n">ini</span>
-
-<span class="c1"># 改为</span>
-<span class="p">[</span><span class="n">include</span><span class="p">]</span>
-<span class="n">files</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">supervisor</span><span class="o">/</span><span class="n">conf</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">cnf</span>
-</pre></div>
-
-
-<h3>4. 启动</h3>
-<div class="highlight"><pre><span></span>supervisord -c /etc/supervisor/supervisord.conf
-</pre></div>
-
-
-<h2>二、基本使用</h2>
-<h3>1. 创建脚本</h3>
-<div class="highlight"><pre><span></span># vim /etc/supervisor/conf …</pre></div>
+                <div class="summary"><p>Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/supervisor.html">more ...</a>
                 </div>
         </div>
@@ -391,20 +286,16 @@ pip install supervisor
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/mysql-partition.html"><i class="icon-tag"></i>mysql partition</a>
+	<a href="http://www.phpue.com/tag/mysql-listfen-qu.html"><i class="icon-tag"></i>mysql list分区</a>
+	<a href="http://www.phpue.com/tag/rangefen-qu.html"><i class="icon-tag"></i>range分区</a>
+	<a href="http://www.phpue.com/tag/zi-fen-qu.html"><i class="icon-tag"></i>子分区</a>
+	<a href="http://www.phpue.com/tag/hashfen-qu.html"><i class="icon-tag"></i>hash分区</a>
+	<a href="http://www.phpue.com/tag/keyfen-qu.html"><i class="icon-tag"></i>key分区</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、分区类型</h2>
-<h3>1. RANGE类型(范围分区)</h3>
-<blockquote>
-<p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
-</blockquote>
-<p>啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 <br /></p>
-<p>咱们看一个创建的例子</p>
-<div class="highlight"><pre><span></span>CREATE TABLE `t1` (
-  `id` int(11) NOT NULL,
-  `uid` int(11) NOT NULL COMMENT &#39;用户id&#39;,
-  `score` int(3) NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;分数&#39;,
-  PRIMARY KEY (`id`,`score`)
-) ENGINE …</pre></div>
+                <div class="summary"><p>mysql分区类型介绍</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition.html">more ...</a>
                 </div>
         </div>

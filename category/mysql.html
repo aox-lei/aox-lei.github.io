@@ -118,36 +118,12 @@
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/pt-online-schema-change.html"><i class="icon-tag"></i>pt-online-schema-change</a>
+	<a href="http://www.phpue.com/tag/percona-toolkit.html"><i class="icon-tag"></i>percona-toolkit</a>
+	<a href="http://www.phpue.com/tag/mysqlzai-xian-xiu-gai-biao-jie-gou-cao-zuo.html"><i class="icon-tag"></i>mysql在线修改表结构操作</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>1. 参数</h2>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>--host=xxx --user=xxx --password=xxx</td>
-<td></td>
-<td>连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。</td>
-</tr>
-<tr>
-<td>--alter</td>
-<td></td>
-<td>结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。</td>
-</tr>
-<tr>
-<td>D=db_name,t=table_name</td>
-<td></td>
-<td>指定要ddl的数据库名和表名</td>
-</tr>
-<tr>
-<td>--max-load</td>
-<td></td>
-<td>默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE …</td></tr></tbody></table>
+                <div class="summary"><p>pt-online-schema-change可以在不影响正常业务的情况下, 对数据库表结构进行修改, 修改的速度根据数据量大小决定。是一个很值得学习的工具</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/pt-online-schema-change.html">more ...</a>
                 </div>
         </div>
@@ -165,20 +141,16 @@
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/mysql-partition.html"><i class="icon-tag"></i>mysql partition</a>
+	<a href="http://www.phpue.com/tag/mysql-listfen-qu.html"><i class="icon-tag"></i>mysql list分区</a>
+	<a href="http://www.phpue.com/tag/rangefen-qu.html"><i class="icon-tag"></i>range分区</a>
+	<a href="http://www.phpue.com/tag/zi-fen-qu.html"><i class="icon-tag"></i>子分区</a>
+	<a href="http://www.phpue.com/tag/hashfen-qu.html"><i class="icon-tag"></i>hash分区</a>
+	<a href="http://www.phpue.com/tag/keyfen-qu.html"><i class="icon-tag"></i>key分区</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、分区类型</h2>
-<h3>1. RANGE类型(范围分区)</h3>
-<blockquote>
-<p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
-</blockquote>
-<p>啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 <br /></p>
-<p>咱们看一个创建的例子</p>
-<div class="highlight"><pre><span></span>CREATE TABLE `t1` (
-  `id` int(11) NOT NULL,
-  `uid` int(11) NOT NULL COMMENT &#39;用户id&#39;,
-  `score` int(3) NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;分数&#39;,
-  PRIMARY KEY (`id`,`score`)
-) ENGINE …</pre></div>
+                <div class="summary"><p>mysql分区类型介绍</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition.html">more ...</a>
                 </div>
         </div>
@@ -342,20 +314,14 @@
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/mysql-partition.html"><i class="icon-tag"></i>mysql partition</a>
+	<a href="http://www.phpue.com/tag/mysql-rangefen-qu.html"><i class="icon-tag"></i>mysql range分区</a>
+	<a href="http://www.phpue.com/tag/rangefen-qu.html"><i class="icon-tag"></i>range分区</a>
+	<a href="http://www.phpue.com/tag/range-columns-fen-qu.html"><i class="icon-tag"></i>range columns 分区</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符<br /></p>
-<p>让我们先来创建一个range分区的表</p>
-<div class="highlight"><pre><span></span>CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
-    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
-    job_code INT NOT NULL,
-    store_id INT NOT NULL
-)
-PARTITION BY RANGE (store_id) (
-    PARTITION p0 VALUES LESS THAN (6 …</pre></div>
+                <div class="summary"><p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range.html">more ...</a>
                 </div>
         </div>
@@ -373,27 +339,14 @@ PARTITION BY RANGE (store_id) (
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/mysql-partition.html"><i class="icon-tag"></i>mysql partition</a>
+	<a href="http://www.phpue.com/tag/mysql-rangefen-qu.html"><i class="icon-tag"></i>mysql range分区</a>
+	<a href="http://www.phpue.com/tag/rangefen-qu.html"><i class="icon-tag"></i>range分区</a>
+	<a href="http://www.phpue.com/tag/range-columns-fen-qu.html"><i class="icon-tag"></i>range columns 分区</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
-- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
-- 2. RANGE COLUMNS 接受一个或多个字段的列表
-- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列</p>
-<p>基本定义:</p>
-<div class="highlight"><pre><span></span>CREATE TABLE table_name
-PARTITIONED BY RANGE COLUMNS(column_list) (
-    PARTITION partition_name VALUES LESS THAN (value_list)[,
-    PARTITION partition_name VALUES LESS THAN (value_list)][,
-    ...]
-)
-column_list:
-    column_name[, column_name][, ...]
-value_list:
-    value[, value][, ...]
-</pre></div>
-
-
-<p>column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值</p>
-<div class="highlight"><pre><span></span>mysql&gt; CREATE …</pre></div>
+                <div class="summary"><p>RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。Range Columns可以用在多列分区的分区结构中</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-range-columns.html">more ...</a>
                 </div>
         </div>

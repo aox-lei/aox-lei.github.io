@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-22T00:00:00+08:00</updated><entry><title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title><link href="http://www.phpue.com/php/curl-osstatus-25299.html" rel="alternate"></link><published>2017-11-22T00:00:00+08:00</published><updated>2017-11-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-22:/php/curl-osstatus-25299.html</id><summary type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
-&lt;p&gt;基本环境:
-MAC OS X、php5.6&lt;/p&gt;
-&lt;p&gt;phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)&lt;/p&gt;
-&lt;p&gt;一、先查看系统的curl支持的协议&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; curl -V
-curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-22T00:00:00+08:00</updated><entry><title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title><link href="http://www.phpue.com/php/curl-osstatus-25299.html" rel="alternate"></link><published>2017-11-22T00:00:00+08:00</published><updated>2017-11-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-22:/php/curl-osstatus-25299.html</id><summary type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;</summary><content type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
 &lt;p&gt;基本环境:
 MAC OS X、php5.6&lt;/p&gt;
 &lt;p&gt;phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)&lt;/p&gt;
@@ -33,37 +27,7 @@ Features: AsynchDNS IPv6 Largefile NTLM NTLM_WB SSL libz TLS-SRP UnixSockets HTT
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL&lt;/p&gt;</content></entry><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/dnspod-dynamic.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/python/dnspod-dynamic.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
-&lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
-&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
-&lt;h2&gt;一、dnspod动态提交域名解析记录&lt;/h2&gt;
-&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
-&lt;p&gt;程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod&lt;/p&gt;
-&lt;h3&gt;1. 安装&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install requests apscheduler argparse
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/"&gt;如何获取自己的api_token&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;修改文件, 打开dnspod.py,
-修改 API_TOKEN = &amp;#39;登录的token&amp;#39; 为你的API_TOKEN, 方法是id, api_token
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 使用&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;获取你的域名列表&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -d
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;ol&gt;
-&lt;li&gt;获取指定域名的记录信息&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -r …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
+&lt;p&gt;四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL&lt;/p&gt;</content><category term="curl-osstatus"></category><category term="25299"></category><category term="curl错误"></category></entry><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/dnspod-dynamic.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/python/dnspod-dynamic.html</id><summary type="html">&lt;p&gt;通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
 &lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
 &lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
 然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
@@ -117,26 +81,7 @@ RECORD_IDS = [ # 记录id
 
 
 &lt;p&gt;有问题可以提交到这里: &lt;a href="https://github.com/mm333444/python_script/issues/new"&gt;ISSUE&lt;/a&gt;
-qq群:252799167&lt;/p&gt;</content></entry><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/wechat-account2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
-&lt;h2&gt;一、介绍&lt;/h2&gt;
-&lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
-&lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
-微信抓取的难点:
-1. 无法获取到微信公众号的信息(微信并没有提供列表)
-2. 无法脱离客户端获取微信公众号历史消息页面
-3. 可以获取到文章内容页但是脱离客户端后无法获取到点赞、阅读数据&lt;/p&gt;
-&lt;p&gt;所以, 流程中的一部分是依赖于手机客户端的, 如果要大量抓取微信公众号信息,就必须依靠大量客户端抓取(自己准备手机、微信号、电费、和人工)&lt;/p&gt;
-&lt;p&gt;基本使用的方式是和知乎大神说的一样的, 都是中间人代理攻击的方式。&lt;/p&gt;
-&lt;h2&gt;一、抓取要使用的工具&lt;/h2&gt;
-&lt;p&gt;知乎大神用的是nodejs, post给php处理, 并且github上有的大部分也是用这个方式, 或者纯nodejs的方式, 个人觉得受限太大, 最主要的原因是我不会nodejs, 简单学过一些, 不过使用的anyproxy, 还是会出现一些无法解决的问题, 无法适用于长期采集&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;python3.5+&lt;/li&gt;
-&lt;li&gt;mitmproxy&lt;/li&gt;
-&lt;li&gt;其他用到的包插件&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;二、微信抓取基本的应用规则&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;单个客户端公众号历史消息列表页, 一天访问次数不可以超过1300次 …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
+qq群:252799167&lt;/p&gt;</content><category term="dnspod"></category><category term="dnspod 动态域名"></category><category term="dynamic domain"></category><category term="局域网搭建外部服务器"></category></entry><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/wechat-account2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account2.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
 &lt;h2&gt;一、介绍&lt;/h2&gt;
 &lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
 &lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
@@ -249,21 +194,7 @@ pip install requests
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# content.py
 分析内容中的文章列表并保存
 以及将cookie保存起来, 假设保存到redis中
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/wechat-account3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
-&lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
-&lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;threading&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bs4&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.config&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;redis_key&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.model.Article&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/wechat-account3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account3.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
 &lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
@@ -530,19 +461,7 @@ pip install requests
             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
 
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/wechat-account4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;wx\.qlogo\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;short\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;minorshort\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;www\.microvirt\.com&amp;#39;&lt;/span&gt;
-    &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 请求 &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-    &lt;span class="n"&gt;_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretty_url&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;not_allow_domain&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;re …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/wechat-account4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;</summary><content type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -562,35 +481,7 @@ pip install requests
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>pt-online-schema-change 在线修改表结构</title><link href="http://www.phpue.com/mysql/pt-online-schema-change.html" rel="alternate"></link><published>2017-11-01T00:00:00+08:00</published><updated>2017-11-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-01:/mysql/pt-online-schema-change.html</id><summary type="html">&lt;h2&gt;1. 参数&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数&lt;/th&gt;
-&lt;th&gt;默认值&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;--host=xxx --user=xxx --password=xxx&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;--alter&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;D=db_name,t=table_name&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;指定要ddl的数据库名和表名&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;--max-load&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;1. 参数&lt;/h2&gt;
+&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>pt-online-schema-change 在线修改表结构</title><link href="http://www.phpue.com/mysql/pt-online-schema-change.html" rel="alternate"></link><published>2017-11-01T00:00:00+08:00</published><updated>2017-11-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-01:/mysql/pt-online-schema-change.html</id><summary type="html">&lt;p&gt;pt-online-schema-change可以在不影响正常业务的情况下, 对数据库表结构进行修改, 修改的速度根据数据量大小决定。是一个很值得学习的工具&lt;/p&gt;</summary><content type="html">&lt;h2&gt;1. 参数&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -661,38 +552,8 @@ pip install requests
 &lt;h2&gt;3. 使用示例&lt;/h2&gt;
 &lt;h3&gt;1. 添加字段&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pt-online-schema-change --user=user --password=password --host=10.0.201.34  --alter &amp;quot;ADD COLUMN f_id int default 0&amp;quot; D=confluence,t=sbtest3 --print --execute
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/supervisor.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-31:/python/supervisor.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;1. 安装&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
-pip install supervisor
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 生成配置文件&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo echo_supervisord_conf &amp;gt; /etc/supervisor/supervisord.conf
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;3.修改配置项&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 找到&lt;/span&gt;
-&lt;span class="p"&gt;;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;relative&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;ini&lt;/span&gt;
-
-&lt;span class="c1"&gt;# 改为&lt;/span&gt;
-&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;supervisor&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;cnf&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;4. 启动&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;supervisord -c /etc/supervisor/supervisord.conf
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;二、基本使用&lt;/h2&gt;
-&lt;h3&gt;1. 创建脚本&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# vim /etc/supervisor/conf …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="pt-online-schema-change"></category><category term="percona-toolkit"></category><category term="mysql在线修改表结构操作"></category></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/supervisor.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-31:/python/supervisor.html</id><summary type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;
+&lt;h2&gt;一、安装配置&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;1. 安装&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
@@ -963,19 +824,7 @@ stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志
 &lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
 &lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
 &lt;h5&gt;6. crashsms&lt;/h5&gt;
-&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(一) ——概述</title><link href="http://www.phpue.com/mysql/mysql-partition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition.html</id><summary type="html">&lt;h2&gt;一、分区类型&lt;/h2&gt;
-&lt;h3&gt;1. RANGE类型(范围分区)&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 &lt;br /&gt;&lt;/p&gt;
-&lt;p&gt;咱们看一个创建的例子&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `t1` (
-  `id` int(11) NOT NULL,
-  `uid` int(11) NOT NULL COMMENT &amp;#39;用户id&amp;#39;,
-  `score` int(3) NOT NULL DEFAULT &amp;#39;0&amp;#39; COMMENT &amp;#39;分数&amp;#39;,
-  PRIMARY KEY (`id`,`score`)
-) ENGINE …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;一、分区类型&lt;/h2&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content><category term="supervisor"></category><category term="supervisord"></category><category term="python 进程管理"></category></entry><entry><title>Mysql 分区介绍(一) ——概述</title><link href="http://www.phpue.com/mysql/mysql-partition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition.html</id><summary type="html">&lt;p&gt;mysql分区类型介绍&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、分区类型&lt;/h2&gt;
 &lt;h3&gt;1. RANGE类型(范围分区)&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;/p&gt;
@@ -1115,7 +964,7 @@ SUBPARTITIONS 2 (
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
+&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql list分区"></category><category term="range分区"></category><category term="子分区"></category><category term="hash分区"></category><category term="key分区"></category></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -1842,19 +1691,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 
 &lt;h2&gt;三、HASH和KEY如何处理null&lt;/h2&gt;
-&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql分区对null的处理"></category><category term="分区处理"></category><category term="分区管理"></category></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
-&lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
-    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
-    job_code INT NOT NULL,
-    store_id INT NOT NULL
-)
-PARTITION BY RANGE (store_id) (
-    PARTITION p0 VALUES LESS THAN (6 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql分区对null的处理"></category><category term="分区处理"></category><category term="分区管理"></category></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;/p&gt;</summary><content type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
 &lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
     id INT NOT NULL,
@@ -1934,26 +1771,7 @@ PARTITION BY RANGE(YEAR(joined) ) (
     PARTITION p3 VALUES LESS THAN (1990),
     PARTITION p4 VALUES LESS THAN MAXVALUE
 );
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range-columns.html</id><summary type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
-- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
-- 2. RANGE COLUMNS 接受一个或多个字段的列表
-- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列&lt;/p&gt;
-&lt;p&gt;基本定义:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE table_name
-PARTITIONED BY RANGE COLUMNS(column_list) (
-    PARTITION partition_name VALUES LESS THAN (value_list)[,
-    PARTITION partition_name VALUES LESS THAN (value_list)][,
-    ...]
-)
-column_list:
-    column_name[, column_name][, ...]
-value_list:
-    value[, value][, ...]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql range分区"></category><category term="range分区"></category><category term="range columns 分区"></category></entry><entry><title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range-columns.html</id><summary type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。Range Columns可以用在多列分区的分区结构中&lt;/p&gt;</summary><content type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
 - 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
 - 2. RANGE COLUMNS 接受一个或多个字段的列表
 - 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列&lt;/p&gt;
@@ -2071,21 +1889,7 @@ mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
 | p            | p1             |          3 |
 +--------------+----------------+------------+
 2 rows in set (0.00 sec)
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(八) —— 子分区</title><link href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-subpartition.html</id><summary type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
-id INT, purchased DATE
-)
-PARTITION BY RANGE( YEAR(purchased) )
-SUBPARTITION BY HASH( TO_DAYS(purchased) )
-SUBPARTITIONS 2 (
-    PARTITION p0 VALUES LESS THAN (1990),
-    PARTITION p1 VALUES LESS THAN (2000),
-    PARTITION p2 VALUES LESS THAN MAXVALUE
-);
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql range分区"></category><category term="range分区"></category><category term="range columns 分区"></category></entry><entry><title>Mysql 分区介绍(八) —— 子分区</title><link href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-subpartition.html</id><summary type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
 id INT, purchased DATE
 )
@@ -2129,87 +1933,7 @@ SUBPARTITIONS 2 (
             SUBPARTITION s2b
         )
     );
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/pt-archiver.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/pt-archiver.html</id><summary type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;A&lt;/td&gt;
-&lt;td&gt;字符编码&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;D&lt;/td&gt;
-&lt;td&gt;库&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;F&lt;/td&gt;
-&lt;td&gt;从文件读取选项&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;L&lt;/td&gt;
-&lt;td&gt;加载数据本地文件&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;P&lt;/td&gt;
-&lt;td&gt;端口&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;S&lt;/td&gt;
-&lt;td&gt;socket文件&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;a&lt;/td&gt;
-&lt;td&gt;执行查询的数据库&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;b&lt;/td&gt;
-&lt;td&gt;如果是true, 禁用SQL_LOG_BIN&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;h&lt;/td&gt;
-&lt;td&gt;数据库地址&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;i&lt;/td&gt;
-&lt;td&gt;查询使用的索引&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;m&lt;/td&gt;
-&lt;td&gt;插件模块名称&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;p&lt;/td&gt;
-&lt;td&gt;数据库密码&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;t&lt;/td&gt;
-&lt;td&gt;表&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;u&lt;/td&gt;
-&lt;td&gt;用户名&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2&gt;2. 常用参数&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数&lt;/th&gt;
-&lt;th&gt;默认值&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;--limit 10000&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;每次取1000行数据用pt-archive处理，Number of rows to fetch and archive per statement …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql子分区"></category><category term="子分区的作用"></category></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/pt-archiver.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/pt-archiver.html</id><summary type="html">&lt;p&gt;pt-archiver可以在不影响正常业务的情况下, 对数据进行删除, 迁移操作。效率高且出错率低&lt;/p&gt;</summary><content type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -2459,7 +2183,7 @@ SUBPARTITIONS 2 (
 --progress 5000 --where ‘a&amp;lt;12000‘ \
 
 --statistics --charset=UTF8 --limit=10000 --txn-size 1000 --purge
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/awk.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-25:/linux/awk.html</id><summary type="html">&lt;p&gt;awk的基本使用方法&lt;/p&gt;</summary><content type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="pt-archiver"></category><category term="percona-toolkit"></category><category term="mysql数据删除"></category><category term="mysql在线数据迁移"></category></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/awk.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-25:/linux/awk.html</id><summary type="html">&lt;p&gt;awk的基本使用方法&lt;/p&gt;</summary><content type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
 &lt;p&gt;$0 代表整行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk &amp;#39;{print $1}&amp;#39; # 输出第一行
 &lt;/pre&gt;&lt;/div&gt;
@@ -2494,21 +2218,7 @@ awk &amp;#39;$1==1 {print $1}&amp;#39;
 
 &lt;h3&gt;6. 拆分文件&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk -F : &amp;#39;$1 ~ /www/ {print &amp;gt; $2}&amp;#39; /etc/passwd
-&lt;/pre&gt;&lt;/div&gt;</content><category term="awk"></category><category term="linux"></category></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/multiprocessing-threading.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-22:/python/multiprocessing-threading.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
-&lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
-&lt;h2&gt;二、线程&lt;/h2&gt;
-&lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
-&lt;h2&gt;三、多任务的模式&lt;/h2&gt;
-&lt;h3&gt;一、多进程模式&lt;/h3&gt;
-&lt;p&gt;启动多个进程, 每个进程有一个线程去完成。因为python的多线程有GIL锁(全局锁), 在CPU密集型的情况下, 效率可能还不如单线程。
-CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。&lt;/p&gt;
-&lt;h3&gt;二、多线程模式&lt;/h3&gt;
-&lt;p&gt;单个进程下, 多个进程去完成。这种情况下只推荐做IO密集型的操作, 比如爬虫&lt;/p&gt;
-&lt;h3&gt;三、多进程+多线程模式&lt;/h3&gt;
-&lt;p&gt;启动多个进程, 每个进程下再启动多个线程去完成, 这种在一般项目中都有可能采用, 比如一个项目有多个脚本, 分别启动进程去管理, 而在单个脚本任务中, 又启动多个线程去抓取数据等&lt;/p&gt;
-&lt;h2&gt;四、Python 多进程的方式&lt;/h2&gt;
-&lt;p&gt;Python 多进程采用的是multiprocessing, 兼容性好, 可以兼容windows平台&lt;/p&gt;
-&lt;h3&gt;一、基本使用 …&lt;/h3&gt;</summary><content type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="awk"></category><category term="linux"></category></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/multiprocessing-threading.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-22:/python/multiprocessing-threading.html</id><summary type="html">&lt;p&gt;python对多进程和多线程的使用, 以及多进程, 多线程的介绍。&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
 &lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
 &lt;h2&gt;二、线程&lt;/h2&gt;
 &lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
@@ -2658,24 +2368,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;span class="mi"&gt;3&lt;/span&gt;
 &lt;span class="mi"&gt;4&lt;/span&gt;
 &lt;span class="mi"&gt;5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/proxy-tool.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-21:/python/proxy-tool.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
-&lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
-&lt;h1&gt;ProxyTool&lt;/h1&gt;
-&lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
-环境: python3.6.2&lt;/p&gt;
-&lt;h2&gt;一、安装方法&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install -r requirements.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;二、使用方法&lt;/h2&gt;
-&lt;p&gt;-env 指定环境, 会读取app.config下指定的配置文件&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python run.py -env online
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;三、 基本逻辑&lt;/h2&gt;
-&lt;p&gt;整个项目分为三部分 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="多进程"></category><category term="多线程"></category><category term="python 多进程"></category><category term="multiprocessing"></category><category term="threading"></category></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/proxy-tool.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-21:/python/proxy-tool.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;</summary><content type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
 &lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
 &lt;h1&gt;ProxyTool&lt;/h1&gt;
 &lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
@@ -2738,31 +2431,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/wechat-account1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/wechat-account1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
-&lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
-https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
-&lt;strong&gt;作用&lt;/strong&gt;
-猜测是为了设置cookie等一些信息, 不经过则cookie无效
-&lt;strong&gt;请求方式&lt;/strong&gt;: GET
-&lt;strong&gt;请求参数&lt;/strong&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数名&lt;/th&gt;
-&lt;th&gt;参数值&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;__biz&lt;/td&gt;
-&lt;td&gt;MzI2NjA3NTc4Ng==&lt;/td&gt;
-&lt;td&gt;公众号标识,每个公众号值不变,base64加密,解密后是数字&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;devicetype&lt;/td&gt;
-&lt;td&gt;iOS10 …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content><category term="python 代理池"></category><category term="代理池"></category><category term="ip池"></category></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/wechat-account1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/wechat-account1.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
 &lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
 https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
@@ -2988,4 +2657,4 @@ https://mp.weixin.qq.com/mp/getverifyinfo?__biz=MjM5MDI5MjAyMA==&amp;amp;type=re
 &lt;h1&gt;cookie可以通用&lt;/h1&gt;
 &lt;h2&gt;备注&lt;/h2&gt;
 &lt;p&gt;cookie每个公众号不通用(部分公众号是通用的,规律暂时未找到)
-cookie中的有效期待定&lt;/p&gt;</content></entry></feed>
+cookie中的有效期待定&lt;/p&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry></feed>
