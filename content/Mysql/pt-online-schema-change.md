@@ -1,6 +1,8 @@
 title: pt-online-schema-change 在线修改表结构
 date: 2017-11-01
 slug: mysql/pt-online-schema-change
+Tags: pt-online-schema-change, percona-toolkit, mysql在线修改表结构操作
+Summary: pt-online-schema-change可以在不影响正常业务的情况下, 对数据库表结构进行修改, 修改的速度根据数据量大小决定。是一个很值得学习的工具
 
 ## 1. 参数
 |参数|默认值|说明|

@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(七) —— KEY分区
 date: 2017-10-02
 slug:mysql/mysql-partition-key
+Tags: mysql分区, key分区, 数据库分区
+Summary: Key分区和HASH分区非常类似。但是也有一些区别。本章就详细介绍一下Mysql分区的Key分区方式
 
 Key分区和HASH分区非常类似。它们主要的区别在于:
 

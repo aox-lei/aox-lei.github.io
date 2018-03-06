@@ -118,36 +118,11 @@
 <a href="http://www.phpue.com/category/linux.html"><i class="icon-folder-open"></i>linux</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/awk.html"><i class="icon-tag"></i>awk</a>
+	<a href="http://www.phpue.com/tag/linux.html"><i class="icon-tag"></i>linux</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h3>1. 输出第几行</h3>
-<p>$0 代表整行</p>
-<div class="highlight"><pre><span></span>awk &#39;{print $1}&#39; # 输出第一行
-</pre></div>
-
-
-<h3>2. 过滤数据</h3>
-<div class="highlight"><pre><span></span>awk &#39;$1==1&#39; # 第一列等于1的数据
-</pre></div>
-
-
-<p>其他计算符号 <strong>!=、&gt;、&lt;、&gt;=、&lt;=</strong></p>
-<div class="highlight"><pre><span></span># 过滤并输出指定列
-awk &#39;$1==1 {print $1}&#39;
-</pre></div>
-
-
-<h3>3. 格式化输出</h3>
-<div class="highlight"><pre><span></span>awk &#39;{printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6}&#39; netstat.txt
-</pre></div>
-
-
-<h3>4. 指定分隔符和指定输出分隔符</h3>
-<div class="highlight"><pre><span></span>awk -F 分隔符 -OFS 输出的分隔符
-</pre></div>
-
-
-<h3>5. 字符串查找</h3>
-<p>模式取反用 …</p>
+                <div class="summary"><p>awk的基本使用方法</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/linux/awk.html">more ...</a>
                 </div>
         </div>

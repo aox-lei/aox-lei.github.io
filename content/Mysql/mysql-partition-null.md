@@ -1,6 +1,8 @@
 title: Mysql分区表如何处理null
 date: 2017-10-02
 slug:mysql/mysql-partition-null
+Tags: mysql分区, mysql分区对null的处理, 分区处理, 分区管理
+Summary: 分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。
 
 分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。
 

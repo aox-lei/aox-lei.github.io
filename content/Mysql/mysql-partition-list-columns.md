@@ -1,6 +1,9 @@
 title: Mysql 分区介绍(五) —— LIST COLUMNS分区
 date: 2017-10-02
 slug:mysql/mysql-partition-list-columns
+Tags: mysql分区, List分区, List Columns分区, 列分区, 数据库分区
+Summary: Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME
+
 
 Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME
 

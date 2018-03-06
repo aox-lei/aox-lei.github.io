@@ -1,6 +1,8 @@
 title: pt-archiver 数据删除、迁移工具使用
 date: 2017-10-01
 slug:mysql/pt-archiver
+Tags: pt-archiver, percona-toolkit, mysql数据删除, mysql在线数据迁移
+Summary: pt-archiver可以在不影响正常业务的情况下, 对数据进行删除, 迁移操作。效率高且出错率低
 
 ## 1. 数据库连接参数
 |参数|说明|

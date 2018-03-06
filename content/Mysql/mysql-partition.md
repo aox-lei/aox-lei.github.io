@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(一) ——概述
 date: 2017-10-02
 slug:mysql/mysql-partition
+Tags: mysql分区, mysql partition, mysql list分区, range分区, 子分区, hash分区, key分区
+Summary: mysql分区类型介绍
 
 ## 一、分区类型
 ### 1. RANGE类型(范围分区)

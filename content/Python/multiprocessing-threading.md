@@ -1,6 +1,8 @@
 title: Python 多进程和多线程的方案
 date: 2017-09-22
 slug: python/multiprocessing-threading
+Tags: 多进程, 多线程, python 多进程, multiprocessing, threading
+Summary: python对多进程和多线程的使用, 以及多进程, 多线程的介绍。
 
 ## 一、进程
 对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程

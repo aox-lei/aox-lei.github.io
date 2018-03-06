@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(二) —— RANGE分区
 date: 2017-10-02
 slug:mysql/mysql-partition-range
+Tags: mysql分区, mysql partition, mysql range分区, range分区, range columns 分区
+Summary:通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符
 
 通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符<br />
 

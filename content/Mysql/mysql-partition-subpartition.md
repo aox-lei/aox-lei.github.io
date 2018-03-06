@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(八) —— 子分区
 date: 2017-10-02
 slug:mysql/mysql-partition-subpartition
+Tags: mysql分区, mysql partition, mysql子分区, 子分区的作用
+Summary: 分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区
 
 分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区
 

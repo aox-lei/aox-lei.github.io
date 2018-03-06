@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(三) —— LIST分区
 date: 2017-10-02
 slug:mysql/mysql-partition-list
+Tags: mysql分区, List分区, List Columns分区, 列分区, 数据库分区
+Summary: LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的
 
 LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的
 

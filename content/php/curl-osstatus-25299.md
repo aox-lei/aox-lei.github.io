@@ -1,6 +1,8 @@
 title:php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题
 date:2017-11-22
 slug:php/curl-osstatus-25299
+Tags: curl-osstatus, 25299, curl错误
+Summary: php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题
 
 php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题
 

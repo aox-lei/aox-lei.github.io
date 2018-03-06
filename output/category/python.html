@@ -118,38 +118,13 @@
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/dnspod.html"><i class="icon-tag"></i>dnspod</a>
+	<a href="http://www.phpue.com/tag/dnspod-dong-tai-yu-ming.html"><i class="icon-tag"></i>dnspod 动态域名</a>
+	<a href="http://www.phpue.com/tag/dynamic-domain.html"><i class="icon-tag"></i>dynamic domain</a>
+	<a href="http://www.phpue.com/tag/ju-yu-wang-da-jian-wai-bu-fu-wu-qi.html"><i class="icon-tag"></i>局域网搭建外部服务器</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>Powered by Lei</p>
-<h2>1. dnspod动态提交域名解析记录</h2>
-<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
-<h2>一、dnspod动态提交域名解析记录</h2>
-<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
-<p>程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod</p>
-<h3>1. 安装</h3>
-<div class="highlight"><pre><span></span>pip install requests apscheduler argparse
-</pre></div>
-
-
-<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/">如何获取自己的api_token</a></p>
-<div class="highlight"><pre><span></span>修改文件, 打开dnspod.py,
-修改 API_TOKEN = &#39;登录的token&#39; 为你的API_TOKEN, 方法是id, api_token
-</pre></div>
-
-
-<h3>2. 使用</h3>
-<ol>
-<li>获取你的域名列表</li>
-</ol>
-<div class="highlight"><pre><span></span>python dnspod.py -d
-</pre></div>
-
-
-<ol>
-<li>获取指定域名的记录信息</li>
-</ol>
-<div class="highlight"><pre><span></span>python dnspod.py -r …</pre></div>
+                <div class="summary"><p>通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/dnspod-dynamic.html">more ...</a>
                 </div>
         </div>
@@ -167,39 +142,12 @@
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/supervisor.html"><i class="icon-tag"></i>supervisor</a>
+	<a href="http://www.phpue.com/tag/supervisord.html"><i class="icon-tag"></i>supervisord</a>
+	<a href="http://www.phpue.com/tag/python-jin-cheng-guan-li.html"><i class="icon-tag"></i>python 进程管理</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、安装配置</h2>
-<p><a href="http://www.supervisord.org/">文档地址</a></p>
-<h3>1. 安装</h3>
-<div class="highlight"><pre><span></span>easy_install supervisor
-pip install supervisor
-</pre></div>
-
-
-<h3>2. 生成配置文件</h3>
-<div class="highlight"><pre><span></span>sudo echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf
-</pre></div>
-
-
-<h3>3.修改配置项</h3>
-<div class="highlight"><pre><span></span><span class="c1"># 找到</span>
-<span class="p">;[</span><span class="n">include</span><span class="p">]</span>
-<span class="p">;</span><span class="n">files</span> <span class="o">=</span> <span class="n">relative</span><span class="o">/</span><span class="n">directory</span><span class="o">/*.</span><span class="n">ini</span>
-
-<span class="c1"># 改为</span>
-<span class="p">[</span><span class="n">include</span><span class="p">]</span>
-<span class="n">files</span> <span class="o">=</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">supervisor</span><span class="o">/</span><span class="n">conf</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">cnf</span>
-</pre></div>
-
-
-<h3>4. 启动</h3>
-<div class="highlight"><pre><span></span>supervisord -c /etc/supervisor/supervisord.conf
-</pre></div>
-
-
-<h2>二、基本使用</h2>
-<h3>1. 创建脚本</h3>
-<div class="highlight"><pre><span></span># vim /etc/supervisor/conf …</pre></div>
+                <div class="summary"><p>Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/supervisor.html">more ...</a>
                 </div>
         </div>
@@ -217,22 +165,14 @@ pip install supervisor
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/duo-jin-cheng.html"><i class="icon-tag"></i>多进程</a>
+	<a href="http://www.phpue.com/tag/duo-xian-cheng.html"><i class="icon-tag"></i>多线程</a>
+	<a href="http://www.phpue.com/tag/python-duo-jin-cheng.html"><i class="icon-tag"></i>python 多进程</a>
+	<a href="http://www.phpue.com/tag/multiprocessing.html"><i class="icon-tag"></i>multiprocessing</a>
+	<a href="http://www.phpue.com/tag/threading.html"><i class="icon-tag"></i>threading</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、进程</h2>
-<p>对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程</p>
-<h2>二、线程</h2>
-<p>线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。</p>
-<h2>三、多任务的模式</h2>
-<h3>一、多进程模式</h3>
-<p>启动多个进程, 每个进程有一个线程去完成。因为python的多线程有GIL锁(全局锁), 在CPU密集型的情况下, 效率可能还不如单线程。
-CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。</p>
-<h3>二、多线程模式</h3>
-<p>单个进程下, 多个进程去完成。这种情况下只推荐做IO密集型的操作, 比如爬虫</p>
-<h3>三、多进程+多线程模式</h3>
-<p>启动多个进程, 每个进程下再启动多个线程去完成, 这种在一般项目中都有可能采用, 比如一个项目有多个脚本, 分别启动进程去管理, 而在单个脚本任务中, 又启动多个线程去抓取数据等</p>
-<h2>四、Python 多进程的方式</h2>
-<p>Python 多进程采用的是multiprocessing, 兼容性好, 可以兼容windows平台</p>
-<h3>一、基本使用 …</h3>
+                <div class="summary"><p>python对多进程和多线程的使用, 以及多进程, 多线程的介绍。</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/multiprocessing-threading.html">more ...</a>
                 </div>
         </div>
@@ -250,25 +190,12 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 <a href="http://www.phpue.com/category/python.html"><i class="icon-folder-open"></i>Python</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/python-dai-li-chi.html"><i class="icon-tag"></i>python 代理池</a>
+	<a href="http://www.phpue.com/tag/dai-li-chi.html"><i class="icon-tag"></i>代理池</a>
+	<a href="http://www.phpue.com/tag/ipchi.html"><i class="icon-tag"></i>ip池</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。</p>
-<p>项目地址:https://github.com/mm333444/ProxyTool/</p>
-<h1>ProxyTool</h1>
-<p>python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
-环境: python3.6.2</p>
-<h2>一、安装方法</h2>
-<div class="highlight"><pre><span></span>pip install -r requirements.txt
-</pre></div>
-
-
-<h2>二、使用方法</h2>
-<p>-env 指定环境, 会读取app.config下指定的配置文件</p>
-<div class="highlight"><pre><span></span>python run.py -env online
-</pre></div>
-
-
-<h2>三、 基本逻辑</h2>
-<p>整个项目分为三部分 …</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/python/proxy-tool.html">more ...</a>
                 </div>
         </div>

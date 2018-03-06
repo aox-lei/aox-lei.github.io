@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog - wechat</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/wechat.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/wechat-account2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account2.html</id><summary type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
-&lt;h2&gt;一、介绍&lt;/h2&gt;
-&lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
-&lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
-微信抓取的难点:
-1. 无法获取到微信公众号的信息(微信并没有提供列表)
-2. 无法脱离客户端获取微信公众号历史消息页面
-3. 可以获取到文章内容页但是脱离客户端后无法获取到点赞、阅读数据&lt;/p&gt;
-&lt;p&gt;所以, 流程中的一部分是依赖于手机客户端的, 如果要大量抓取微信公众号信息,就必须依靠大量客户端抓取(自己准备手机、微信号、电费、和人工)&lt;/p&gt;
-&lt;p&gt;基本使用的方式是和知乎大神说的一样的, 都是中间人代理攻击的方式。&lt;/p&gt;
-&lt;h2&gt;一、抓取要使用的工具&lt;/h2&gt;
-&lt;p&gt;知乎大神用的是nodejs, post给php处理, 并且github上有的大部分也是用这个方式, 或者纯nodejs的方式, 个人觉得受限太大, 最主要的原因是我不会nodejs, 简单学过一些, 不过使用的anyproxy, 还是会出现一些无法解决的问题, 无法适用于长期采集&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;python3.5+&lt;/li&gt;
-&lt;li&gt;mitmproxy&lt;/li&gt;
-&lt;li&gt;其他用到的包插件&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;二、微信抓取基本的应用规则&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;单个客户端公众号历史消息列表页, 一天访问次数不可以超过1300次 …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog - wechat</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/wechat.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>微信公众号信息抓取方法(一)——抓取公众号历史消息列表数据</title><link href="http://www.phpue.com/wechat/wechat-account2.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account2.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;p&gt;马上双十一了, 凑个热闹, 发布一篇重量级的文章。如何抓取微信公众号的文章&lt;/p&gt;
 &lt;h2&gt;一、介绍&lt;/h2&gt;
 &lt;p&gt;研究微信抓取之前, 看过知乎有大神写的比较完善的例子, 受到启发, 才完成了整个微信公众号的抓取。
 &lt;a href="https://zhuanlan.zhihu.com/c_65943221"&gt;微信公众号内容的批量采集与应用&lt;/a&gt;
@@ -131,21 +112,7 @@ pip install requests
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# content.py
 分析内容中的文章列表并保存
 以及将cookie保存起来, 假设保存到redis中
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/wechat-account3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account3.html</id><summary type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
-&lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
-&lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;threading&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bs4&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.config&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;redis_key&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;__&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.model.Article&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>微信公众号信息抓取方法(二)——抓取文章点赞、阅读、评论、小程序信息</title><link href="http://www.phpue.com/wechat/wechat-account3.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account3.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;p&gt;上一篇文章文章将cookie信息保存到redis中, 则这一节主要是取出cookie, 并且构造方法去获取文章的点赞、阅读、评论、小程序信息, 而且不会访问文章内容页, 防止被微信认为是刷阅读数而封号, cookie的有效期保险一些为2个小时。所以在2个小时内一定要处理完数据&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# crawl_like.py&lt;/span&gt;
 &lt;span class="c1"&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
 &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 抓取文章点赞和评论&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
@@ -412,19 +379,7 @@ pip install requests
             &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
 
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/wechat-account4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;wx\.qlogo\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;short\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;minorshort\.weixin\.qq\.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;www\.microvirt\.com&amp;#39;&lt;/span&gt;
-    &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; 请求 &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-    &lt;span class="n"&gt;_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretty_url&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;not_allow_domain&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;re …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>微信公众号信息抓取方法(三)——增加微信抓取稳定性</title><link href="http://www.phpue.com/wechat/wechat-account4.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/wechat/wechat-account4.html</id><summary type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;</summary><content type="html">&lt;p&gt;在客户端访问公众号时, 会附加访问很多url, 图片, 视频或者其他检测类url的请求, 这些请求会造成一些开销, 且容易让客户端卡死、闪退等问题, 所以在rule.py中只要指定某些访问的url, 直接返回数据, 不发生实际的请求, 即可提高抓取效率&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;flow&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;not_allow_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
         &lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mmbiz\.qpic\.cn&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -444,31 +399,7 @@ pip install requests
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/wechat-account1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/wechat-account1.html</id><summary type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
-&lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
-https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
-&lt;strong&gt;作用&lt;/strong&gt;
-猜测是为了设置cookie等一些信息, 不经过则cookie无效
-&lt;strong&gt;请求方式&lt;/strong&gt;: GET
-&lt;strong&gt;请求参数&lt;/strong&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数名&lt;/th&gt;
-&lt;th&gt;参数值&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;__biz&lt;/td&gt;
-&lt;td&gt;MzI2NjA3NTc4Ng==&lt;/td&gt;
-&lt;td&gt;公众号标识,每个公众号值不变,base64加密,解密后是数字&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;devicetype&lt;/td&gt;
-&lt;td&gt;iOS10 …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</summary><content type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
+&lt;p&gt;在执行过程中, 有可能会内存太多造成服务器卡死, 或者服务异常退出, 这时可以借助python进程管理的神器,发生意外退出并且监控内存使用 &lt;a href="http://www.phpue.com/python/3.html"&gt;supervisor 使用教程&lt;/a&gt;&lt;/p&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry><entry><title>微信公众号历史记录以及文章内容接口数据分析</title><link href="http://www.phpue.com/wechat/wechat-account1.html" rel="alternate"></link><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-09:/wechat/wechat-account1.html</id><summary type="html">&lt;p&gt;本文介绍如何通过中间人攻击, 抓取微信公众平台数据&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一: 查看历史消息&lt;/h2&gt;
 &lt;h3&gt;1. 请求转发到实际的页面&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;URL&lt;/strong&gt;
 https://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzI2NjA3NTc4Ng==&amp;amp;devicetype=iOS10.3.2&amp;amp;version=16050c20&amp;amp;lang=zh_CN&amp;amp;nettype=WIFI&amp;amp;ascene=3&amp;amp;fontScale=100&amp;amp;pass_ticket=M9BUVH%2BJ9ju9HPQnUHJOghEPjTseQIWuGhGhdg6wE2FaaMeWfW3NZR1bAv8VKX2t&amp;amp;wx_header=1
@@ -694,4 +625,4 @@ https://mp.weixin.qq.com/mp/getverifyinfo?__biz=MjM5MDI5MjAyMA==&amp;amp;type=re
 &lt;h1&gt;cookie可以通用&lt;/h1&gt;
 &lt;h2&gt;备注&lt;/h2&gt;
 &lt;p&gt;cookie每个公众号不通用(部分公众号是通用的,规律暂时未找到)
-cookie中的有效期待定&lt;/p&gt;</content></entry></feed>
+cookie中的有效期待定&lt;/p&gt;</content><category term="微信公众号"></category><category term="微信数据抓取"></category><category term="微信文章抓取"></category><category term="微信点赞数抓取"></category><category term="微信评论抓取"></category></entry></feed>

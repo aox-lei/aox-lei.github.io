@@ -1,6 +1,8 @@
 title:awk的使用方法(慢慢记录完善)
 date:2017-09-25
+Tags: awk,linux
 slug:linux/awk
+Summary: awk的基本使用方法
 
 ### 1. 输出第几行
 $0 代表整行

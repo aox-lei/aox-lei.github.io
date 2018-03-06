@@ -1,6 +1,7 @@
 title:关于Andy Dufresne
 date:2017-09-09
 slug:about-me
+Tags: 个人介绍, 七麦科技, 春播, 赛迪集团
 
 # Personal Information
 ---

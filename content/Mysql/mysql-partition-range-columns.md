@@ -1,6 +1,8 @@
 title: Mysql 分区介绍(四) —— RANGE COLUMNS分区
 date: 2017-10-02
 slug:mysql/mysql-partition-range-columns
+Tags: mysql分区, mysql partition, mysql range分区, range分区, range columns 分区
+Summary: RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。Range Columns可以用在多列分区的分区结构中
 
 RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
 - 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名

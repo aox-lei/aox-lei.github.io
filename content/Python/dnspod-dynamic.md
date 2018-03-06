@@ -1,6 +1,8 @@
 title: dnspod动态域名提交, 类似花生壳实现的功能
 date: 2017-11-10
 slug: python/dnspod-dynamic
+Tags: dnspod, dnspod 动态域名, dynamic domain, 局域网搭建外部服务器
+Summary: 通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定
 
 
 Powered by Lei

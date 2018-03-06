@@ -1,35 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog - Python</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/python.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/dnspod-dynamic.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/python/dnspod-dynamic.html</id><summary type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
-&lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
-&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
-&lt;h2&gt;一、dnspod动态提交域名解析记录&lt;/h2&gt;
-&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
-然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
-&lt;p&gt;程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod&lt;/p&gt;
-&lt;h3&gt;1. 安装&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install requests apscheduler argparse
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/"&gt;如何获取自己的api_token&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;修改文件, 打开dnspod.py,
-修改 API_TOKEN = &amp;#39;登录的token&amp;#39; 为你的API_TOKEN, 方法是id, api_token
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 使用&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;获取你的域名列表&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -d
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;ol&gt;
-&lt;li&gt;获取指定域名的记录信息&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -r …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog - Python</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/python.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-10T00:00:00+08:00</updated><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/dnspod-dynamic.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-11-10:/python/dnspod-dynamic.html</id><summary type="html">&lt;p&gt;通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
 &lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
 &lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
 然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
@@ -83,38 +53,8 @@ RECORD_IDS = [ # 记录id
 
 
 &lt;p&gt;有问题可以提交到这里: &lt;a href="https://github.com/mm333444/python_script/issues/new"&gt;ISSUE&lt;/a&gt;
-qq群:252799167&lt;/p&gt;</content></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/supervisor.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-31:/python/supervisor.html</id><summary type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;1. 安装&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
-pip install supervisor
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;2. 生成配置文件&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo echo_supervisord_conf &amp;gt; /etc/supervisor/supervisord.conf
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;3.修改配置项&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 找到&lt;/span&gt;
-&lt;span class="p"&gt;;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;relative&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;ini&lt;/span&gt;
-
-&lt;span class="c1"&gt;# 改为&lt;/span&gt;
-&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;supervisor&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;cnf&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;4. 启动&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;supervisord -c /etc/supervisor/supervisord.conf
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;二、基本使用&lt;/h2&gt;
-&lt;h3&gt;1. 创建脚本&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# vim /etc/supervisor/conf …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;一、安装配置&lt;/h2&gt;
+qq群:252799167&lt;/p&gt;</content><category term="dnspod"></category><category term="dnspod 动态域名"></category><category term="dynamic domain"></category><category term="局域网搭建外部服务器"></category></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/supervisor.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-31:/python/supervisor.html</id><summary type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;
+&lt;h2&gt;一、安装配置&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
 &lt;h3&gt;1. 安装&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
@@ -385,21 +325,7 @@ stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志
 &lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
 &lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
 &lt;h5&gt;6. crashsms&lt;/h5&gt;
-&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/multiprocessing-threading.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-22:/python/multiprocessing-threading.html</id><summary type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
-&lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
-&lt;h2&gt;二、线程&lt;/h2&gt;
-&lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
-&lt;h2&gt;三、多任务的模式&lt;/h2&gt;
-&lt;h3&gt;一、多进程模式&lt;/h3&gt;
-&lt;p&gt;启动多个进程, 每个进程有一个线程去完成。因为python的多线程有GIL锁(全局锁), 在CPU密集型的情况下, 效率可能还不如单线程。
-CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。&lt;/p&gt;
-&lt;h3&gt;二、多线程模式&lt;/h3&gt;
-&lt;p&gt;单个进程下, 多个进程去完成。这种情况下只推荐做IO密集型的操作, 比如爬虫&lt;/p&gt;
-&lt;h3&gt;三、多进程+多线程模式&lt;/h3&gt;
-&lt;p&gt;启动多个进程, 每个进程下再启动多个线程去完成, 这种在一般项目中都有可能采用, 比如一个项目有多个脚本, 分别启动进程去管理, 而在单个脚本任务中, 又启动多个线程去抓取数据等&lt;/p&gt;
-&lt;h2&gt;四、Python 多进程的方式&lt;/h2&gt;
-&lt;p&gt;Python 多进程采用的是multiprocessing, 兼容性好, 可以兼容windows平台&lt;/p&gt;
-&lt;h3&gt;一、基本使用 …&lt;/h3&gt;</summary><content type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content><category term="supervisor"></category><category term="supervisord"></category><category term="python 进程管理"></category></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/multiprocessing-threading.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-22:/python/multiprocessing-threading.html</id><summary type="html">&lt;p&gt;python对多进程和多线程的使用, 以及多进程, 多线程的介绍。&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
 &lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
 &lt;h2&gt;二、线程&lt;/h2&gt;
 &lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
@@ -549,24 +475,7 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;span class="mi"&gt;3&lt;/span&gt;
 &lt;span class="mi"&gt;4&lt;/span&gt;
 &lt;span class="mi"&gt;5&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/proxy-tool.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-21:/python/proxy-tool.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
-&lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
-&lt;h1&gt;ProxyTool&lt;/h1&gt;
-&lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
-环境: python3.6.2&lt;/p&gt;
-&lt;h2&gt;一、安装方法&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install -r requirements.txt
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;二、使用方法&lt;/h2&gt;
-&lt;p&gt;-env 指定环境, 会读取app.config下指定的配置文件&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python run.py -env online
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;三、 基本逻辑&lt;/h2&gt;
-&lt;p&gt;整个项目分为三部分 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="多进程"></category><category term="多线程"></category><category term="python 多进程"></category><category term="multiprocessing"></category><category term="threading"></category></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/proxy-tool.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-21:/python/proxy-tool.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;</summary><content type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
 &lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
 &lt;h1&gt;ProxyTool&lt;/h1&gt;
 &lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
@@ -629,4 +538,4 @@ CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content></entry></feed>
+&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star&lt;/p&gt;</content><category term="python 代理池"></category><category term="代理池"></category><category term="ip池"></category></entry></feed>
