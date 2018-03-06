@@ -1115,25 +1115,7 @@ SUBPARTITIONS 2 (
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
-    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
-    job_code INT,
-    store_id INT
-)
-PARTITION BY HASH(store_id)
-PARTITIONS 4;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;如果不包含PARTITIONS, 那么默认为1个分区&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
-    id INT …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
+&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -1212,7 +1194,7 @@ PARTITIONS 4;
 &lt;/li&gt;
 &lt;li&gt;Set N = N &amp;amp; (V - 1)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
+&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content><category term="mysql分区"></category><category term="hash分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
 &lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
