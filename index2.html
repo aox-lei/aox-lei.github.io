@@ -118,20 +118,14 @@
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/listfen-qu.html"><i class="icon-tag"></i>List分区</a>
+	<a href="http://www.phpue.com/tag/list-columnsfen-qu.html"><i class="icon-tag"></i>List Columns分区</a>
+	<a href="http://www.phpue.com/tag/lie-fen-qu.html"><i class="icon-tag"></i>列分区</a>
+	<a href="http://www.phpue.com/tag/shu-ju-ku-fen-qu.html"><i class="icon-tag"></i>数据库分区</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
-<div class="highlight"><pre><span></span>CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
-    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
-    job_code INT,
-    store_id INT
-)
-PARTITION BY LIST(store_id) (
-    PARTITION pNorth VALUES IN (3,5,6,9,17),
-    PARTITION pEast VALUES IN (1 …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list.html">more ...</a>
                 </div>
         </div>
@@ -149,21 +143,14 @@ PARTITION BY LIST(store_id) (
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/listfen-qu.html"><i class="icon-tag"></i>List分区</a>
+	<a href="http://www.phpue.com/tag/list-columnsfen-qu.html"><i class="icon-tag"></i>List Columns分区</a>
+	<a href="http://www.phpue.com/tag/lie-fen-qu.html"><i class="icon-tag"></i>列分区</a>
+	<a href="http://www.phpue.com/tag/shu-ju-ku-fen-qu.html"><i class="icon-tag"></i>数据库分区</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME</p>
-<p>你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
-针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:</p>
-<div class="highlight"><pre><span></span>CREATE TABLE customers_1 (
-    first_name VARCHAR(25),
-    last_name VARCHAR(25),
-    street_1 VARCHAR(30),
-    street_2 VARCHAR(30),
-    city VARCHAR(15),
-    renewal DATE
-)
-PARTITION BY LIST COLUMNS(city) (
-    PARTITION pRegion_1 VALUES IN(&#39;Oskarshamn&#39;, &#39;Högsby&#39;, &#39;Mönsterås&#39;),
-    PARTITION pRegion_2 VALUES IN …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-list-columns.html">more ...</a>
                 </div>
         </div>
@@ -181,29 +168,15 @@ PARTITION BY LIST COLUMNS(city) (
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/shu-ju-ku-fen-qu.html"><i class="icon-tag"></i>数据库分区</a>
+	<a href="http://www.phpue.com/tag/fen-qu-guan-li.html"><i class="icon-tag"></i>分区管理</a>
+	<a href="http://www.phpue.com/tag/fen-qu-ji-ben-cao-zuo.html"><i class="icon-tag"></i>分区基本操作</a>
+	<a href="http://www.phpue.com/tag/jiao-huan-fen-qu.html"><i class="icon-tag"></i>交换分区</a>
+	<a href="http://www.phpue.com/tag/fen-qu-xiu-jian-you-hua.html"><i class="icon-tag"></i>分区修剪优化</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><h2>一、分区操作</h2>
-<h4>1. 将没有分区的表改为分区表</h4>
-<div class="highlight"><pre><span></span>ALTER TABLE trb3 PARTITION BY KEY(id) PARTITIONS 2;
-</pre></div>
-
-
-<h4>2. 删除分区</h4>
-<div class="highlight"><pre><span></span># 删除所有分区, 同时数据丢失
-ALTER TABLE es2 REMOVE PARTITIONING;
-
-# 删除指定分区, 数据丢失
-ALTER TABLE tr DROP PARTITION p2;
-</pre></div>
-
-
-<h4>3. SELECT指定分区查询</h4>
-<div class="highlight"><pre><span></span>select * from daily_rank_1_1 partition (p2015_04_24) limit 10;
-</pre></div>
-
-
-<h4>4. 添加分区</h4>
-<p>如果设置了MAXVALUE则无法添加新分区, 会提示 MAXVALUE can only be used in last …</p>
+                <div class="summary"><p>本文详细介绍一下关于Mysql分区的基本操作(新增、编辑、删除分区以及如何重新划分分区)、交换分区和分区的基本维护方式, 在实际应用中, 分区如何修剪优化, 分区的限制和性能</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-manage.html">more ...</a>
                 </div>
         </div>
@@ -221,19 +194,13 @@ ALTER TABLE tr DROP PARTITION p2;
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu-dui-nullde-chu-li.html"><i class="icon-tag"></i>mysql分区对null的处理</a>
+	<a href="http://www.phpue.com/tag/fen-qu-chu-li.html"><i class="icon-tag"></i>分区处理</a>
+	<a href="http://www.phpue.com/tag/fen-qu-guan-li.html"><i class="icon-tag"></i>分区管理</a>
 </footer><!-- /.post-info --></div>
                 <div class="summary"><p>分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。</p>
-<h2>1. RANGE 分区如何处理null.</h2>
-<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE t1 (
-    -&gt;     c1 INT,
-    -&gt;     c2 VARCHAR(20)
-    -&gt; )
-    -&gt; PARTITION BY RANGE(c1) (
-    -&gt;     PARTITION p0 VALUES LESS THAN (0),
-    -&gt;     PARTITION p1 VALUES LESS THAN (10),
-    -&gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
-    -&gt; );
-Query OK, 0 rows affected (0.09 sec …</pre></div>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-null.html">more ...</a>
                 </div>
         </div>

@@ -1194,7 +1194,7 @@ PARTITIONS 4;
 &lt;/li&gt;
 &lt;li&gt;Set N = N &amp;amp; (V - 1)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content><category term="mysql分区"></category><category term="hash分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
+&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content><category term="mysql分区"></category><category term="hash分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。但是也有一些区别。本章就详细介绍一下Mysql分区的Key分区方式&lt;/p&gt;</summary><content type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
 &lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
@@ -1205,30 +1205,7 @@ PARTITIONS 4;
 )
 PARTITION BY KEY()
 PARTITIONS 2;
-&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
-&lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE k1 (
-    id INT NOT NULL PRIMARY KEY,
-    name VARCHAR(20)
-)
-PARTITION BY KEY()
-PARTITIONS 2;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql 分区介绍(三) —— LIST分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list.html</id><summary type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
-    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
-    job_code INT,
-    store_id INT
-)
-PARTITION BY LIST(store_id) (
-    PARTITION pNorth VALUES IN (3,5,6,9,17),
-    PARTITION pEast VALUES IN (1 …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="key分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(三) —— LIST分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list.html</id><summary type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;</summary><content type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
     id INT NOT NULL,
     fname VARCHAR(30),
@@ -1248,20 +1225,7 @@ PARTITION BY LIST(store_id) (
 
 
 &lt;p&gt;如果要删除一个分区的所有数据, 可以通过 ALTER TABLE员工表, TRUNCATE PARTITION pWest, 并且效率比DELETE高多了&lt;br /&gt;&lt;/p&gt;
-&lt;p&gt;如果一次性写入多条数据, 在INNODB中, 会将这个认为是单个事务, 如果存在不符合的值, 则不会写入成功, 在MYSIAM中, 因为没有事务处理, 符合条件的值会写入, 不符合的会被抛弃。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(五) —— LIST COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list-columns.html</id><summary type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
-&lt;p&gt;你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
-针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
-    first_name VARCHAR(25),
-    last_name VARCHAR(25),
-    street_1 VARCHAR(30),
-    street_2 VARCHAR(30),
-    city VARCHAR(15),
-    renewal DATE
-)
-PARTITION BY LIST COLUMNS(city) (
-    PARTITION pRegion_1 VALUES IN(&amp;#39;Oskarshamn&amp;#39;, &amp;#39;Högsby&amp;#39;, &amp;#39;Mönsterås&amp;#39;),
-    PARTITION pRegion_2 VALUES IN …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
+&lt;p&gt;如果一次性写入多条数据, 在INNODB中, 会将这个认为是单个事务, 如果存在不符合的值, 则不会写入成功, 在MYSIAM中, 因为没有事务处理, 符合条件的值会写入, 不符合的会被抛弃。&lt;/p&gt;</content><category term="mysql分区"></category><category term="List分区"></category><category term="List Columns分区"></category><category term="列分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(五) —— LIST COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list-columns.html</id><summary type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;</summary><content type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
 &lt;p&gt;你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
 针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
@@ -1303,28 +1267,7 @@ PARTITION BY LIST COLUMNS(renewal) (
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;但是这种情况在日期增长到非常大的时候是很复杂的, 所以这种还是使用RANGE 分区方式比较好。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(九) —— 分区管理</title><link href="http://www.phpue.com/mysql/mysql-partition-manage.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-manage.html</id><summary type="html">&lt;h2&gt;一、分区操作&lt;/h2&gt;
-&lt;h4&gt;1. 将没有分区的表改为分区表&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE trb3 PARTITION BY KEY(id) PARTITIONS 2;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;2. 删除分区&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# 删除所有分区, 同时数据丢失
-ALTER TABLE es2 REMOVE PARTITIONING;
-
-# 删除指定分区, 数据丢失
-ALTER TABLE tr DROP PARTITION p2;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;3. SELECT指定分区查询&lt;/h4&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select * from daily_rank_1_1 partition (p2015_04_24) limit 10;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h4&gt;4. 添加分区&lt;/h4&gt;
-&lt;p&gt;如果设置了MAXVALUE则无法添加新分区, 会提示 MAXVALUE can only be used in last …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、分区操作&lt;/h2&gt;
+&lt;p&gt;但是这种情况在日期增长到非常大的时候是很复杂的, 所以这种还是使用RANGE 分区方式比较好。&lt;/p&gt;</content><category term="mysql分区"></category><category term="List分区"></category><category term="List Columns分区"></category><category term="列分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(九) —— 分区管理</title><link href="http://www.phpue.com/mysql/mysql-partition-manage.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-manage.html</id><summary type="html">&lt;p&gt;本文详细介绍一下关于Mysql分区的基本操作(新增、编辑、删除分区以及如何重新划分分区)、交换分区和分区的基本维护方式, 在实际应用中, 分区如何修剪优化, 分区的限制和性能&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、分区操作&lt;/h2&gt;
 &lt;h4&gt;1. 将没有分区的表改为分区表&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE trb3 PARTITION BY KEY(id) PARTITIONS 2;
 &lt;/pre&gt;&lt;/div&gt;
@@ -1768,18 +1711,7 @@ Query OK, 2 rows affected (0.09 sec)
 &lt;li&gt;分区表不支持查询缓存&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</content></entry><entry><title>Mysql分区表如何处理null</title><link href="http://www.phpue.com/mysql/mysql-partition-null.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-null.html</id><summary type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
-&lt;h2&gt;1. RANGE 分区如何处理null.&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE t1 (
-    -&amp;gt;     c1 INT,
-    -&amp;gt;     c2 VARCHAR(20)
-    -&amp;gt; )
-    -&amp;gt; PARTITION BY RANGE(c1) (
-    -&amp;gt;     PARTITION p0 VALUES LESS THAN (0),
-    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10),
-    -&amp;gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
-    -&amp;gt; );
-Query OK, 0 rows affected (0.09 sec …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
+&lt;/ul&gt;</content><category term="mysql分区"></category><category term="数据库分区"></category><category term="分区管理"></category><category term="分区基本操作"></category><category term="交换分区"></category><category term="分区修剪优化"></category></entry><entry><title>Mysql分区表如何处理null</title><link href="http://www.phpue.com/mysql/mysql-partition-null.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-null.html</id><summary type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
 &lt;h2&gt;1. RANGE 分区如何处理null.&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE t1 (
     -&amp;gt;     c1 INT,
@@ -1910,7 +1842,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 
 &lt;h2&gt;三、HASH和KEY如何处理null&lt;/h2&gt;
-&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql分区对null的处理"></category><category term="分区处理"></category><category term="分区管理"></category></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
 &lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
     id INT NOT NULL,

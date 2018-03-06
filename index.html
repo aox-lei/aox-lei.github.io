@@ -445,19 +445,12 @@ pip install supervisor
 <a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
 
 
+<span class="label">Tags</span>
+	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
+	<a href="http://www.phpue.com/tag/keyfen-qu.html"><i class="icon-tag"></i>key分区</a>
+	<a href="http://www.phpue.com/tag/shu-ju-ku-fen-qu.html"><i class="icon-tag"></i>数据库分区</a>
 </footer><!-- /.post-info --></div>
-                <div class="summary"><p>Key分区和HASH分区非常类似。它们主要的区别在于:</p>
-<ol>
-<li>Key分区默认使用主键作为分区键</li>
-<li>key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。</li>
-</ol>
-<div class="highlight"><pre><span></span>CREATE TABLE k1 (
-    id INT NOT NULL PRIMARY KEY,
-    name VARCHAR(20)
-)
-PARTITION BY KEY()
-PARTITIONS 2;
-</pre></div>
+                <div class="summary"><p>Key分区和HASH分区非常类似。但是也有一些区别。本章就详细介绍一下Mysql分区的Key分区方式</p>
                         <a class="btn primary xsmall" href="http://www.phpue.com/mysql/mysql-partition-key.html">more ...</a>
                 </div>
         </div>
