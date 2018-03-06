@@ -62,4 +62,4 @@ awk &amp;#39;$1==1 {print $1}&amp;#39;
 
 &lt;h3&gt;6. 拆分文件&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk -F : &amp;#39;$1 ~ /www/ {print &amp;gt; $2}&amp;#39; /etc/passwd
-&lt;/pre&gt;&lt;/div&gt;</content></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</content><category term="awk"></category><category term="linux"></category></entry></feed>
