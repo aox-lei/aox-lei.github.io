@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/</loc>
-<lastmod>2018-03-06T11:20:00-00:00</lastmod>
+<lastmod>2018-03-06T16:16:29-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/archives.html</loc>
-<lastmod>2018-03-06T11:20:00-00:00</lastmod>
+<lastmod>2018-03-06T16:16:29-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tags.html</loc>
-<lastmod>2018-03-06T11:20:00-00:00</lastmod>
+<lastmod>2018-03-06T16:16:29-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/categories.html</loc>
-<lastmod>2018-03-06T11:20:00-00:00</lastmod>
+<lastmod>2018-03-06T16:16:29-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -36,6 +36,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/mysql/mysql-sync.html</loc>
+<lastmod>2017-12-01T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -201,7 +208,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/category/mysql.html</loc>
-<lastmod>2017-11-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -223,6 +230,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.phpue.com/category/wechat.html</loc>
 <lastmod>2017-11-10T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/mysqlzhu-cong-pei-zhi.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/mysqldu-xie-fen-chi.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -593,7 +614,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/author/andy-dufresne.html</loc>
-<lastmod>2017-11-22T00:00:00+08:06</lastmod>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
