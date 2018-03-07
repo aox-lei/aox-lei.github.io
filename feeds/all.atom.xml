@@ -1,5 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-12-01T00:00:00+08:00</updated><entry><title>Mysql中间件——Atlas</title><link href="http://www.phpue.com/mysql/mysql-atlas.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mysql-atlas.html</id><summary type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-12-01T00:00:00+08:00</updated><entry><title>mycat教程(一) —— 安装</title><link href="http://www.phpue.com/mysql/mycat-1.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mycat-1.html</id><summary type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
+&lt;h2&gt;一. 安装jdk&lt;/h2&gt;
+&lt;p&gt;下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf jdk-8u161-linux-x64.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;创建java目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
+&lt;h2&gt;一. 安装jdk&lt;/h2&gt;
+&lt;p&gt;下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf jdk-8u161-linux-x64.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;创建java目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mkdir /java
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;移动文件到/java下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mv jdk1.8.0_161 /java
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;配置环境变量&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo vim /etc/environment
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;末尾加入以下配置（JAVA_HOME 后的路径就是jdk的文件位置)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;PATH=&amp;quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$JAVA_HOME/bin&amp;quot;
+export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+export JAVA_HOME=/java/jdk1.8.0_161
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;修改完成之后保存关闭，并输入以下命令使环境变量立即生效&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source /etc/environment
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;检查是否安装成功&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; java -version
+java version &amp;quot;1.8.0_161&amp;quot;
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;配置重启后的环境变量&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo gedit /etc/profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在文件的最后添加以下内容：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#set Java environment
+export JAVA_HOME=/dengyang/jdk1.8.0_161
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使环境变量生效&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source /etc/profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. 安装mycat&lt;/h2&gt;
+&lt;p&gt;下载地址: http://dl.mycat.io/1.6-RELEASE/&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf Mycat-server-xxxxx.linux.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;移动到/usr/local/目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mv mycat /usr/local
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;创建用户&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;useradd mycat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;修改权限&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;chown -R mycat mycat /usr/local/mycat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;查看目录
+| - bin ----------- 执行文件目录&lt;br/&gt;
+| - conf ---------- 配置文件目录&lt;br/&gt;
+| - doc ----------- 文档目录&lt;br/&gt;
+| - lib ----------- 目录下主要存放 mycat 依赖的一些 jar 文件&lt;br/&gt;
+| - logs ---------- 日志目录。日志的配置是在 conf/log4j.xml 中&lt;/li&gt;
+&lt;/ol&gt;</content><category term="mycat"></category><category term="mycat教程"></category><category term="数据库中间件"></category></entry><entry><title>Mysql中间件——Atlas</title><link href="http://www.phpue.com/mysql/mysql-atlas.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mysql-atlas.html</id><summary type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/Qihoo360/Atlas/"&gt;github地址&lt;/a&gt;
 &lt;a href="https://github.com/Qihoo360/Atlas/blob/master/README_ZH.md"&gt;介绍&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;一、安装&lt;/h2&gt;
