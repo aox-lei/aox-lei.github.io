@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/</loc>
-<lastmod>2018-03-07T15:20:34-00:00</lastmod>
+<lastmod>2018-03-08T17:19:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/archives.html</loc>
-<lastmod>2018-03-07T15:20:34-00:00</lastmod>
+<lastmod>2018-03-08T17:19:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tags.html</loc>
-<lastmod>2018-03-07T15:20:34-00:00</lastmod>
+<lastmod>2018-03-08T17:19:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/categories.html</loc>
-<lastmod>2018-03-07T15:20:34-00:00</lastmod>
+<lastmod>2018-03-08T17:19:54-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -36,6 +36,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/mysql/mycat-2.html</loc>
+<lastmod>2017-12-02T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -222,7 +229,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/category/mysql.html</loc>
-<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-02T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -250,21 +257,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/tag/mycat.html</loc>
-<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-02T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tag/mycatjiao-cheng.html</loc>
-<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-02T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tag/shu-ju-ku-zhong-jian-jian.html</loc>
-<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-02T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -649,7 +656,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/author/andy-dufresne.html</loc>
-<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<lastmod>2017-12-02T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
