@@ -1,18 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-12-01T00:00:00+08:00</updated><entry><title>mycat教程(一) —— 安装</title><link href="http://www.phpue.com/mysql/mycat-1.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mycat-1.html</id><summary type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
-&lt;h2&gt;一. 安装jdk&lt;/h2&gt;
-&lt;p&gt;下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Andy Dufresne's Blog</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/all.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-12-02T00:00:00+08:00</updated><entry><title>Mycat基本使用教程</title><link href="http://www.phpue.com/mysql/mycat-2.html" rel="alternate"></link><published>2017-12-02T00:00:00+08:00</published><updated>2017-12-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-02:/mysql/mycat-2.html</id><summary type="html">&lt;p&gt;在完成mycat安装后, 我们开始一个示例来尽快熟悉mycat&lt;/p&gt;</summary><content type="html">&lt;p&gt;在完成mycat安装后, 开始一个示例来尽快熟悉mycat&lt;/p&gt;
+&lt;h2&gt;一、环境说明&lt;/h2&gt;
+&lt;h3&gt;1. 服务器说明&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;服务器名称&lt;/th&gt;
+&lt;th&gt;地址&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;mycat服务器&lt;/td&gt;
+&lt;td&gt;10.211.55.13&lt;/td&gt;
+&lt;td&gt;mycat中间件服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;mysql服务器&lt;/td&gt;
+&lt;td&gt;10.211.55.9&lt;/td&gt;
+&lt;td&gt;mysql服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;2. mysql 库和表说明&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;库名称&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;db01&lt;/td&gt;
+&lt;td&gt;只有一个user表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;db02&lt;/td&gt;
+&lt;td&gt;item表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;db03&lt;/td&gt;
+&lt;td&gt;item表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;db02,db03上的item表根据id%2取模保存数据, 也就是进行了数据分片&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;解压&lt;/li&gt;
+&lt;li&gt;db01 创建表语句&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf jdk-8u161-linux-x64.tar.gz
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT &amp;#39;&amp;#39;,
+  `indate` datetime NOT NULL DEFAULT &amp;#39;0000-00-00 00:00:00&amp;#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;ol&gt;
-&lt;li&gt;创建java目录&lt;/li&gt;
+&lt;li&gt;db02,db03 创建表语句&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL DEFAULT &amp;#39;0&amp;#39;,
+  `indate` datetime NOT NULL DEFAULT &amp;#39;0000-00-00 00:00:00&amp;#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. mycat服务器说明&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;mycat目录&lt;/strong&gt;: /usr/local/mycat&lt;/p&gt;
+&lt;p&gt;至此, 我们的环境就配置好了&lt;/p&gt;
+&lt;h2&gt;二、配置mycat服务&lt;/h2&gt;
+&lt;h3&gt;1. server.xml配置&lt;/h3&gt;
+&lt;p&gt;路径在 &lt;code&gt;/usr/local/mycat/conf/server.xml&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:server SYSTEM &amp;quot;server.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:server&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;system&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useSqlStat&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;  &lt;span class="c"&gt;&amp;lt;!-- 1为开启实时统计、0为关闭 --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useGlobleTableCheck&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;  &lt;span class="c"&gt;&amp;lt;!-- 1为开启全加班一致性检测、0为关闭 --&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sequnceHandlerType&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;processorBufferPoolType&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="c"&gt;&amp;lt;!-- 8066 为连接mycat的端口--&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;serverPort&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;8066&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="c"&gt;&amp;lt;!-- 9066 为连接mycat管理地址的端口--&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;managerPort&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;9066&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;idleTimeout&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;300000&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;bindIp&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0.0.0.0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;frontWriteQueueSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;4096&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;processors&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;32&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;handleDistributedTransactions&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useOffHeapForMerge&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;memoryPageSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1m&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;spillsFileBufferSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1k&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useStreamOutput&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;systemReserveMemorySize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;384m&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useZKSwitch&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/system&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 配置连接mycat的账号密码, 和逻辑库名称, 可以设置多个--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;user&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;root&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;123456&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;schemas&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;TESTDB&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/user&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;user&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;user&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;schemas&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;TESTDB&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;readOnly&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/user&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:server&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 配置rule.xml&lt;/h3&gt;
+&lt;p&gt;路径在: &lt;code&gt;/usr/local/mycat/conf/rule.xml&lt;/code&gt;
+&lt;code&gt;function必须在tableRule的下面, 否则会报错找不到&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:rule SYSTEM &amp;quot;rule.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:rule&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 指定表规则的名称, 以及分片的function--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;tableRule&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;role1&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;rule&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;columns&amp;gt;&lt;/span&gt;id&lt;span class="nt"&gt;&amp;lt;/columns&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;mod-long&lt;span class="nt"&gt;&amp;lt;/algorithm&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;/rule&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/tableRule&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 分片名称为mod-long, 为tableRule标签提供--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;function&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mod-long&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;io.mycat.route.function.PartitionByMod&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 指定有几个节点,咱们有两个db02和db03,所以写2, 取模就是id%2 --&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;count&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;2&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;virtualBucketTimes&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;160&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/function&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:rule&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 配置schema.xml&lt;/h3&gt;
+&lt;p&gt;路径在: &lt;code&gt;/usr/local/mycat/conf/schema.xml&lt;/code&gt;
+声明也必须按照顺序, 最不需要调用的, 放在最后。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:schema SYSTEM &amp;quot;schema.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:schema&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 声明一个逻辑表, 表名为TESTDB, 和server.xml中的对应 --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;schema&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;TESTDB&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;checkSQLschema=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;sqlMaxLimit=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;100&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 指定实际表名为users, 是在node_db01节点上--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;table&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;users&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;primaryKey=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;autoIncrement=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;true&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataNode=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db01&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 实际表名为item, 在node_db02和node_db03节点上--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;table&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;item&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;primaryKey=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;autoIncrement=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;true&amp;quot;&lt;/span&gt;  &lt;span class="na"&gt;dataNode=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db02,node_db03&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;rule=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;role1&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/schema&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db01&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db02&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db02&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db03&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db03&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- 声明数据库的连接地址, 名称为dataHost01, 为dataNode节点提供--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataHost&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;maxCon=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1000&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;minCon=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;10&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;balance=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;writeType=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dbType=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mysql&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dbDriver=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;native&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;heartbeat&amp;gt;&lt;/span&gt;select user()&lt;span class="nt"&gt;&amp;lt;/heartbeat&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 数据库的连接地址，账号和密码--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;writeHost&lt;/span&gt; &lt;span class="na"&gt;host=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;server1&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;url=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;10.211.55.9:3306&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;user=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;root&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;password=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;123123&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/dataHost&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:schema&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 启动mycat&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; cd /usr/local/mycat/bin
+&amp;gt; ./mycat start
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果发生错误可以查看/usr/local/mycat/logs/wrapper.log日志&lt;/p&gt;
+&lt;h2&gt;三、验证&lt;/h2&gt;
+&lt;h3&gt;1. 验证user表的查询写入&lt;/h3&gt;
+&lt;p&gt;账号和密码都是server.xml声明的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; /usr/local/mysql/bin/mysql -h10.211.55.13 -uroot -P8066 -p123456
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 查看库&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; show databases;
++----------+
+| DATABASE |
++----------+
+| TESTDB   |
++----------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;发现有TESTDB库&lt;/p&gt;
+&lt;h4&gt;3. 查看表&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; use TESTDB;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show tables;
++------------------+
+| Tables in TESTDB |
++------------------+
+| item             |
+| users            |
++------------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到了item和users表, 这就是我们在schema.xml中声明的逻辑表, 实际对应的是mysql服务器上的表&lt;/p&gt;
+&lt;h4&gt;4. 验证user的写入&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into users (`id`, `name`, `indate`)values(1, &amp;#39;test_name&amp;#39;, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.08 sec)
+
+mysql&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;去实际的users表中看, 数据也存在。&lt;/p&gt;
+&lt;h4&gt;5. 验证查询&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; select * from users;
++----+-----------+---------------------+
+| id | name      | indate              |
++----+-----------+---------------------+
+|  1 | test_name | 2017-01-01 00:00:00 |
++----+-----------+---------------------+
+1 row in set (0.06 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也可以查到, 说明执行成功了&lt;/p&gt;
+&lt;h3&gt;2. 验证item表&lt;/h3&gt;
+&lt;h4&gt;1. 验证写入&lt;/h4&gt;
+&lt;p&gt;因为id分布式的话,id无法自增判断, 所以必须指定id, 否则提示错误。这个在稍后会介绍如何解决&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into item(`id`, `value`, `indate`)values(1, 1, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;查看实际的库, 发现写在了db03库中,&lt;/p&gt;
+&lt;p&gt;再写入一条&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into item(`id`, `value`, `indate`)values(2, 2, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;发现写在了db02库中, 所以分片的方式也成功了&lt;/p&gt;
+&lt;h4&gt;2. 验证查询&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;+----+-------+---------------------+
+| id | value | indate              |
++----+-------+---------------------+
+|  2 |     2 | 2017-01-01 00:00:00 |
+|  1 |     1 | 2017-01-01 00:00:00 |
++----+-------+---------------------+
+2 rows in set (0.03 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也有了两条记录&lt;/p&gt;</content><category term="mycat"></category><category term="mycat教程"></category><category term="数据库中间件"></category></entry><entry><title>mycat教程(一) —— 安装</title><link href="http://www.phpue.com/mysql/mycat-1.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mycat-1.html</id><summary type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
 &lt;h2&gt;一. 安装jdk&lt;/h2&gt;
 &lt;p&gt;下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&lt;/p&gt;
 &lt;ol&gt;
