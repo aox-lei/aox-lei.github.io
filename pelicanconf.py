@@ -6,7 +6,7 @@ AUTHOR = 'Andy Dufresne'
 SITENAME = "Andy Dufresne's Blog"
 SITEURL = 'http://www.phpue.com'
 # SITEURL = 'http://127.0.0.1:8000'
-THEME = 'bootstrap2'
+THEME = 'gum'
 PATH = 'content'
 
 TIMEZONE = 'PRC'
