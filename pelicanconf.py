@@ -20,7 +20,7 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-MENUITEMS = (('首页', SITEURL), ('关于我', SITEURL + '/pages/about-me.html'))
+# MENUITEMS = (('首页', SITEURL), ('关于我', SITEURL + '/pages/about-me.html'))
 
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
@@ -28,7 +28,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
                                                 'http://jinja.pocoo.org/'))
 
 # Social widget
-SOCIAL = (('我的笔记', '#'), ('我的博客', '#'))
+SOCIAL = (('我的博客', SITEURL), ('关于我', SITEURL + '/pages/about-me.html'))
 
 DEFAULT_PAGINATION = 10
 
