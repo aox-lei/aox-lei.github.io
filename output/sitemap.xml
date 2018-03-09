@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/</loc>
-<lastmod>2018-03-09T10:05:46-00:00</lastmod>
+<lastmod>2018-03-09T17:58:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/archives.html</loc>
-<lastmod>2018-03-09T10:05:46-00:00</lastmod>
+<lastmod>2018-03-09T17:58:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tags.html</loc>
-<lastmod>2018-03-09T10:05:46-00:00</lastmod>
+<lastmod>2018-03-09T17:58:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/categories.html</loc>
-<lastmod>2018-03-09T10:05:46-00:00</lastmod>
+<lastmod>2018-03-09T17:58:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -61,6 +61,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/mysql/mysql-sync.html</loc>
+<lastmod>2017-12-01T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/python/sentry-install.html</loc>
 <lastmod>2017-12-01T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
@@ -243,7 +250,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/category/python.html</loc>
-<lastmod>2017-11-10T00:00:00+08:06</lastmod>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -285,6 +292,41 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/tag/mysqldu-xie-fen-chi.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/sentry.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/ri-zhi-shou-ji-xi-tong.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/log.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/python-ri-zhi-sou-ji-xi-tong.html</loc>
+<lastmod>2017-12-01T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/ri-zhi-guan-li-xi-tong.html</loc>
 <lastmod>2017-12-01T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
