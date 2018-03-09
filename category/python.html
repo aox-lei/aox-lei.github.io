@@ -1,150 +1,248 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+
         <title>Andy Dufresne's Blog</title>
         <meta charset="utf-8" />
         <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Full Atom Feed" />
         <link href="http://www.phpue.com/feeds/python.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Categories Atom Feed" />
-        <link rel="stylesheet" href="/theme/css/main.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!--[if lte IE 8]><script src="/theme/js/ie/html5shiv.js"></script><![endif]-->
-        <!--[if lte IE 8]><link rel="stylesheet" href="/theme/css/ie8.css" /><![endif]-->
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
 </head>
 
-<body>
-        <header id="banner" class="body">
-                <h1><a href="http://www.phpue.com/">Andy Dufresne's Blog <strong></strong></a></h1>
-        </header><!-- /#banner -->
-<!-- Sidebar -->
-            <div id="sidebar">
+<body id="index" class="home">
 
-                <!-- Logo -->
-                    <h1 id="logo"><a href="/">Andy Dufresne's Blog</a></h1>
-                    <!-- Text -->
-                    <section class="box text-style1">
-                        <div class="inner">
-                            <p>
-                                <strong>Ut scelerisque nec sapien ut sollicitudin:</strong><br />
-                            </p>
-                        </div>
-                    </section>
-                <!-- Nav -->
-                    <nav id="nav">
-                        <ul>
-                            
-                            <li><a href="#">Nam euismod dui</a></li>
-                            <li><a href="#">Integer eget eros</a></li>
-                            <li><a href="#">Proin vehicula tortor</a></li>
-                            <li><a href="#">Vestibulum consectetur tellus</a></li>
-                        </ul>
-                    </nav>
 
-                <!-- Search -->
-                    <!-- <section class="box search">
-                        <form method="post" action="#">
-                            <input type="text" class="text" name="search" placeholder="Search" />
-                        </form>
-                    </section> -->
+    <div class="container">
 
-                
+        <div class="row">
 
-                <!-- Recent Posts -->
-                    <section class="box recent-posts">
-                        <header>
-                            <h2>Contact Me</h2>
-                        </header>
-                        <ul>
-                            <li><a class="icon fa-envelope" href="#"> eMail</a></li>
-                            <li><a class="icon fa-twitter" href="#"> Twitter</a></li>
-                            <li><a class="icon fa-facebook" href="#"> Facebook</a></li>
-                            <li><a class="icon fa-github" href="#"> Github</a></li>
-                            
-                        </ul>
-                    </section>
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">Andy Dufresne's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                <li><a href="http://www.phpue.com">首页</a></li>
+                <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content">
+<h2>Articles in the Python category</h2>
+
+
+   <div class="row">
+
+
+        <div class="eleven columns">
+                 <ol id="post-list">
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://www.phpue.com/python/dnspod-dynamic.html" rel="bookmark" title="Permalink to dnspod动态域名提交, 类似花生壳实现的功能">dnspod动态域名提交, 类似花生壳实现的功能</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2017-11-10T00:00:00+08:00"> Fri 10 November 2017 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://www.phpue.com/python/dnspod-dynamic.html" rel="bookmark" title="Permalink to dnspod动态域名提交, 类似花生壳实现的功能">Read more <i class="icon-arrow-right"></i></a></div>
 
 
 
-                <!-- Copyright -->
-                    <ul id="copyright">
-                        <li>Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
-                which takes great advantage of <a href="http://python.org">Python</a>.</li>
-                        <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                        <li>Modified under a <a href="https://creativecommons.org/licenses/by/3.0/">CC:BY</a> license.</li>
-                    </ul>
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://www.phpue.com/tag/dnspod.html">dnspod</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/dnspod-dong-tai-yu-ming.html">dnspod 动态域名</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/dynamic-domain.html">dynamic domain</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/ju-yu-wang-da-jian-wai-bu-fu-wu-qi.html">局域网搭建外部服务器</a>
+                                </div>
 
-            </div><!-- /#menu -->
-<div id="content">
-<div class="inner">
-<!-- <h2>Articles in the Python category</h2>
- -->
 
-        <article class="box post post-excerpt">
-                <header> 
-                <h2><a href="http://www.phpue.com/python/dnspod-dynamic.html" rel="bookmark" title="Permalink to dnspod动态域名提交, 类似花生壳实现的功能">dnspod动态域名提交, 类似花生壳实现的功能</a></h2> 
-                <p></p>
-                </header>
-                <div class="info">
-                    <span class="date" datetime="2017-11-10T00:00:00+08:00"><span class="month">Nov</span> <span class="day">10</span> <span class="month"> 2017</span></span>
-                    <!-- <ul class="stats">
-                                    <li><a href="#" class="icon fa-comment">16</a></li>
-                                    <li><a href="#" class="icon fa-heart">32</a></li>
-                                    <li><a href="#" class="icon fa-twitter">64</a></li>
-                                    <li><a href="#" class="icon fa-facebook">128</a></li>
-                                </ul> -->
-                </div><!-- /.post-info -->
-                <div class="entry-content"> &nbsp; </div><!-- /.entry-content -->
-        </article>
-        <article class="box post post-excerpt">
-                <header> 
-                <h2><a href="http://www.phpue.com/python/supervisor.html" rel="bookmark" title="Permalink to supervisor python的进程管理工具 使用教程 【持续更新】">supervisor python的进程管理工具 使用教程 【持续更新】</a></h2> 
-                <p></p>
-                </header>
-                <div class="info">
-                    <span class="date" datetime="2017-10-31T00:00:00+08:00"><span class="month">Oct</span> <span class="day">31</span> <span class="month"> 2017</span></span>
-                    <!-- <ul class="stats">
-                                    <li><a href="#" class="icon fa-comment">16</a></li>
-                                    <li><a href="#" class="icon fa-heart">32</a></li>
-                                    <li><a href="#" class="icon fa-twitter">64</a></li>
-                                    <li><a href="#" class="icon fa-facebook">128</a></li>
-                                </ul> -->
-                </div><!-- /.post-info -->
-                <div class="entry-content"> &nbsp; </div><!-- /.entry-content -->
-        </article>
-        <article class="box post post-excerpt">
-                <header> 
-                <h2><a href="http://www.phpue.com/python/multiprocessing-threading.html" rel="bookmark" title="Permalink to Python 多进程和多线程的方案">Python 多进程和多线程的方案</a></h2> 
-                <p></p>
-                </header>
-                <div class="info">
-                    <span class="date" datetime="2017-09-22T00:00:00+08:00"><span class="month">Sep</span> <span class="day">22</span> <span class="month"> 2017</span></span>
-                    <!-- <ul class="stats">
-                                    <li><a href="#" class="icon fa-comment">16</a></li>
-                                    <li><a href="#" class="icon fa-heart">32</a></li>
-                                    <li><a href="#" class="icon fa-twitter">64</a></li>
-                                    <li><a href="#" class="icon fa-facebook">128</a></li>
-                                </ul> -->
-                </div><!-- /.post-info -->
-                <div class="entry-content"> &nbsp; </div><!-- /.entry-content -->
-        </article>
-        <article class="box post post-excerpt">
-                <header> 
-                <h2><a href="http://www.phpue.com/python/proxy-tool.html" rel="bookmark" title="Permalink to ProxyTool代理池功能, 免费获取ip代理">ProxyTool代理池功能, 免费获取ip代理</a></h2> 
-                <p></p>
-                </header>
-                <div class="info">
-                    <span class="date" datetime="2017-09-21T00:00:00+08:00"><span class="month">Sep</span> <span class="day">21</span> <span class="month"> 2017</span></span>
-                    <!-- <ul class="stats">
-                                    <li><a href="#" class="icon fa-comment">16</a></li>
-                                    <li><a href="#" class="icon fa-heart">32</a></li>
-                                    <li><a href="#" class="icon fa-twitter">64</a></li>
-                                    <li><a href="#" class="icon fa-facebook">128</a></li>
-                                </ul> -->
-                </div><!-- /.post-info -->
-                <div class="entry-content"> &nbsp; </div><!-- /.entry-content -->
-        </article>
-<!-- /#posts-list -->
-</div>
-</div><!-- /#content -->
-<!-- /#contentinfo -->
+
+                        </article></li>
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://www.phpue.com/python/supervisor.html" rel="bookmark" title="Permalink to supervisor python的进程管理工具 使用教程 【持续更新】">supervisor python的进程管理工具 使用教程 【持续更新】</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2017-10-31T00:00:00+08:00"> Tue 31 October 2017 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://www.phpue.com/python/supervisor.html" rel="bookmark" title="Permalink to supervisor python的进程管理工具 使用教程 【持续更新】">Read more <i class="icon-arrow-right"></i></a></div>
+
+
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://www.phpue.com/tag/supervisor.html">supervisor</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/supervisord.html">supervisord</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/python-jin-cheng-guan-li.html">python 进程管理</a>
+                                </div>
+
+
+
+                        </article></li>
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://www.phpue.com/python/multiprocessing-threading.html" rel="bookmark" title="Permalink to Python 多进程和多线程的方案">Python 多进程和多线程的方案</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2017-09-22T00:00:00+08:00"> Fri 22 September 2017 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>python对多进程和多线程的使用, 以及多进程, 多线程的介绍。</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://www.phpue.com/python/multiprocessing-threading.html" rel="bookmark" title="Permalink to Python 多进程和多线程的方案">Read more <i class="icon-arrow-right"></i></a></div>
+
+
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://www.phpue.com/tag/duo-jin-cheng.html">多进程</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/duo-xian-cheng.html">多线程</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/python-duo-jin-cheng.html">python 多进程</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/multiprocessing.html">multiprocessing</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/threading.html">threading</a>
+                                </div>
+
+
+
+                        </article></li>
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="http://www.phpue.com/python/proxy-tool.html" rel="bookmark" title="Permalink to ProxyTool代理池功能, 免费获取ip代理">ProxyTool代理池功能, 免费获取ip代理</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2017-09-21T00:00:00+08:00"> Thu 21 September 2017 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="http://www.phpue.com/python/proxy-tool.html" rel="bookmark" title="Permalink to ProxyTool代理池功能, 免费获取ip代理">Read more <i class="icon-arrow-right"></i></a></div>
+
+
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="http://www.phpue.com/tag/python-dai-li-chi.html">python 代理池</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/dai-li-chi.html">代理池</a>
+                                            <a class="danger label" href="http://www.phpue.com/tag/ipchi.html">ip池</a>
+                                </div>
+
+
+
+                        </article></li>
+                </ol><!-- /#posts-list -->
+
+        </div><!-- /.eleven.columns -->
+        
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+      <li><a href="http://www.phpue.com">首页</a></li>
+      <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="#">我的笔记</a></li>
+    <li><a href="#">我的博客</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+<p class="paginator">
+    Page 1 / 1
+</p>
+</section><!-- /#content -->
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
 </body>
 </html>
