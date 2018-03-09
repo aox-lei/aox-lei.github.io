@@ -1,141 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Mysql 分区介绍(八) —— 子分区</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Andy Dufresne">
+<html lang="zh">
+<head>
+          <title>Andy Dufresne's Blog</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/mysql.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Categories Atom Feed" />
 
-    <!-- Le styles -->
-    <link rel="stylesheet" href="http://www.phpue.com/theme/css/bootstrap.min.css" type="text/css" />
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-      .tag-1 {
-        font-size: 13pt;
-      }
-      .tag-2 {
-        font-size: 10pt;
-      }
-      .tag-2 {
-        font-size: 8pt;
-      }
-      .tag-4 {
-        font-size: 6pt;
-     }
-    </style>
-    <link href="http://www.phpue.com/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="http://www.phpue.com/theme/css/font-awesome.css" rel="stylesheet">
 
-    <link href="http://www.phpue.com/theme/css/pygments.css" rel="stylesheet">
+    <meta name="tags" content="mysql分区" />
+    <meta name="tags" content="mysql partition" />
+    <meta name="tags" content="mysql子分区" />
+    <meta name="tags" content="子分区的作用" />
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!--[if lte IE 8]><script src="/theme/js/ie/html5shiv.js"></script><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="/theme/css/ie8.css" /><![endif]-->
+</head>
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="http://www.phpue.com/theme/images/favicon.ico">
-    <link rel="apple-touch-icon" href="http://www.phpue.com/theme/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="http://www.phpue.com/theme/images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="http://www.phpue.com/theme/images/apple-touch-icon-114x114.png">
+<body>
+        <header id="banner" class="body">
+                <h1><a href="http://www.phpue.com/">Andy Dufresne's Blog <strong></strong></a></h1>
+        </header><!-- /#banner -->
+<!-- Sidebar -->
+            <div id="sidebar">
 
-    <link href="http://www.phpue.com/" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog ATOM Feed" />
+                <!-- Logo -->
+                    <h1 id="logo"><a href="/">Andy Dufresne's Blog</a></h1>
+                    <!-- Text -->
+                    <section class="box text-style1">
+                        <div class="inner">
+                            <p>
+                                <strong>Ut scelerisque nec sapien ut sollicitudin:</strong><br />
+                            </p>
+                        </div>
+                    </section>
+                <!-- Nav -->
+                    <nav id="nav">
+                        <ul>
+                            
+                            <li><a href="#">Nam euismod dui</a></li>
+                            <li><a href="#">Integer eget eros</a></li>
+                            <li><a href="#">Proin vehicula tortor</a></li>
+                            <li><a href="#">Vestibulum consectetur tellus</a></li>
+                        </ul>
+                    </nav>
 
-  </head>
+                <!-- Search -->
+                    <!-- <section class="box search">
+                        <form method="post" action="#">
+                            <input type="text" class="text" name="search" placeholder="Search" />
+                        </form>
+                    </section> -->
 
-  <body>
+                
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="http://www.phpue.com/index.html">Andy Dufresne's Blog </a>
-          <div class="nav-collapse">
-            <ul class="nav">
-                  <li><a href="http://www.phpue.com">首页</a></li>
-                  <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
-                  <li >
-                    <a href="http://www.phpue.com/category/linux.html">
-						<i class="icon-folder-open icon-large"></i>linux
-					</a>
-                  </li>
-                  <li class="active">
-                    <a href="http://www.phpue.com/category/mysql.html">
-						<i class="icon-folder-open icon-large"></i>Mysql
-					</a>
-                  </li>
-                  <li >
-                    <a href="http://www.phpue.com/category/php.html">
-						<i class="icon-folder-open icon-large"></i>php
-					</a>
-                  </li>
-                  <li >
-                    <a href="http://www.phpue.com/category/python.html">
-						<i class="icon-folder-open icon-large"></i>Python
-					</a>
-                  </li>
-                  <li >
-                    <a href="http://www.phpue.com/category/wechat.html">
-						<i class="icon-folder-open icon-large"></i>wechat
-					</a>
-                  </li>
+                <!-- Recent Posts -->
+                    <section class="box recent-posts">
+                        <header>
+                            <h2>Contact Me</h2>
+                        </header>
+                        <ul>
+                            <li><a class="icon fa-envelope" href="#"> eMail</a></li>
+                            <li><a class="icon fa-twitter" href="#"> Twitter</a></li>
+                            <li><a class="icon fa-facebook" href="#"> Facebook</a></li>
+                            <li><a class="icon fa-github" href="#"> Github</a></li>
+                            
+                        </ul>
+                    </section>
 
-                          <ul class="nav pull-right">
-                                <li><a href="http://www.phpue.com/archives.html"><i class="icon-th-list"></i>Archives</a></li>
-                          </ul>
 
-            </ul>
-            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="span9" id="content">
-<section id="content">
-        <article>
-                <header>
-                        <h1>
-                                <a href=""
-                                        rel="bookmark"
-                                        title="Permalink to Mysql 分区介绍(八) —— 子分区">
-                                        Mysql 分区介绍(八) —— 子分区
-                                </a>
-                        </h1>
+                <!-- Copyright -->
+                    <ul id="copyright">
+                        <li>Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.</li>
+                        <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                        <li>Modified under a <a href="https://creativecommons.org/licenses/by/3.0/">CC:BY</a> license.</li>
+                    </ul>
+
+            </div><!-- /#menu -->
+<div id="content">
+<div class="inner">
+        <article class="box post post-excerpt">
+                <header> 
+                <h2><a href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="bookmark" title="Permalink to Mysql 分区介绍(八) —— 子分区">Mysql 分区介绍(八) —— 子分区</a></h2> 
+                <p></p>
                 </header>
-                <div class="entry-content">
-                <div class="well">
-<footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2017-10-02T00:00:00+08:00">
-        <i class="icon-calendar"></i>Mon 02 October 2017
-</abbr>
-<span class="label">By</span>
-<a href="http://www.phpue.com/author/andy-dufresne.html"><i class="icon-user"></i>Andy Dufresne</a>
-<span class="label">Category</span>
-<a href="http://www.phpue.com/category/mysql.html"><i class="icon-folder-open"></i>Mysql</a>.
-
-
-<span class="label">Tags</span>
-	<a href="http://www.phpue.com/tag/mysqlfen-qu.html"><i class="icon-tag"></i>mysql分区</a>
-	<a href="http://www.phpue.com/tag/mysql-partition.html"><i class="icon-tag"></i>mysql partition</a>
-	<a href="http://www.phpue.com/tag/mysqlzi-fen-qu.html"><i class="icon-tag"></i>mysql子分区</a>
-	<a href="http://www.phpue.com/tag/zi-fen-qu-de-zuo-yong.html"><i class="icon-tag"></i>子分区的作用</a>
-</footer><!-- /.post-info -->                </div>
-                <p>分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区</p>
+                <div class="info">
+                    <span class="date" datetime="2017-10-02T00:00:00+08:00"><span class="month">Oct</span> <span class="day">02</span> <span class="month"> 2017</span></span>
+                    <ul class="stats">
+                                    <li><a href="mailto:?Subject=Mysql 分区介绍(八) —— 子分区&Body=I%20saw%20this%20and%20thought%20of%20you!%20 http://www.phpue.com/mysql/mysql-partition-subpartition.html" class="icon fa-envelope">&nbsp;</a></li>
+                                    <li><a href="http://reddit.com/submit?url=http://www.phpue.com/mysql/mysql-partition-subpartition.html&title=#Mysql 分区介绍(八) —— 子分区"" class="icon fa-reddit">&nbsp;</a></li>
+                                    <li><a href="https://twitter.com/share?url=http://www.phpue.com/mysql/mysql-partition-subpartition.html&text=&hashtags=GnotC" class="icon fa-twitter">&nbsp;</a></li>
+                                    <li><a href="https://www.facebook.com/sharer.php?u=http://www.phpue.com/mysql/mysql-partition-subpartition.html" class="icon fa-facebook">&nbsp;</a></li>
+                                </ul>
+                </div><!-- /.post-info -->
+                <div class="entry-content"> &nbsp; </div><!-- /.entry-content -->
+        </article>
+    <p>分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区</p>
 <div class="highlight"><pre><span></span>CREATE TABLE ts (
 id INT, purchased DATE
 )
@@ -180,75 +143,13 @@ SUBPARTITIONS 2 (
         )
     );
 </pre></div>
-                </div><!-- /.entry-content -->
-        </article>
-</section>
-        </div><!--/span-->
-
-                <div class="span3 well sidebar-nav" id="sidebar">
-<ul class="nav nav-list">
-<li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
-    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
-    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
-    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
-<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
-<li><a href="http://www.phpue.com/feeds/all.atom.xml" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
-    <li><a href="#"><i class="icon-我的笔记-sign icon-large"></i>我的笔记</a></li>
-    <li><a href="#"><i class="icon-我的博客-sign icon-large"></i>我的博客</a></li>
-
-<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
-<li>
-<a href="http://www.phpue.com/category/linux.html">
-    <i class="icon-folder-open icon-large"></i>linux
-</a>
-</li>
-<li>
-<a href="http://www.phpue.com/category/mysql.html">
-    <i class="icon-folder-open icon-large"></i>Mysql
-</a>
-</li>
-<li>
-<a href="http://www.phpue.com/category/php.html">
-    <i class="icon-folder-open icon-large"></i>php
-</a>
-</li>
-<li>
-<a href="http://www.phpue.com/category/python.html">
-    <i class="icon-folder-open icon-large"></i>Python
-</a>
-</li>
-<li>
-<a href="http://www.phpue.com/category/wechat.html">
-    <i class="icon-folder-open icon-large"></i>wechat
-</a>
-</li>
-
-<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
-
-
-</ul>        </div><!--/.well -->
-
-      </div><!--/row-->
-
-      <hr>
-
-      <footer>
-        <address id="about">
-                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
-                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
-        </address><!-- /#about -->
-
-        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
-                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
-      </footer>
-
-    </div><!--/.fluid-container-->
-
-
-
-    <!-- Le javascript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://www.phpue.com/theme/js/jquery-1.7.2.min.js"></script>
-    <script src="http://www.phpue.com/theme/js/bootstrap.min.js"></script>
-  </body>
+  </div><!-- /.entry-content -->
+  <!-- Pagination -->
+            <div class="pagination">
+            </div>
+ 
+</div>
+</div>
+<!-- /#contentinfo -->
+</body>
 </html>
