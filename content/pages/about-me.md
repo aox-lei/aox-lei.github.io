@@ -22,7 +22,7 @@ Tags: 个人介绍, 七麦科技, 春播, 赛迪集团
 # Personal Introduction
 ---
 Anythig is possible<br />
-Next year there will be a different self <br />
+There will be a different kind of me next year <br />
 
 
 qq: 2387813033 <br/>
