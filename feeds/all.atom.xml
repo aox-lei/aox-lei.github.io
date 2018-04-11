@@ -6,7 +6,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="java-version" src="SITEURL/upload/zookeeper-install/java-version.png"&gt;
+&lt;p&gt;&lt;img alt="java-version" src="../{filename}/upload/zookeeper-install/java-version.png"&gt;
 如果你的机器上安装了java, 则直接跳过此步骤&lt;/p&gt;</content><category term="zookeeper"></category><category term="分布式集群"></category><category term="分布式应用协调"></category></entry><entry><title>Mycat基本使用教程</title><link href="http://www.phpue.com/mysql/mycat-2.html" rel="alternate"></link><published>2017-12-02T00:00:00+08:00</published><updated>2017-12-02T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-12-02:/mysql/mycat-2.html</id><summary type="html">&lt;p&gt;在完成mycat安装后, 我们开始一个示例来尽快熟悉mycat&lt;/p&gt;</summary><content type="html">&lt;p&gt;在完成mycat安装后, 开始一个示例来尽快熟悉mycat&lt;/p&gt;
 &lt;h2&gt;一、环境说明&lt;/h2&gt;
 &lt;h3&gt;1. 服务器说明&lt;/h3&gt;

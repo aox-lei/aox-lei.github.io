@@ -6,7 +6,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="java-version" src="SITEURL/upload/zookeeper-install/java-version.png"&gt;
+&lt;p&gt;&lt;img alt="java-version" src="../{filename}/upload/zookeeper-install/java-version.png"&gt;
 如果你的机器上安装了java, 则直接跳过此步骤&lt;/p&gt;</content><category term="zookeeper"></category><category term="分布式集群"></category><category term="分布式应用协调"></category></entry><entry><title>awk的使用方法(慢慢记录完善)</title><link href="http://www.phpue.com/linux/awk.html" rel="alternate"></link><published>2017-09-25T00:00:00+08:00</published><updated>2017-09-25T00:00:00+08:00</updated><author><name>Andy Dufresne</name></author><id>tag:www.phpue.com,2017-09-25:/linux/awk.html</id><summary type="html">&lt;p&gt;awk的基本使用方法&lt;/p&gt;</summary><content type="html">&lt;h3&gt;1. 输出第几行&lt;/h3&gt;
 &lt;p&gt;$0 代表整行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;awk &amp;#39;{print $1}&amp;#39; # 输出第一行
