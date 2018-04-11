@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/</loc>
-<lastmod>2018-03-12T16:19:30-00:00</lastmod>
+<lastmod>2018-04-11T15:00:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/archives.html</loc>
-<lastmod>2018-03-12T16:19:30-00:00</lastmod>
+<lastmod>2018-04-11T15:00:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/tags.html</loc>
-<lastmod>2018-03-12T16:19:30-00:00</lastmod>
+<lastmod>2018-04-11T15:00:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.phpue.com/categories.html</loc>
-<lastmod>2018-03-12T16:19:30-00:00</lastmod>
+<lastmod>2018-04-11T15:00:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -36,6 +36,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <lastmod>2017-09-09T00:00:00+08:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.3</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/linux/zookeeper-install.html</loc>
+<lastmod>2018-04-11T00:00:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -229,7 +236,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/category/linux.html</loc>
-<lastmod>2017-09-25T00:00:00+08:06</lastmod>
+<lastmod>2018-04-11T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -258,6 +265,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.phpue.com/category/wechat.html</loc>
 <lastmod>2017-11-10T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/zookeeper.html</loc>
+<lastmod>2018-04-11T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/fen-bu-shi-ji-qun.html</loc>
+<lastmod>2018-04-11T00:00:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.phpue.com/tag/fen-bu-shi-ying-yong-xie-diao.html</loc>
+<lastmod>2018-04-11T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -698,7 +726,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.phpue.com/author/andy-dufresne.html</loc>
-<lastmod>2017-12-02T00:00:00+08:06</lastmod>
+<lastmod>2018-04-11T00:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

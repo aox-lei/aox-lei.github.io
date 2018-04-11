@@ -2,9 +2,10 @@
 <html lang="zh">
 <head>
 
-        <title>Andy Dufresne's Blog - python 代理池</title>
+        <title>zookeeper 如何安装使用</title>
         <meta charset="utf-8" />
         <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/linux.atom.xml" type="application/atom+xml" rel="alternate" title="Andy Dufresne's Blog Categories Atom Feed" />
 
 
         <!-- Mobile viewport optimized: j.mp/bplateviewport -->
@@ -38,7 +39,7 @@
               <ul class="columns">
                 <li><a href="http://www.phpue.com/">Home</a></li>
 
-                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/linux.html">linux</a></li>
                   <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
                   <li><a href="http://www.phpue.com/category/php.html">php</a></li>
                   <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
@@ -47,49 +48,47 @@
               </ul>
             </div>
 
-<section id="content">
-
-
+<section id="content" class="body">
 
    <div class="row">
-
-
         <div class="eleven columns">
-                 <ol id="post-list">
-                        <li><article class="hentry">
-                                <header> <h2 class="entry-title"><a href="http://www.phpue.com/python/proxy-tool.html" rel="bookmark" title="Permalink to ProxyTool代理池功能, 免费获取ip代理">ProxyTool代理池功能, 免费获取ip代理</a></h2> </header>
-                                <footer class="post-info">
-                                    <abbr class="published" title="2017-09-21T00:00:00+08:00"> Thu 21 September 2017 </abbr>
-                                    <address class="vcard author">By 
-                                    <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
-                                    </address>
-                                </footer><!-- /.post-info -->
-                                <div class="entry-content"> <p>在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。</p> </div><!-- /.entry-content -->
-
-                                <div class="medium primary btn"><a href="http://www.phpue.com/python/proxy-tool.html" rel="bookmark" title="Permalink to ProxyTool代理池功能, 免费获取ip代理">Read more <i class="icon-arrow-right"></i></a></div>
 
 
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/linux/zookeeper-install.html" rel="bookmark"
+                   title="Permalink to zookeeper 如何安装使用">zookeeper 如何安装使用</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2018-04-11T00:00:00+08:00">
+                Wed 11 April 2018
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/andy-dufresne.html"> Andy Dufresne</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Zookeeper是一个高性能的分布式系统的协调服务。它在一个简单的接口里暴露公共服务：像命名、配置管理、同步、和群组服务，所以你没有必要从头开始实现它们。你可以使用现成的Zookeeper去实现共识、群组管理、领导人选举和业务协议。并且你可以在它的基础之上建立自己特定的需求。</p>
+<h2>一、安装</h2>
+<h3>一、安装jdk</h3>
+<div class="highlight"><pre><span></span>$ java -version
+</pre></div>
 
-                                <div class="row tag-row">
-                                        <span>Tagged as : </span>
-                                            <a class="danger label" href="http://www.phpue.com/tag/python-dai-li-chi.html">python 代理池</a>
-                                            <a class="danger label" href="http://www.phpue.com/tag/dai-li-chi.html">代理池</a>
-                                            <a class="danger label" href="http://www.phpue.com/tag/ipchi.html">ip池</a>
-                                </div>
 
+<p><img alt="java-version" src="SITEURL/upload/zookeeper-install/java-version.png">
+如果你的机器上安装了java, 则直接跳过此步骤</p>
+            </div><!-- /.entry-content -->
 
-
-                        </article></li>
-                </ol><!-- /#posts-list -->
 
         </div><!-- /.eleven.columns -->
-        
+
 <div class="three columns">
 
 <h4>Pages</h4>
 
  <ul>
-        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/linux.html">linux</a></li>
         <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
         <li><a href="http://www.phpue.com/category/php.html">php</a></li>
         <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
@@ -121,10 +120,8 @@
 
 </div> </div><!-- /.row -->
 
-<p class="paginator">
-    Page 1 / 1
-</p>
-</section><!-- /#content -->
+
+</section>
 
        </div><!-- /.row -->
     </div><!-- /.container -->
