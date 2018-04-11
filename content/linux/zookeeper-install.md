@@ -1,4 +1,4 @@
-title:zookeeper 如何安装使用
+title:zookeeper 安装使用教程
 date:2018-04-11
 Tags: zookeeper, 分布式集群, 分布式应用协调
 slug:linux/zookeeper-install
@@ -6,7 +6,7 @@ Summary: Zookeeper是一个高性能的分布式系统的协调服务。它在�
 
 Zookeeper是一个高性能的分布式系统的协调服务。它在一个简单的接口里暴露公共服务：像命名、配置管理、同步、和群组服务，所以你没有必要从头开始实现它们。你可以使用现成的Zookeeper去实现共识、群组管理、领导人选举和业务协议。并且你可以在它的基础之上建立自己特定的需求。
 
-Zookeeper实现的方式为建立一个集群服务器, 并且集群服务器会自动选择leader, 当leader挂掉以后再重新选举
+Zookeeper实现的方式为建立一个集群服务器, 并且集群服务器会自动选择leader, 当leader挂掉以后再重新选举。在zookeeper中可以创建节点, 通过监听节点数据变化, 来达到客户端执行指定操作。
 
 ## 一、安装
 ### 一、安装jdk
