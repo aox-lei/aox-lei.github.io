@@ -47,3 +47,4 @@ SITEMAP = {
         "pages": "monthly",
     }
 }
+STATIC_PATHS = ['upload']
