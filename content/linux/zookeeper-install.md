@@ -126,3 +126,5 @@ WatchedEvent state:SyncConnected type: None path:null
 | skipACL | | 对所有客户端请求都不作ACL检查。如果之前节点上设置有权限限制，一旦服务器上打开这个开头，那么也将失效。|
 | forceSync | | 这个参数确定了是否需要在事务日志提交的时候调用 FileChannel .force来保证数据完全同步到磁盘。|
 | jute.maxbuffer | 1M | 每个节点最大数据量，是默认是1M。这个限制必须在server和client端都进行设置才会生效。|
+
+我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan?invite_code=2n310aji3veo4
