@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.mirrors.ustc.edu.cn/simple/"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+blinker = "==1.4"
+docutils = "==0.14"
+feedgenerator = "==1.9"
+ghp-import = "==0.5.5"
+"jinja2" = "==2.9.6"
+pelican = "==3.7.1"
+python-dateutil = "==2.6.1"
+pytz = "==2017.2"
+six = "==1.10.0"
+Markdown = "==2.6.9"
+MarkupSafe = "==1.0"
+Pygments = "==2.2.0"
+Unidecode = "==0.4.21"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
