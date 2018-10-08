@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>aox's Blog - php</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/php.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-11-22T00:00:00+08:00</updated><entry><title>php curl时遇到Can't load the certificate "..." and its private key: OSStatus -25299的问题</title><link href="http://www.phpue.com/php/curl-osstatus-25299.html" rel="alternate"></link><published>2017-11-22T00:00:00+08:00</published><updated>2017-11-22T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-11-22:/php/curl-osstatus-25299.html</id><summary type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;</summary><content type="html">&lt;p&gt;php在执行curl 使用私钥访问https网站时, 提示Can't load the certificate "..." and its private key: OSStatus -25299, 在此之前还有提示其他类似的错误, 应该都是因为php中curl的SSL Version中不是OpenSSL的问题&lt;/p&gt;
+&lt;p&gt;基本环境:
+MAC OS X、php5.6&lt;/p&gt;
+&lt;p&gt;phpinfo()查看curl信息, 显示的SSL Version 不是OpenSSL(在linux可能也显示别的)&lt;/p&gt;
+&lt;p&gt;一、先查看系统的curl支持的协议&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; curl -V
+curl 7.56.1 (x86_64-apple-darwin15.3.0) libcurl/7.56.1 OpenSSL/1.0.2m zlib/1.2.5
+Release-Date: 2017-10-23
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
+Features: AsynchDNS IPv6 Largefile NTLM NTLM_WB SSL libz TLS-SRP UnixSockets HTTPS-proxy
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果返回的信息里没有OpenSSL, 则需要重新安装一个新的curl, 查看第二步, 如果有OpenSSL, 则直接看第三步&lt;/p&gt;
+&lt;p&gt;二、重新安装curl&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; brew uninstall curl
+&amp;gt;&amp;gt;&amp;gt; brew install curl --with-openssl
+&amp;gt;&amp;gt;&amp;gt; brew link curl --force
+&amp;gt;&amp;gt;&amp;gt; curl --version
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;三、重新安装php&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt;&amp;gt;&amp;gt; brew uninstall php56
+&amp;gt;&amp;gt;&amp;gt; brew install --with-homebrew-curl php56
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;四、重启服务, 查看phpinfo中的SSL VERSION 是否是OpenSSL&lt;/p&gt;</content><category term="curl-osstatus"></category><category term="25299"></category><category term="curl错误"></category></entry></feed>

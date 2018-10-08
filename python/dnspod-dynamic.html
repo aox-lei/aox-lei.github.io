@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>dnspod动态域名提交, 类似花生壳实现的功能</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/python.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/python/dnspod-dynamic.html" rel="bookmark"
+                   title="Permalink to dnspod动态域名提交, 类似花生壳实现的功能">dnspod动态域名提交, 类似花生壳实现的功能</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2017-11-10T00:00:00+08:00">
+                Fri 10 November 2017
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Powered by Lei</p>
+<h2>1. dnspod动态提交域名解析记录</h2>
+<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
+<h2>一、dnspod动态提交域名解析记录</h2>
+<p>经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了</p>
+<p>程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod</p>
+<h3>1. 安装</h3>
+<div class="highlight"><pre><span></span>pip install requests apscheduler argparse
+</pre></div>
+
+
+<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/">如何获取自己的api_token</a></p>
+<div class="highlight"><pre><span></span>修改文件, 打开dnspod.py,
+修改 API_TOKEN = &#39;登录的token&#39; 为你的API_TOKEN, 方法是id, api_token
+</pre></div>
+
+
+<h3>2. 使用</h3>
+<ol>
+<li>获取你的域名列表</li>
+</ol>
+<div class="highlight"><pre><span></span>python dnspod.py -d
+</pre></div>
+
+
+<ol>
+<li>获取指定域名的记录信息</li>
+</ol>
+<div class="highlight"><pre><span></span>python dnspod.py -r 123 # 从第一步查出来的域名的domain_id
+</pre></div>
+
+
+<ol>
+<li>填写要修改的记录id</li>
+</ol>
+<div class="highlight"><pre><span></span># 打开dnspod.py 找到:
+RECORD_IDS = [ # 记录id
+    1,
+    2,
+]
+改为要修改的记录id
+</pre></div>
+
+
+<ol>
+<li>运行</li>
+</ol>
+<div class="highlight"><pre><span></span>python dnspod.py -s 开始运行
+</pre></div>
+
+
+<p>有问题可以提交到这里: <a href="https://github.com/mm333444/python_script/issues/new">ISSUE</a>
+qq群:252799167</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>

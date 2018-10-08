@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>Mycat基本使用教程</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/mysql.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/mysql/mycat-2.html" rel="bookmark"
+                   title="Permalink to Mycat基本使用教程">Mycat基本使用教程</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2017-12-02T00:00:00+08:00">
+                Sat 02 December 2017
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>在完成mycat安装后, 开始一个示例来尽快熟悉mycat</p>
+<h2>一、环境说明</h2>
+<h3>1. 服务器说明</h3>
+<table>
+<thead>
+<tr>
+<th>服务器名称</th>
+<th>地址</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mycat服务器</td>
+<td>10.211.55.13</td>
+<td>mycat中间件服务器</td>
+</tr>
+<tr>
+<td>mysql服务器</td>
+<td>10.211.55.9</td>
+<td>mysql服务器</td>
+</tr>
+</tbody>
+</table>
+<h3>2. mysql 库和表说明</h3>
+<table>
+<thead>
+<tr>
+<th>库名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>db01</td>
+<td>只有一个user表</td>
+</tr>
+<tr>
+<td>db02</td>
+<td>item表</td>
+</tr>
+<tr>
+<td>db03</td>
+<td>item表</td>
+</tr>
+</tbody>
+</table>
+<p>db02,db03上的item表根据id%2取模保存数据, 也就是进行了数据分片</p>
+<ol>
+<li>db01 创建表语句</li>
+</ol>
+<div class="highlight"><pre><span></span>CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT &#39;&#39;,
+  `indate` datetime NOT NULL DEFAULT &#39;0000-00-00 00:00:00&#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+</pre></div>
+
+
+<ol>
+<li>db02,db03 创建表语句</li>
+</ol>
+<div class="highlight"><pre><span></span>CREATE TABLE `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL DEFAULT &#39;0&#39;,
+  `indate` datetime NOT NULL DEFAULT &#39;0000-00-00 00:00:00&#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8
+</pre></div>
+
+
+<h3>3. mycat服务器说明</h3>
+<p><strong>mycat目录</strong>: /usr/local/mycat</p>
+<p>至此, 我们的环境就配置好了</p>
+<h2>二、配置mycat服务</h2>
+<h3>1. server.xml配置</h3>
+<p>路径在 <code>/usr/local/mycat/conf/server.xml</code></p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE mycat:server SYSTEM &quot;server.dtd&quot;&gt;</span>
+<span class="nt">&lt;mycat:server</span> <span class="na">xmlns:mycat=</span><span class="s">&quot;http://io.mycat/&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;system&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useSqlStat&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/property&gt;</span>  <span class="c">&lt;!-- 1为开启实时统计、0为关闭 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useGlobleTableCheck&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/property&gt;</span>  <span class="c">&lt;!-- 1为开启全加班一致性检测、0为关闭 --&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;sequnceHandlerType&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;processorBufferPoolType&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/property&gt;</span>
+                        <span class="c">&lt;!-- 8066 为连接mycat的端口--&gt;</span>
+                        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;serverPort&quot;</span><span class="nt">&gt;</span>8066<span class="nt">&lt;/property&gt;</span>
+                        <span class="c">&lt;!-- 9066 为连接mycat管理地址的端口--&gt;</span>
+                        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;managerPort&quot;</span><span class="nt">&gt;</span>9066<span class="nt">&lt;/property&gt;</span>
+                        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;idleTimeout&quot;</span><span class="nt">&gt;</span>300000<span class="nt">&lt;/property&gt;</span> <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;bindIp&quot;</span><span class="nt">&gt;</span>0.0.0.0<span class="nt">&lt;/property&gt;</span>
+                        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;frontWriteQueueSize&quot;</span><span class="nt">&gt;</span>4096<span class="nt">&lt;/property&gt;</span> <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;processors&quot;</span><span class="nt">&gt;</span>32<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;handleDistributedTransactions&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useOffHeapForMerge&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;memoryPageSize&quot;</span><span class="nt">&gt;</span>1m<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;spillsFileBufferSize&quot;</span><span class="nt">&gt;</span>1k<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useStreamOutput&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;systemReserveMemorySize&quot;</span><span class="nt">&gt;</span>384m<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useZKSwitch&quot;</span><span class="nt">&gt;</span>true<span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/system&gt;</span>
+        <span class="c">&lt;!-- 配置连接mycat的账号密码, 和逻辑库名称, 可以设置多个--&gt;</span>
+        <span class="nt">&lt;user</span> <span class="na">name=</span><span class="s">&quot;root&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>123456<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;schemas&quot;</span><span class="nt">&gt;</span>TESTDB<span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/user&gt;</span>
+        <span class="nt">&lt;user</span> <span class="na">name=</span><span class="s">&quot;user&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>user<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;schemas&quot;</span><span class="nt">&gt;</span>TESTDB<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;readOnly&quot;</span><span class="nt">&gt;</span>true<span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/user&gt;</span>
+<span class="nt">&lt;/mycat:server&gt;</span>
+</pre></div>
+
+
+<h3>2. 配置rule.xml</h3>
+<p>路径在: <code>/usr/local/mycat/conf/rule.xml</code>
+<code>function必须在tableRule的下面, 否则会报错找不到</code></p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE mycat:rule SYSTEM &quot;rule.dtd&quot;&gt;</span>
+<span class="nt">&lt;mycat:rule</span> <span class="na">xmlns:mycat=</span><span class="s">&quot;http://io.mycat/&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- 指定表规则的名称, 以及分片的function--&gt;</span>
+        <span class="nt">&lt;tableRule</span> <span class="na">name=</span><span class="s">&quot;role1&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;rule&gt;</span>
+                        <span class="nt">&lt;columns&gt;</span>id<span class="nt">&lt;/columns&gt;</span>
+                        <span class="nt">&lt;algorithm&gt;</span>mod-long<span class="nt">&lt;/algorithm&gt;</span>
+                <span class="nt">&lt;/rule&gt;</span>
+        <span class="nt">&lt;/tableRule&gt;</span>
+        <span class="c">&lt;!-- 分片名称为mod-long, 为tableRule标签提供--&gt;</span>
+        <span class="nt">&lt;function</span> <span class="na">name=</span><span class="s">&quot;mod-long&quot;</span> <span class="na">class=</span><span class="s">&quot;io.mycat.route.function.PartitionByMod&quot;</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!-- 指定有几个节点,咱们有两个db02和db03,所以写2, 取模就是id%2 --&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;count&quot;</span><span class="nt">&gt;</span>2<span class="nt">&lt;/property&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;virtualBucketTimes&quot;</span><span class="nt">&gt;</span>160<span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;/function&gt;</span>
+<span class="nt">&lt;/mycat:rule&gt;</span>
+</pre></div>
+
+
+<h3>3. 配置schema.xml</h3>
+<p>路径在: <code>/usr/local/mycat/conf/schema.xml</code>
+声明也必须按照顺序, 最不需要调用的, 放在最后。</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE mycat:schema SYSTEM &quot;schema.dtd&quot;&gt;</span>
+<span class="nt">&lt;mycat:schema</span> <span class="na">xmlns:mycat=</span><span class="s">&quot;http://io.mycat/&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- 声明一个逻辑表, 表名为TESTDB, 和server.xml中的对应 --&gt;</span>
+        <span class="nt">&lt;schema</span> <span class="na">name=</span><span class="s">&quot;TESTDB&quot;</span> <span class="na">checkSQLschema=</span><span class="s">&quot;false&quot;</span> <span class="na">sqlMaxLimit=</span><span class="s">&quot;100&quot;</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!-- 指定实际表名为users, 是在node_db01节点上--&gt;</span>
+                <span class="nt">&lt;table</span> <span class="na">name=</span><span class="s">&quot;users&quot;</span> <span class="na">primaryKey=</span><span class="s">&quot;id&quot;</span> <span class="na">autoIncrement=</span><span class="s">&quot;true&quot;</span> <span class="na">dataNode=</span><span class="s">&quot;node_db01&quot;</span> <span class="nt">/&gt;</span>
+                <span class="c">&lt;!-- 实际表名为item, 在node_db02和node_db03节点上--&gt;</span>
+                <span class="nt">&lt;table</span> <span class="na">name=</span><span class="s">&quot;item&quot;</span> <span class="na">primaryKey=</span><span class="s">&quot;id&quot;</span> <span class="na">autoIncrement=</span><span class="s">&quot;true&quot;</span>  <span class="na">dataNode=</span><span class="s">&quot;node_db02,node_db03&quot;</span> <span class="na">rule=</span><span class="s">&quot;role1&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/schema&gt;</span>
+
+        <span class="nt">&lt;dataNode</span> <span class="na">name=</span><span class="s">&quot;node_db01&quot;</span> <span class="na">dataHost=</span><span class="s">&quot;dataHost01&quot;</span> <span class="na">database=</span><span class="s">&quot;db01&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;dataNode</span> <span class="na">name=</span><span class="s">&quot;node_db02&quot;</span> <span class="na">dataHost=</span><span class="s">&quot;dataHost01&quot;</span> <span class="na">database=</span><span class="s">&quot;db02&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;dataNode</span> <span class="na">name=</span><span class="s">&quot;node_db03&quot;</span> <span class="na">dataHost=</span><span class="s">&quot;dataHost01&quot;</span> <span class="na">database=</span><span class="s">&quot;db03&quot;</span> <span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- 声明数据库的连接地址, 名称为dataHost01, 为dataNode节点提供--&gt;</span>
+        <span class="nt">&lt;dataHost</span> <span class="na">name=</span><span class="s">&quot;dataHost01&quot;</span> <span class="na">maxCon=</span><span class="s">&quot;1000&quot;</span> <span class="na">minCon=</span><span class="s">&quot;10&quot;</span> <span class="na">balance=</span><span class="s">&quot;0&quot;</span> <span class="na">writeType=</span><span class="s">&quot;0&quot;</span> <span class="na">dbType=</span><span class="s">&quot;mysql&quot;</span> <span class="na">dbDriver=</span><span class="s">&quot;native&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;heartbeat&gt;</span>select user()<span class="nt">&lt;/heartbeat&gt;</span>
+                <span class="c">&lt;!-- 数据库的连接地址，账号和密码--&gt;</span>
+                <span class="nt">&lt;writeHost</span> <span class="na">host=</span><span class="s">&quot;server1&quot;</span> <span class="na">url=</span><span class="s">&quot;10.211.55.9:3306&quot;</span> <span class="na">user=</span><span class="s">&quot;root&quot;</span> <span class="na">password=</span><span class="s">&quot;123123&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/dataHost&gt;</span>
+<span class="nt">&lt;/mycat:schema&gt;</span>
+</pre></div>
+
+
+<h3>4. 启动mycat</h3>
+<div class="highlight"><pre><span></span>&gt; cd /usr/local/mycat/bin
+&gt; ./mycat start
+</pre></div>
+
+
+<p>如果发生错误可以查看/usr/local/mycat/logs/wrapper.log日志</p>
+<h2>三、验证</h2>
+<h3>1. 验证user表的查询写入</h3>
+<p>账号和密码都是server.xml声明的</p>
+<div class="highlight"><pre><span></span>&gt; /usr/local/mysql/bin/mysql -h10.211.55.13 -uroot -P8066 -p123456
+</pre></div>
+
+
+<h4>2. 查看库</h4>
+<div class="highlight"><pre><span></span>mysql&gt; show databases;
++----------+
+| DATABASE |
++----------+
+| TESTDB   |
++----------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>发现有TESTDB库</p>
+<h4>3. 查看表</h4>
+<div class="highlight"><pre><span></span>mysql&gt; use TESTDB;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&gt; show tables;
++------------------+
+| Tables in TESTDB |
++------------------+
+| item             |
+| users            |
++------------------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>看到了item和users表, 这就是我们在schema.xml中声明的逻辑表, 实际对应的是mysql服务器上的表</p>
+<h4>4. 验证user的写入</h4>
+<div class="highlight"><pre><span></span>mysql&gt; insert into users (`id`, `name`, `indate`)values(1, &#39;test_name&#39;, &#39;2017-01-01&#39;);
+Query OK, 1 row affected (0.08 sec)
+
+mysql&gt;
+</pre></div>
+
+
+<p>去实际的users表中看, 数据也存在。</p>
+<h4>5. 验证查询</h4>
+<div class="highlight"><pre><span></span>mysql&gt; select * from users;
++----+-----------+---------------------+
+| id | name      | indate              |
++----+-----------+---------------------+
+|  1 | test_name | 2017-01-01 00:00:00 |
++----+-----------+---------------------+
+1 row in set (0.06 sec)
+</pre></div>
+
+
+<p>也可以查到, 说明执行成功了</p>
+<h3>2. 验证item表</h3>
+<h4>1. 验证写入</h4>
+<p>因为id分布式的话,id无法自增判断, 所以必须指定id, 否则提示错误。这个在稍后会介绍如何解决</p>
+<div class="highlight"><pre><span></span>mysql&gt; insert into item(`id`, `value`, `indate`)values(1, 1, &#39;2017-01-01&#39;);
+Query OK, 1 row affected (0.01 sec)
+</pre></div>
+
+
+<p>查看实际的库, 发现写在了db03库中,</p>
+<p>再写入一条</p>
+<div class="highlight"><pre><span></span>mysql&gt; insert into item(`id`, `value`, `indate`)values(2, 2, &#39;2017-01-01&#39;);
+Query OK, 1 row affected (0.01 sec)
+</pre></div>
+
+
+<p>发现写在了db02库中, 所以分片的方式也成功了</p>
+<h4>2. 验证查询</h4>
+<div class="highlight"><pre><span></span>+----+-------+---------------------+
+| id | value | indate              |
++----+-------+---------------------+
+|  2 |     2 | 2017-01-01 00:00:00 |
+|  1 |     1 | 2017-01-01 00:00:00 |
++----+-------+---------------------+
+2 rows in set (0.03 sec)
+</pre></div>
+
+
+<p>也有了两条记录</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>
