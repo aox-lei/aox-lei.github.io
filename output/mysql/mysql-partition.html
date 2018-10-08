@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>Mysql 分区介绍(一) ——概述</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/mysql.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/mysql/mysql-partition.html" rel="bookmark"
+                   title="Permalink to Mysql 分区介绍(一) ——概述">Mysql 分区介绍(一) ——概述</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2017-10-02T00:00:00+08:00">
+                Mon 02 October 2017
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <h2>一、分区类型</h2>
+<h3>1. RANGE类型(范围分区)</h3>
+<blockquote>
+<p>通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符</p>
+</blockquote>
+<p>啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 <br /></p>
+<p>咱们看一个创建的例子</p>
+<div class="highlight"><pre><span></span>CREATE TABLE `t1` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT &#39;用户id&#39;,
+  `score` int(3) NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;分数&#39;,
+  PRIMARY KEY (`id`,`score`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+PARTITION BY RANGE (score)
+(PARTITION p0 VALUES LESS THAN (10) ENGINE = InnoDB,
+ PARTITION p1 VALUES LESS THAN (20) ENGINE = InnoDB,
+ PARTITION p2 VALUES LESS THAN (30) ENGINE = InnoDB,
+ PARTITION p3 VALUES LESS THAN (40) ENGINE = InnoDB)
+</pre></div>
+
+
+<p>创建了个t1表, 并且t1有四个分区, 第一个分区p0的范围是小于10的, 第二个是小于20的。这就是一个range分区的例子。 <br />
+<code>那为啥主键定义的是双主键呢?</code> 因为分区键(score) 必须也是主键或者唯一键的一部分。</p>
+<p>Range分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-range">Mysql 分区介绍(二) —— RANGE分区</a></p>
+<h3>2. LIST分区</h3>
+<blockquote>
+<p>LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的</p>
+</blockquote>
+<p>这说的有点乱, 还是直接看一个创建的例子吧</p>
+<div class="highlight"><pre><span></span>create table t2 (
+    id int not null,
+    uid int not null comment &#39;用户id&#39;,
+    score int(3) not null default 0 comment &#39;分数&#39;,
+    primary key(id, uid)
+)
+partition by list(uid) (
+    partition p0 values in (1,3,5,7,9),
+    partition p1 values in (2,4,6,8,10)
+)
+</pre></div>
+
+
+<p>t2的分区键是uid, 有两个分区(这个很明显嘛), 如果uid in (1,3,5,7,9), 那么这条数据就会保存在p0中, 如果是2,4,6,8,10的话, 就会在p1中, 这就是LIST 分区</p>
+<p>Range分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-list">Mysql 分区介绍(三) —— LIST分区</a></p>
+<h3>3. COLUMNS 分区</h3>
+<p>COLUMNS和以上两种是很不一样的, 这个是可以用多个分区键确定分区的。有两种方式, RANGE COLUMNS 和 LIST COLUMNS</p>
+<h4>1. RANGE COLUMNS 分区</h4>
+<blockquote>
+<p>类似RANGE 分区, 但是可以使用一个或多个字段值定义</p>
+</blockquote>
+<p>不太好理解... 还是看例子吧</p>
+<div class="highlight"><pre><span></span>create table t3 (
+    a int,
+    b int,
+    c char(3),
+    d int
+)
+PARTITION BY RANGE COLUMNS(a,d,c) (
+PARTITION p0 VALUES LESS THAN (5,10,&#39;ggg&#39;),
+PARTITION p1 VALUES LESS THAN (10,20,&#39;mmm&#39;),
+PARTITION p2 VALUES LESS THAN (15,30,&#39;sss&#39;)
+)
+</pre></div>
+
+
+<p>分区键有多个, 并且都是范围的, 就是RANGE COLUMNS 分区</p>
+<p>RANGE COLUMNS分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-range-columns">Mysql 分区介绍(四) —— RANGE COLUMNS分区</a></p>
+<h4>2. LIST COLUMNS 分区</h4>
+<blockquote>
+<p>Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME</p>
+</blockquote>
+<p>还是看例子吧</p>
+<div class="highlight"><pre><span></span>CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&#39;Oskarshamn&#39;, &#39;Högsby&#39;, &#39;Mönsterås&#39;),
+    PARTITION pRegion_2 VALUES IN(&#39;Vimmerby&#39;, &#39;Hultsfred&#39;, &#39;Västervik&#39;),
+    PARTITION pRegion_3 VALUES IN(&#39;Nässjö&#39;, &#39;Eksjö&#39;, &#39;Vetlanda&#39;),
+    PARTITION pRegion_4 VALUES IN(&#39;Uppvidinge&#39;, &#39;Alvesta&#39;, &#39;Växjo&#39;)
+);
+</pre></div>
+
+
+<p>LIST COLUMNS分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-list-columns">Mysql 分区介绍(五) —— LIST COLUMNS分区</a></p>
+<h3>3. HASH分区</h3>
+<blockquote>
+<p>使用分区键去确保数据可以均匀的分布在一个预先确定数字的分区上, 在hash分区中, 无需显式的指定分区</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;,
+    separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+</pre></div>
+
+
+<p>HASH分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-hash">Mysql 分区介绍(六) —— HASH分区</a></p>
+<h3>4. KEY分区</h3>
+<blockquote>
+<p>key分区类似hash分区, 接受0个或多个列名, key分区的哈希函数由MySQL服务器提供。NDB集群使用md5()；使用其他存储引擎的表，服务器采用自己的内部的哈希函数是基于相同的算法password()。</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+</pre></div>
+
+
+<p>KEY分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-key">Mysql 分区介绍(七) —— KEY分区</a></p>
+<h3>5. 子分区</h3>
+<blockquote>
+<p>子分区也称为复合分区, 在分区的基础上进一步进行分区的方式</p>
+</blockquote>
+<div class="highlight"><pre><span></span>CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+</pre></div>
+
+
+<p>子分区的详细介绍请看<a href="http://www.phpue.com/mysql/mysql-partition-subpartition">Mysql 分区介绍(八) —— 子分区</a></p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>

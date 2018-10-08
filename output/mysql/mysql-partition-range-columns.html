@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/mysql.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="bookmark"
+                   title="Permalink to Mysql 分区介绍(四) —— RANGE COLUMNS分区">Mysql 分区介绍(四) —— RANGE COLUMNS分区</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2017-10-02T00:00:00+08:00">
+                Mon 02 October 2017
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列</p>
+<p>基本定义:</p>
+<div class="highlight"><pre><span></span>CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+</pre></div>
+
+
+<p>column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值</p>
+<div class="highlight"><pre><span></span>mysql&gt; CREATE TABLE rcx (
+    -&gt;     a INT,
+    -&gt;     b INT,
+    -&gt;     c CHAR(3),
+    -&gt;     d INT
+    -&gt; )
+    -&gt; PARTITION BY RANGE COLUMNS(a,d,c) (
+    -&gt;     PARTITION p0 VALUES LESS THAN (5,10,&#39;ggg&#39;),
+    -&gt;     PARTITION p1 VALUES LESS THAN (10,20,&#39;mmm&#39;),
+    -&gt;     PARTITION p2 VALUES LESS THAN (15,30,&#39;sss&#39;),
+    -&gt;     PARTITION p3 VALUES LESS THAN (MAXVALUE,MAXVALUE,MAXVALUE)
+    -&gt; );
+Query OK, 0 rows affected (0.15 sec)
+</pre></div>
+
+
+<p>如果我们写入三条数据到这个表每个列的值是5, 三条数据都将存储在p1分区, 因为每个列的值都不小于5, 所以我们可以查询INFORMATION_SCHEMA.PARTITIONS:</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO r1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;r1&#39;;
++----------------+------------+
+| PARTITION_NAME | TABLE_ROWS |
++----------------+------------+
+| p0             |          0 |
+| p1             |          3 |
++----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>同样的, RANGE COLUMNS和RANGE分区一样, 也是支持MAXVALUE的。</p>
+<div class="highlight"><pre><span></span>CREATE TABLE rc1 (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS(a, b) (
+    PARTITION p0 VALUES LESS THAN (5, 12),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE, MAXVALUE)
+);
+</pre></div>
+
+
+<p>但是在此时, 写入的数据分布也会发生很大变化</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO rc1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;rc1&#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          2 |
+| p            | p1             |          1 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
+
+
+<p>因为我们比较的是行数据而非标量值</p>
+<div class="highlight"><pre><span></span>mysql&gt; SELECT (5,10) &lt; (5,12), (5,11) &lt; (5,12), (5,12) &lt; (5,12);
++-----------------+-----------------+-----------------+
+| (5,10) &lt; (5,12) | (5,11) &lt; (5,12) | (5,12) &lt; (5,12) |
++-----------------+-----------------+-----------------+
+|               1 |               1 |               0 |
++-----------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>如果是单个字段的RANGE COLUMNS分区, 那么和RANGE分区是一致的</p>
+<div class="highlight"><pre><span></span>CREATE TABLE rx (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS (a)  (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (MAXVALUE)
+);
+</pre></div>
+
+
+<p>如果我们新增行(5,10), (5, 11)和(5,12)到表中, 我们可以看到他们存储的位置是一样的</p>
+<div class="highlight"><pre><span></span>mysql&gt; INSERT INTO rx VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&gt;     WHERE TABLE_NAME = &#39;rx&#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          0 |
+| p            | p1             |          3 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>

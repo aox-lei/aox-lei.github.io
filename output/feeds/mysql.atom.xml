@@ -1,0 +1,2045 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>aox's Blog - Mysql</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/mysql.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2017-12-02T00:00:00+08:00</updated><entry><title>Mycat基本使用教程</title><link href="http://www.phpue.com/mysql/mycat-2.html" rel="alternate"></link><published>2017-12-02T00:00:00+08:00</published><updated>2017-12-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-12-02:/mysql/mycat-2.html</id><summary type="html">&lt;p&gt;在完成mycat安装后, 我们开始一个示例来尽快熟悉mycat&lt;/p&gt;</summary><content type="html">&lt;p&gt;在完成mycat安装后, 开始一个示例来尽快熟悉mycat&lt;/p&gt;
+&lt;h2&gt;一、环境说明&lt;/h2&gt;
+&lt;h3&gt;1. 服务器说明&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;服务器名称&lt;/th&gt;
+&lt;th&gt;地址&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;mycat服务器&lt;/td&gt;
+&lt;td&gt;10.211.55.13&lt;/td&gt;
+&lt;td&gt;mycat中间件服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;mysql服务器&lt;/td&gt;
+&lt;td&gt;10.211.55.9&lt;/td&gt;
+&lt;td&gt;mysql服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;2. mysql 库和表说明&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;库名称&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;db01&lt;/td&gt;
+&lt;td&gt;只有一个user表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;db02&lt;/td&gt;
+&lt;td&gt;item表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;db03&lt;/td&gt;
+&lt;td&gt;item表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;db02,db03上的item表根据id%2取模保存数据, 也就是进行了数据分片&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;db01 创建表语句&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT &amp;#39;&amp;#39;,
+  `indate` datetime NOT NULL DEFAULT &amp;#39;0000-00-00 00:00:00&amp;#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;db02,db03 创建表语句&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL DEFAULT &amp;#39;0&amp;#39;,
+  `indate` datetime NOT NULL DEFAULT &amp;#39;0000-00-00 00:00:00&amp;#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. mycat服务器说明&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;mycat目录&lt;/strong&gt;: /usr/local/mycat&lt;/p&gt;
+&lt;p&gt;至此, 我们的环境就配置好了&lt;/p&gt;
+&lt;h2&gt;二、配置mycat服务&lt;/h2&gt;
+&lt;h3&gt;1. server.xml配置&lt;/h3&gt;
+&lt;p&gt;路径在 &lt;code&gt;/usr/local/mycat/conf/server.xml&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:server SYSTEM &amp;quot;server.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:server&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;system&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useSqlStat&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;  &lt;span class="c"&gt;&amp;lt;!-- 1为开启实时统计、0为关闭 --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useGlobleTableCheck&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;  &lt;span class="c"&gt;&amp;lt;!-- 1为开启全加班一致性检测、0为关闭 --&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sequnceHandlerType&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;processorBufferPoolType&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="c"&gt;&amp;lt;!-- 8066 为连接mycat的端口--&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;serverPort&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;8066&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="c"&gt;&amp;lt;!-- 9066 为连接mycat管理地址的端口--&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;managerPort&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;9066&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;idleTimeout&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;300000&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;bindIp&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0.0.0.0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;frontWriteQueueSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;4096&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;processors&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;32&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;handleDistributedTransactions&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useOffHeapForMerge&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;memoryPageSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1m&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;spillsFileBufferSize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;1k&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useStreamOutput&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;0&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;systemReserveMemorySize&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;384m&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;useZKSwitch&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/system&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 配置连接mycat的账号密码, 和逻辑库名称, 可以设置多个--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;user&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;root&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;123456&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;schemas&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;TESTDB&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/user&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;user&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;user&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;schemas&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;TESTDB&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;readOnly&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/user&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:server&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 配置rule.xml&lt;/h3&gt;
+&lt;p&gt;路径在: &lt;code&gt;/usr/local/mycat/conf/rule.xml&lt;/code&gt;
+&lt;code&gt;function必须在tableRule的下面, 否则会报错找不到&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:rule SYSTEM &amp;quot;rule.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:rule&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 指定表规则的名称, 以及分片的function--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;tableRule&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;role1&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;rule&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;columns&amp;gt;&lt;/span&gt;id&lt;span class="nt"&gt;&amp;lt;/columns&amp;gt;&lt;/span&gt;
+                        &lt;span class="nt"&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;mod-long&lt;span class="nt"&gt;&amp;lt;/algorithm&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;/rule&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/tableRule&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 分片名称为mod-long, 为tableRule标签提供--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;function&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mod-long&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;io.mycat.route.function.PartitionByMod&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 指定有几个节点,咱们有两个db02和db03,所以写2, 取模就是id%2 --&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;count&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;2&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;property&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;virtualBucketTimes&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;160&lt;span class="nt"&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/function&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:rule&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 配置schema.xml&lt;/h3&gt;
+&lt;p&gt;路径在: &lt;code&gt;/usr/local/mycat/conf/schema.xml&lt;/code&gt;
+声明也必须按照顺序, 最不需要调用的, 放在最后。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;!DOCTYPE mycat:schema SYSTEM &amp;quot;schema.dtd&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;mycat:schema&lt;/span&gt; &lt;span class="na"&gt;xmlns:mycat=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://io.mycat/&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- 声明一个逻辑表, 表名为TESTDB, 和server.xml中的对应 --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;schema&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;TESTDB&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;checkSQLschema=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;sqlMaxLimit=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;100&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 指定实际表名为users, 是在node_db01节点上--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;table&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;users&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;primaryKey=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;autoIncrement=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;true&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataNode=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db01&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 实际表名为item, 在node_db02和node_db03节点上--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;table&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;item&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;primaryKey=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;autoIncrement=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;true&amp;quot;&lt;/span&gt;  &lt;span class="na"&gt;dataNode=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db02,node_db03&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;rule=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;role1&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/schema&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db01&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db02&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db02&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataNode&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;node_db03&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dataHost=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;database=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;db03&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- 声明数据库的连接地址, 名称为dataHost01, 为dataNode节点提供--&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;dataHost&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dataHost01&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;maxCon=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1000&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;minCon=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;10&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;balance=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;writeType=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dbType=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mysql&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;dbDriver=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;native&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;heartbeat&amp;gt;&lt;/span&gt;select user()&lt;span class="nt"&gt;&amp;lt;/heartbeat&amp;gt;&lt;/span&gt;
+                &lt;span class="c"&gt;&amp;lt;!-- 数据库的连接地址，账号和密码--&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;writeHost&lt;/span&gt; &lt;span class="na"&gt;host=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;server1&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;url=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;10.211.55.9:3306&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;user=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;root&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;password=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;123123&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/dataHost&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/mycat:schema&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 启动mycat&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; cd /usr/local/mycat/bin
+&amp;gt; ./mycat start
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果发生错误可以查看/usr/local/mycat/logs/wrapper.log日志&lt;/p&gt;
+&lt;h2&gt;三、验证&lt;/h2&gt;
+&lt;h3&gt;1. 验证user表的查询写入&lt;/h3&gt;
+&lt;p&gt;账号和密码都是server.xml声明的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; /usr/local/mysql/bin/mysql -h10.211.55.13 -uroot -P8066 -p123456
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 查看库&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; show databases;
++----------+
+| DATABASE |
++----------+
+| TESTDB   |
++----------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;发现有TESTDB库&lt;/p&gt;
+&lt;h4&gt;3. 查看表&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; use TESTDB;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show tables;
++------------------+
+| Tables in TESTDB |
++------------------+
+| item             |
+| users            |
++------------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到了item和users表, 这就是我们在schema.xml中声明的逻辑表, 实际对应的是mysql服务器上的表&lt;/p&gt;
+&lt;h4&gt;4. 验证user的写入&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into users (`id`, `name`, `indate`)values(1, &amp;#39;test_name&amp;#39;, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.08 sec)
+
+mysql&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;去实际的users表中看, 数据也存在。&lt;/p&gt;
+&lt;h4&gt;5. 验证查询&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; select * from users;
++----+-----------+---------------------+
+| id | name      | indate              |
++----+-----------+---------------------+
+|  1 | test_name | 2017-01-01 00:00:00 |
++----+-----------+---------------------+
+1 row in set (0.06 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也可以查到, 说明执行成功了&lt;/p&gt;
+&lt;h3&gt;2. 验证item表&lt;/h3&gt;
+&lt;h4&gt;1. 验证写入&lt;/h4&gt;
+&lt;p&gt;因为id分布式的话,id无法自增判断, 所以必须指定id, 否则提示错误。这个在稍后会介绍如何解决&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into item(`id`, `value`, `indate`)values(1, 1, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;查看实际的库, 发现写在了db03库中,&lt;/p&gt;
+&lt;p&gt;再写入一条&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; insert into item(`id`, `value`, `indate`)values(2, 2, &amp;#39;2017-01-01&amp;#39;);
+Query OK, 1 row affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;发现写在了db02库中, 所以分片的方式也成功了&lt;/p&gt;
+&lt;h4&gt;2. 验证查询&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;+----+-------+---------------------+
+| id | value | indate              |
++----+-------+---------------------+
+|  2 |     2 | 2017-01-01 00:00:00 |
+|  1 |     1 | 2017-01-01 00:00:00 |
++----+-------+---------------------+
+2 rows in set (0.03 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也有了两条记录&lt;/p&gt;</content><category term="mycat"></category><category term="mycat教程"></category><category term="数据库中间件"></category></entry><entry><title>mycat教程(一) —— 安装</title><link href="http://www.phpue.com/mysql/mycat-1.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mycat-1.html</id><summary type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Mycat 是什么？从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了 MySQL 协议的的 Server，前端用户可以把它看作是一个数据库代理，用 MySQL 客户端工具和命令行访问，而其后端可以用 MySQL 原生（Native）协议与多个 MySQL 服务器通信，也可以用 JDBC 协议与大多数主流数据库服务器通信， 其核心功能是分表分库，即将一个大表水平分割为 N 个小表，存储在后端 MySQL 服务器里或者其他数据库里。&lt;/p&gt;
+&lt;h2&gt;一. 安装jdk&lt;/h2&gt;
+&lt;p&gt;下载地址:http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf jdk-8u161-linux-x64.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;创建java目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mkdir /java
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;移动文件到/java下&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mv jdk1.8.0_161 /java
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;配置环境变量&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo vim /etc/environment
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;末尾加入以下配置（JAVA_HOME 后的路径就是jdk的文件位置)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;PATH=&amp;quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$JAVA_HOME/bin&amp;quot;
+export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+export JAVA_HOME=/java/jdk1.8.0_161
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;修改完成之后保存关闭，并输入以下命令使环境变量立即生效&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source /etc/environment
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;检查是否安装成功&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; java -version
+java version &amp;quot;1.8.0_161&amp;quot;
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;配置重启后的环境变量&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo gedit /etc/profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在文件的最后添加以下内容：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#set Java environment
+export JAVA_HOME=/dengyang/jdk1.8.0_161
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使环境变量生效&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;source /etc/profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. 安装mycat&lt;/h2&gt;
+&lt;p&gt;下载地址: http://dl.mycat.io/1.6-RELEASE/&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar -zxvf Mycat-server-xxxxx.linux.tar.gz
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;移动到/usr/local/目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo mv mycat /usr/local
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;创建用户&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;useradd mycat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;修改权限&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;chown -R mycat mycat /usr/local/mycat
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;查看目录
+| - bin ----------- 执行文件目录&lt;br/&gt;
+| - conf ---------- 配置文件目录&lt;br/&gt;
+| - doc ----------- 文档目录&lt;br/&gt;
+| - lib ----------- 目录下主要存放 mycat 依赖的一些 jar 文件&lt;br/&gt;
+| - logs ---------- 日志目录。日志的配置是在 conf/log4j.xml 中&lt;/li&gt;
+&lt;/ol&gt;</content><category term="mycat"></category><category term="mycat教程"></category><category term="数据库中间件"></category></entry><entry><title>Mysql中间件——Atlas</title><link href="http://www.phpue.com/mysql/mysql-atlas.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mysql-atlas.html</id><summary type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/Qihoo360/Atlas/"&gt;github地址&lt;/a&gt;
+&lt;a href="https://github.com/Qihoo360/Atlas/blob/master/README_ZH.md"&gt;介绍&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;一、安装&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/Qihoo360/Atlas/wiki/Atlas%E7%9A%84%E5%AE%89%E8%A3%85"&gt;安装&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在安装之前, 服务器上必须要装有mysql, altas会用到mysql的组件。&lt;/p&gt;
+&lt;p&gt;在启动时, 可能提示faild start altas of test之类的信息, 解决方法如下&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;echo &amp;#39;/usr/local/mysql/lib/&amp;#39; &amp;gt;&amp;gt; /etc/ld.so.conf
+ldconfig
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;二、配置说明&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[mysql-proxy]&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)管理接口的用户名&lt;/span&gt;
+&lt;span class="na"&gt;admin-username&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;user&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)管理接口的密码&lt;/span&gt;
+&lt;span class="na"&gt;admin-password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;pwd&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，根据实际情况配置)主库的IP和端口&lt;/span&gt;
+&lt;span class="na"&gt;proxy-backend-addresses&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;192.168.0.12:3306&lt;/span&gt;
+
+&lt;span class="na"&gt;(非必备，根据实际情况配置)从库的IP和端口，@后面的数字代表权重，用来作负载均衡，若省略则默认为1，可设置多项，用逗号分隔。如果想让主库也能分担读请求的话，只需要将主库信息加入到下面的配置项中。&lt;/span&gt;
+&lt;span class="na"&gt;proxy-read-only-backend-addresses&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;192.168.0.13:3306,192.168.0.14:3306&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，根据实际情况配置)用户名与其对应的加密过的MySQL密码，密码使用PREFIX/bin目录下的加密程序encrypt加密，用户名与密码之间用冒号分隔。主从数据库上需要先创建该用户并设置密码（用户名和密码在主从数据库上要一致）。比如用户名为myuser，密码为mypwd，执行./encrypt mypwd结果为HJBoxfRsjeI&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;。如果有多个用户用逗号分隔即可。则设置如下行所示：&lt;/span&gt;
+&lt;span class="na"&gt;pwds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;myuser: HJBoxfRsjeI=,myuser2:HJBoxfRsjeI=&lt;/span&gt;
+
+&lt;span class="na"&gt;（必备，默认值即可)Atlas的运行方式，设为true时为守护进程方式，设为false时为前台方式，一般开发调试时设为false，线上运行时设为true&lt;/span&gt;
+&lt;span class="na"&gt;daemon&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)设置Atlas的运行方式，设为true时Atlas会启动两个进程，一个为monitor，一个为worker，monitor在worker意外退出后会自动将其重启，设为false时只有worker，没有monitor，一般开发调试时设为false，线上运行时设为true&lt;/span&gt;
+&lt;span class="na"&gt;keepalive&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;true&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，根据实际情况配置)工作线程数，推荐设置成系统的CPU核数的2至4倍&lt;/span&gt;
+&lt;span class="na"&gt;event-threads&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;4&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)日志级别，分为message、warning、critical、error、debug五个级别&lt;/span&gt;
+&lt;span class="na"&gt;log-level&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;message&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)日志存放的路径&lt;/span&gt;
+&lt;span class="na"&gt;log-path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/usr/local/mysql-proxy/log&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，根据实际情况配置)SQL日志的开关，可设置为OFF、ON、REALTIME，OFF代表不记录SQL日志，ON代表记录SQL日志，该模式下日志刷新是基于缓冲区的，当日志填满缓冲区后，才将日志信息刷到磁盘。REALTIME用于调试，代表记录SQL日志且实时写入磁盘，默认为OFF&lt;/span&gt;
+&lt;span class="na"&gt;sql-log&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;OFF&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，可不设置）慢日志输出设置。当设置了该参数时，则日志只输出执行时间超过sql-log-slow（单位：ms)的日志记录。不设置该参数则输出全部日志。&lt;/span&gt;
+&lt;span class="na"&gt;sql-log-slow&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;10&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，可不设置）关闭不活跃的客户端连接设置。当设置了该参数时，Atlas会主动关闭经过&amp;#39;wait-timeout&amp;#39;时间后一直未活跃的连接。单位：秒&lt;/span&gt;
+&lt;span class="na"&gt;wait-timeout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;10&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)Atlas监听的工作接口IP和端口, 连接altas的地址&lt;/span&gt;
+&lt;span class="na"&gt;proxy-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;0.0.0.0:1234&lt;/span&gt;
+
+&lt;span class="na"&gt;(必备，默认值即可)Atlas监听的管理接口IP和端口 admin-address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;0.0.0.0:2345, 连接altas管理服务的地址&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，可不设置)分表设置，此例中person为库名，mt为表名，id为分表字段，3为子表数量，可设置多项，以逗号分隔，若不分表则不需要设置该项，子表需要事先建好，子表名称为表名_数字，数字范围为[0,子表数-1]，如本例里，子表名称为mt_0、mt_1、mt_2&lt;/span&gt;
+&lt;span class="na"&gt;tables&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;person.mt.id.3&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，可不设置)默认字符集，若不设置该项，则默认字符集为latin1&lt;/span&gt;
+&lt;span class="na"&gt;charset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;utf8&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，可不设置)允许连接Atlas的客户端的IP，可以是精确IP，也可以是IP段，以逗号分隔，若不设置该项则允许所有IP连接，否则只允许列表中的IP连接&lt;/span&gt;
+&lt;span class="na"&gt;client-ips&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;127.0.0.1, 192.168.1&lt;/span&gt;
+
+&lt;span class="na"&gt;(可选项，极少需要)Atlas前面挂接的LVS的物理网卡的IP(注意不是虚IP)，若有LVS且设置了client-ips则此项必须设置，否则可以不设置&lt;/span&gt;
+&lt;span class="na"&gt;lvs-ips&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;192.168.1.1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、Altas管理&lt;/h2&gt;
+&lt;p&gt;执行mysql -h127.0.0.1 -uuser -ppwd -P2345进行连接, 进入altas管理&lt;/p&gt;
+&lt;h3&gt;1. 查询帮助&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select * from help;
+
++----------------------------+---------------------------------------------------------+
+| command                    | description                                             |
++----------------------------+---------------------------------------------------------+
+| SELECT * FROM help         | 显示帮助                                        |
+| SELECT * FROM backends     | 查看后端服务器状态                 |
+| SET OFFLINE $backend_id    | 下线后端服务器, $backend_id is backend_ndx&amp;#39;s id |
+| SET ONLINE $backend_id     | 上线后端服务器, ...                              |
+| ADD MASTER $backend        | 添加主服务器, example: &amp;quot;add master 127.0.0.1:3306&amp;quot;, ...               |
+| ADD SLAVE $backend         | 添加从服务器, example: &amp;quot;add slave 127.0.0.1:3306&amp;quot;, ...                |
+| REMOVE BACKEND $backend_id | 移除后端服务器example: &amp;quot;remove backend 1&amp;quot;, ...                        |
+| ADD CLIENT $client         | 添加客户端 example: &amp;quot;add client 192.168.1.2&amp;quot;, ...                  |
+| REMOVE CLIENT $client      | 移除客户端example: &amp;quot;remove client 192.168.1.2&amp;quot;, ...               |
+| SAVE CONFIG                | 保存配置到文件                         |
++----------------------------+---------------------------------------------------------+
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 查看后端mysql状态信息&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; select * from backends
+    -&amp;gt; ;
++-------------+-------------------+-------+------+
+| backend_ndx | address           | state | type |
++-------------+-------------------+-------+------+
+|           1 | 10.211.55.9:3306  | up    | rw   |
+|           2 | 10.211.55.10:3306 | up    | ro   |
++-------------+-------------------+-------+------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 下线mysql服务器&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; set offline 2
+    -&amp;gt; ;
++-------------+-------------------+---------+------+
+| backend_ndx | address           | state   | type |
++-------------+-------------------+---------+------+
+|           2 | 10.211.55.10:3306 | offline | ro   |
++-------------+-------------------+---------+------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 上线mysql服务器&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; set online 2;
++-------------+-------------------+---------+------+
+| backend_ndx | address           | state   | type |
++-------------+-------------------+---------+------+
+|           2 | 10.211.55.10:3306 | unknown | ro   |
++-------------+-------------------+---------+------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Mysql主从配置</title><link href="http://www.phpue.com/mysql/mysql-sync.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-12-01:/mysql/mysql-sync.html</id><summary type="html">&lt;p&gt;Mysql主从可以方便的实现数据的自动备份, 实现数据库的扩展, 并且可以使读写分离, 减轻数据库压力。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Mysql主从可以方便的实现数据的自动备份, 实现数据库的扩展, 并且可以使读写分离, 减轻数据库压力。&lt;/p&gt;
+&lt;h2&gt;主从复制原理&lt;/h2&gt;
+&lt;p&gt;从库生成两个线程，一个I/O线程，一个SQL线程；&lt;/p&gt;
+&lt;p&gt;i/o线程去请求主库 的binlog，并将得到的binlog日志写到relay log（中继日志） 文件中；
+主库会生成一个 log dump 线程，用来给从库 i/o线程传binlog；&lt;/p&gt;
+&lt;p&gt;SQL 线程，会读取relay log文件中的日志，并解析成具体操作，来实现主从的操作一致，而最终数据一致；&lt;/p&gt;
+&lt;h2&gt;一、准备工作&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;主从的数据库最好一致&lt;/li&gt;
+&lt;li&gt;主从的数据库内部数据结构最好一致&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;主数据库地址: 10.211.55.9
+从数据库地址: 10.211.55.10&lt;/p&gt;
+&lt;h2&gt;二、主数据库的配置&lt;/h2&gt;
+&lt;h3&gt;1. 修改mysql配置, 开启binlog&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
+&lt;span class="na"&gt;log-bin&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;mysql-bin #开启二进制日志&lt;/span&gt;
+&lt;span class="na"&gt;server-id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;1 #设置server-id&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;server_id的作用&lt;/code&gt;
+1. server_id标识语句是由哪个server产生的
+2. 如果两个slave具有相同的server_id, 那么最后一个会被踢掉。如果执行了slave stop, maser上的线程并不会退出, 在执行slave start后, 会直接进行连接。
+3. 如果主主同步构成一个环状, 就要保证数据不同不进入死循环, 就需要靠server_id来实现。&lt;/p&gt;
+&lt;h3&gt;2. 重启mysql并创建同步账号&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE USER &amp;#39;sync&amp;#39;@&amp;#39;%&amp;#39; IDENTIFIED BY &amp;#39;slavepass&amp;#39;;#创建用户
+mysql&amp;gt; GRANT REPLICATION SLAVE ON *.* TO &amp;#39;sync&amp;#39;@&amp;#39;%&amp;#39;;#分配权限
+mysql&amp;gt;flush privileges;   #刷新权限
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 查看master状态并记录binlog文件位置&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql &amp;gt; SHOW MASTER STATUS;
++------------------+----------+--------------+------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++------------------+----------+--------------+------------------+
+| mysql-bin.000001 | 5524     |              |                  |
++------------------+----------+--------------+------------------+
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、从服务器设置&lt;/h2&gt;
+&lt;h3&gt;1. 修改配置&lt;/h3&gt;
+&lt;p&gt;经测试, 从服务器不需要开启binlog也可以同步&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[mysqld]&lt;/span&gt;
+&lt;span class="na"&gt;server-id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;2 #设置server-id，必须唯一&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 指定主库&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CHANGE MASTER TO
+    -&amp;gt;     MASTER_HOST=&amp;#39;10.211.155.9&amp;#39;,
+    -&amp;gt;     MASTER_USER=&amp;#39;sync&amp;#39;,
+    -&amp;gt;     MASTER_PASSWORD=&amp;#39;123123&amp;#39;,
+    -&amp;gt;     MASTER_LOG_FILE=&amp;#39;mysql-bin.000001&amp;#39;,
+    -&amp;gt;     MASTER_LOG_POS=5524;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 开始同步&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;start slave;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 查看slave状态&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;***************************[ 1. row ]***************************
+Slave_IO_State                | Waiting for master to send event
+Master_Host                   | 10.211.55.9
+Master_User                   | sync
+Master_Port                   | 3306
+Connect_Retry                 | 60
+Master_Log_File               | mysql-bin.000001
+Read_Master_Log_Pos           | 7071
+Relay_Log_File                | lin-Parallels-Virtual-Platform-relay-bin.000004
+Relay_Log_Pos                 | 588
+Relay_Master_Log_File         | mysql-bin.000001
+Slave_IO_Running              | Yes
+Slave_SQL_Running             | Yes
+Replicate_Do_DB               |
+Replicate_Ignore_DB           |
+Replicate_Do_Table            |
+Replicate_Ignore_Table        |
+Replicate_Wild_Do_Table       |
+Replicate_Wild_Ignore_Table   |
+Last_Errno                    | 0
+Last_Error                    |
+Skip_Counter                  | 0
+Exec_Master_Log_Pos           | 7071
+Relay_Log_Space               | 786
+Until_Condition               | None
+Until_Log_File                |
+Until_Log_Pos                 | 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Slave_IO_Running和Slave_SQL_Running 是Yes 则代表同步正常
+如果发生错误, 可以查看以下参数排查问题。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Last_IO_Errno                 | 0
+Last_IO_Error                 |
+Last_SQL_Errno                | 0
+Last_SQL_Error                |
+Slave_SQL_Running_State       | Slave has read all relay log; waiting for the slave I/O thread to update it
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;四、mysql主从复制方案&lt;/h2&gt;
+&lt;h3&gt;1. 异步复制（Asynchronous replication）&lt;/h3&gt;
+&lt;p&gt;MySQL默认的复制即是异步的，主库在执行完客户端提交的事务后会立即将结果返给给客户端，并不关心从库是否已经接收并处理，这样就会有一个问题，主如果crash掉了，此时主上已经提交的事务可能并没有传到从上，如果此时，强行将从提升为主，可能导致新主上的数据不完整。&lt;/p&gt;
+&lt;h3&gt;2. 全同步复制（Fully synchronous replication）&lt;/h3&gt;
+&lt;p&gt;指当主库执行完一个事务，所有的从库都执行了该事务才返回给客户端。因为需要等待所有从库执行完该事务才能返回，所以全同步复制的性能必然会收到严重的影响。&lt;/p&gt;
+&lt;h3&gt;3. 半同步复制（Semisynchronous replication）&lt;/h3&gt;
+&lt;p&gt;介于异步复制和全同步复制之间，主库在执行完客户端提交的事务后不是立刻返回给客户端，而是等待至少一个从库接收到并写到relay log中才返回给客户端。相对于异步复制，半同步复制提高了数据的安全性，同时它也造成了一定程度的延迟，这个延迟最少是一个TCP/IP往返的时间。所以，半同步复制最好在低延时的网络中使用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;存在的问题&lt;/strong&gt;:
+1. 事务还没发送到从库上
+此时，客户端会收到事务提交失败的信息，客户端会重新提交该事务到新的主上，当宕机的主库重新启动后，以从库的身份重新加入到该主从结构中，会发现，该事务在从库中被提交了两次，一次是之前作为主的时候，一次是被新主同步过来的
+2. 事务已经发送到从库上
+此时，从库已经收到并应用了该事务，但是客户端仍然会收到事务提交失败的信息，重新提交该事务到新的主上。&lt;/p&gt;</content><category term="mysql主从配置"></category><category term="mysql读写分离"></category></entry><entry><title>pt-online-schema-change 在线修改表结构</title><link href="http://www.phpue.com/mysql/pt-online-schema-change.html" rel="alternate"></link><published>2017-11-01T00:00:00+08:00</published><updated>2017-11-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-11-01:/mysql/pt-online-schema-change.html</id><summary type="html">&lt;p&gt;pt-online-schema-change可以在不影响正常业务的情况下, 对数据库表结构进行修改, 修改的速度根据数据量大小决定。是一个很值得学习的工具&lt;/p&gt;</summary><content type="html">&lt;h2&gt;1. 参数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;--host=xxx --user=xxx --password=xxx&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;连接实例信息，缩写-h xxx -u xxx -p xxx，密码可以使用参数--ask-pass 手动输入。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--alter&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;结构变更语句，不需要 ALTER TABLE关键字。与原始ddl一样可以指定多个更改，用逗号分隔。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;D=db_name,t=table_name&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;指定要ddl的数据库名和表名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--max-load&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;默认为Threads_running=25。每个chunk拷贝完后，会检查 SHOW GLOBAL STATUS 的内容，检查指标是否超过了指定的阈值。如果超过，则先暂停。这里可以用逗号分隔，指定多个条件，每个条件格式： status指标=MAX_VALUE或者status指标:MAX_VALUE。如果不指定MAX_VALUE，那么工具会这只其为当前值的120%。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--max-lag&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;默认1s。每个chunk拷贝完成后，会查看所有复制Slave的延迟情况（Seconds_Behind_Master）。要是延迟大于该值，则暂停复制数据，直到所有从的滞后小于这个值。--check-interval配合使用，指定出现从库滞后超过 max-lag，则该工具将睡眠多长时间，默认1s，再检查。如--max-lag=5 --check-interval=2。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--chunk-time&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;默认0.5s，即拷贝数据行的时候，为了尽量保证0.5s内拷完一个chunk，动态调整chunk-size的大小，以适应服务器性能的变化。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--set-vars&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;使用pt-osc进行ddl要开一个session去操作，set-vars可以在执行alter之前设定这些变量，比如默认会设置--set-vars "wait_timeout=10000,innodb_lock_wait_timeout=1,lock_wait_timeout=60"。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--dry-run&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;创建和修改新表，但不会创建触发器、复制数据、和替换原表。并不真正执行，可以看到生成的执行语句，了解其执行步骤与细节，和--print配合最佳。。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--execute&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;确定修改表，则指定该参数。真正执行alter。–dry-run与–execute必须指定一个，二者相互排斥&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;1. --alter说明&lt;/h3&gt;
+&lt;p&gt;1.绝大部分情况下表上需要有主键或唯一索引，因为工具在运行当中为了保证新表也是最新的，需要旧表上创建 DELETE和UPDATE 触发器，同步到新表的时候有主键会更快。个别情况是，当alter操作就是在c1列上建立主键时，DELETE触发器将基于c1列。
+2. 子句不支持 rename 去给表重命名。
+3. alter命令原表就不支持给索引重命名，需要先drop再add，在pt-osc也一样。(mysql 5.7 支持 RENAME INDEX old_index_name TO new_index_name)。但给字段重命名，千万不要drop-add，整列数据会丢失，使用change col1 col1_new type constraint（保持类型和约束一致，否则相当于修改 column type，不能online）
+4. 子句如果是add column并且定义了not null，那么必须指定default值，否则会失败。
+5. 如果要删除外键（名 fk_foo），使用工具的时候外键名要加下划线，比如--alter "DROP FOREIGN KEY _fk_foo"&lt;/p&gt;
+&lt;h2&gt;2. 使用限制&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;原表上不能有触发器存在&lt;/li&gt;
+&lt;li&gt;在使用之前需要对磁盘容量进行评估。因为数据量会多一倍&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3. 使用示例&lt;/h2&gt;
+&lt;h3&gt;1. 添加字段&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pt-online-schema-change --user=user --password=password --host=10.0.201.34  --alter &amp;quot;ADD COLUMN f_id int default 0&amp;quot; D=confluence,t=sbtest3 --print --execute
+&lt;/pre&gt;&lt;/div&gt;</content><category term="pt-online-schema-change"></category><category term="percona-toolkit"></category><category term="mysql在线修改表结构操作"></category></entry><entry><title>Mysql 分区介绍(一) ——概述</title><link href="http://www.phpue.com/mysql/mysql-partition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition.html</id><summary type="html">&lt;p&gt;mysql分区类型介绍&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、分区类型&lt;/h2&gt;
+&lt;h3&gt;1. RANGE类型(范围分区)&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;啥意思呢? 就是range类型就是一种范围, 比如, 从1-10, 11-20, 21-30这种的方式分区, 1-10就在一个分区里, 11-20是另外一个分区, 但是看起来他们还是同一个表 &lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;咱们看一个创建的例子&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE `t1` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT &amp;#39;用户id&amp;#39;,
+  `score` int(3) NOT NULL DEFAULT &amp;#39;0&amp;#39; COMMENT &amp;#39;分数&amp;#39;,
+  PRIMARY KEY (`id`,`score`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+PARTITION BY RANGE (score)
+(PARTITION p0 VALUES LESS THAN (10) ENGINE = InnoDB,
+ PARTITION p1 VALUES LESS THAN (20) ENGINE = InnoDB,
+ PARTITION p2 VALUES LESS THAN (30) ENGINE = InnoDB,
+ PARTITION p3 VALUES LESS THAN (40) ENGINE = InnoDB)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;创建了个t1表, 并且t1有四个分区, 第一个分区p0的范围是小于10的, 第二个是小于20的。这就是一个range分区的例子。 &lt;br /&gt;
+&lt;code&gt;那为啥主键定义的是双主键呢?&lt;/code&gt; 因为分区键(score) 必须也是主键或者唯一键的一部分。&lt;/p&gt;
+&lt;p&gt;Range分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-range"&gt;Mysql 分区介绍(二) —— RANGE分区&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;2. LIST分区&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这说的有点乱, 还是直接看一个创建的例子吧&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;create table t2 (
+    id int not null,
+    uid int not null comment &amp;#39;用户id&amp;#39;,
+    score int(3) not null default 0 comment &amp;#39;分数&amp;#39;,
+    primary key(id, uid)
+)
+partition by list(uid) (
+    partition p0 values in (1,3,5,7,9),
+    partition p1 values in (2,4,6,8,10)
+)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;t2的分区键是uid, 有两个分区(这个很明显嘛), 如果uid in (1,3,5,7,9), 那么这条数据就会保存在p0中, 如果是2,4,6,8,10的话, 就会在p1中, 这就是LIST 分区&lt;/p&gt;
+&lt;p&gt;Range分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-list"&gt;Mysql 分区介绍(三) —— LIST分区&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;3. COLUMNS 分区&lt;/h3&gt;
+&lt;p&gt;COLUMNS和以上两种是很不一样的, 这个是可以用多个分区键确定分区的。有两种方式, RANGE COLUMNS 和 LIST COLUMNS&lt;/p&gt;
+&lt;h4&gt;1. RANGE COLUMNS 分区&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;类似RANGE 分区, 但是可以使用一个或多个字段值定义&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不太好理解... 还是看例子吧&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;create table t3 (
+    a int,
+    b int,
+    c char(3),
+    d int
+)
+PARTITION BY RANGE COLUMNS(a,d,c) (
+PARTITION p0 VALUES LESS THAN (5,10,&amp;#39;ggg&amp;#39;),
+PARTITION p1 VALUES LESS THAN (10,20,&amp;#39;mmm&amp;#39;),
+PARTITION p2 VALUES LESS THAN (15,30,&amp;#39;sss&amp;#39;)
+)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;分区键有多个, 并且都是范围的, 就是RANGE COLUMNS 分区&lt;/p&gt;
+&lt;p&gt;RANGE COLUMNS分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-range-columns"&gt;Mysql 分区介绍(四) —— RANGE COLUMNS分区&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;2. LIST COLUMNS 分区&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;还是看例子吧&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&amp;#39;Oskarshamn&amp;#39;, &amp;#39;Högsby&amp;#39;, &amp;#39;Mönsterås&amp;#39;),
+    PARTITION pRegion_2 VALUES IN(&amp;#39;Vimmerby&amp;#39;, &amp;#39;Hultsfred&amp;#39;, &amp;#39;Västervik&amp;#39;),
+    PARTITION pRegion_3 VALUES IN(&amp;#39;Nässjö&amp;#39;, &amp;#39;Eksjö&amp;#39;, &amp;#39;Vetlanda&amp;#39;),
+    PARTITION pRegion_4 VALUES IN(&amp;#39;Uppvidinge&amp;#39;, &amp;#39;Alvesta&amp;#39;, &amp;#39;Växjo&amp;#39;)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;LIST COLUMNS分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-list-columns"&gt;Mysql 分区介绍(五) —— LIST COLUMNS分区&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;3. HASH分区&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用分区键去确保数据可以均匀的分布在一个预先确定数字的分区上, 在hash分区中, 无需显式的指定分区&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;HASH分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-hash"&gt;Mysql 分区介绍(六) —— HASH分区&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;4. KEY分区&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;key分区类似hash分区, 接受0个或多个列名, key分区的哈希函数由MySQL服务器提供。NDB集群使用md5()；使用其他存储引擎的表，服务器采用自己的内部的哈希函数是基于相同的算法password()。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;KEY分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-key"&gt;Mysql 分区介绍(七) —— KEY分区&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;5. 子分区&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;子分区也称为复合分区, 在分区的基础上进一步进行分区的方式&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;子分区的详细介绍请看&lt;a href="http://www.phpue.com/mysql/mysql-partition-subpartition"&gt;Mysql 分区介绍(八) —— 子分区&lt;/a&gt;&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql list分区"></category><category term="range分区"></category><category term="子分区"></category><category term="hash分区"></category><category term="key分区"></category></entry><entry><title>Mysql 分区介绍(六) —— HASH分区</title><link href="http://www.phpue.com/mysql/mysql-partition-hash.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-hash.html</id><summary type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;</summary><content type="html">&lt;p&gt;hash分区是使用主键去确保数据均匀分布在一个预先确定数字的分区上. 在range 或list分区中. 你必须显式的指定给出的数据写入哪个分区或设置一个列值去保存; 在hash分区中. Mysql已经为你准备的. 你只需要指定一个列的值或表达式基于列值去hash和分区的数字在哪个分区表中.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果不包含PARTITIONS, 那么默认为1个分区&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY HASH( YEAR(hired) )
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;expr 必须是非恒量的数, 非随机的数, 就是数字是不同的, 但是是可以确定的。&lt;/p&gt;
+&lt;p&gt;如何确定一条数据的分区呢?先创建一个表&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE t1 (col1 INT, col2 CHAR(5), col3 DATE)
+    PARTITION BY HASH( YEAR(col3) )
+    PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果你插入一条记录到T1的col3值为“2005-09-15 '，然后分配其存储决定如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;MOD(YEAR(&amp;#39;2005-09-01&amp;#39;),4)
+=  MOD(2005,4)
+=  1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;1. 线性hash分区&lt;/h2&gt;
+&lt;p&gt;线性hash分区使用一个线性的2的幂运算法则&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;REATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LINEAR HASH( YEAR(hired) )
+PARTITIONS 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;给定的一个表达式expr，分区中的记录存储在线性散列使用分区数n在Num的分区，其中n是根据下面的算法推导：
+1. 发现大于2的数我们称这种价值V下的力量；它可以计算为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;V = POWER(2, CEILING(LOG(2, num)))
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;（假设数字为13）。然后LOG（2,13）是3.7004397181411。CEILING（3.7004397181411）是4，和V =功率（2,4），这是16。）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;N = F(column_list) &amp;amp; (V - 1).&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;N &amp;gt;= num:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Set V = V / 2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Set N = N &amp;amp; (V - 1)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在线性哈希分区的好处是增加，下降，合并，拆分分区可以更快，有利于在处理含有非常大量的数据表（百万兆字节）。缺点是，与常规哈希分区获得的分布相比，分区之间不太可能均匀分布数据.&lt;/p&gt;</content><category term="mysql分区"></category><category term="hash分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(七) —— KEY分区</title><link href="http://www.phpue.com/mysql/mysql-partition-key.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-key.html</id><summary type="html">&lt;p&gt;Key分区和HASH分区非常类似。但是也有一些区别。本章就详细介绍一下Mysql分区的Key分区方式&lt;/p&gt;</summary><content type="html">&lt;p&gt;Key分区和HASH分区非常类似。它们主要的区别在于:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Key分区默认使用主键作为分区键&lt;/li&gt;
+&lt;li&gt;key分区只接受一个列表的零个或多个列名。任何用作分区键的列都必须包含表主键的一部分或全部，如果表有一个。如果没有指定列名为分区键，则使用表主键。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE k1 (
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(20)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="key分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(三) —— LIST分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list.html</id><summary type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;</summary><content type="html">&lt;p&gt;LIST不同于RANGE分区, 每个分区必须被显式的定义, 每个分区是根据列值的成员在一组列表中的元素定义的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT,
+    store_id INT
+)
+PARTITION BY LIST(store_id) (
+    PARTITION pNorth VALUES IN (3,5,6,9,17),
+    PARTITION pEast VALUES IN (1,2,10,11,19,20),
+    PARTITION pWest VALUES IN (4,12,13,14,18),
+    PARTITION pCentral VALUES IN (7,8,15,16)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果要删除一个分区的所有数据, 可以通过 ALTER TABLE员工表, TRUNCATE PARTITION pWest, 并且效率比DELETE高多了&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;如果一次性写入多条数据, 在INNODB中, 会将这个认为是单个事务, 如果存在不符合的值, 则不会写入成功, 在MYSIAM中, 因为没有事务处理, 符合条件的值会写入, 不符合的会被抛弃。&lt;/p&gt;</content><category term="mysql分区"></category><category term="List分区"></category><category term="List Columns分区"></category><category term="列分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(五) —— LIST COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-list-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-list-columns.html</id><summary type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;</summary><content type="html">&lt;p&gt;Mysql 5.6开始支持LIST COLUMNS分区, 可以开始使用多个列作为分区的键, 并且列的数据类型除了数字类型可以作为分区列; 你也可以使用字符串类型, DATE和DATETIME&lt;/p&gt;
+&lt;p&gt;你有一个在12个城市客户的业务, 为了销售和市场的目的, 你的组织每3个城市划分为一个区域
+针对LIST COLUMNS分区, 你可以基于城市的名称创建一个客户数据表并声明4个分区当你的客户存在对应的这个区域:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_1 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(city) (
+    PARTITION pRegion_1 VALUES IN(&amp;#39;Oskarshamn&amp;#39;, &amp;#39;Högsby&amp;#39;, &amp;#39;Mönsterås&amp;#39;),
+    PARTITION pRegion_2 VALUES IN(&amp;#39;Vimmerby&amp;#39;, &amp;#39;Hultsfred&amp;#39;, &amp;#39;Västervik&amp;#39;),
+    PARTITION pRegion_3 VALUES IN(&amp;#39;Nässjö&amp;#39;, &amp;#39;Eksjö&amp;#39;, &amp;#39;Vetlanda&amp;#39;),
+    PARTITION pRegion_4 VALUES IN(&amp;#39;Uppvidinge&amp;#39;, &amp;#39;Alvesta&amp;#39;, &amp;#39;Växjo&amp;#39;)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;使用日期分区&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE customers_2 (
+    first_name VARCHAR(25),
+    last_name VARCHAR(25),
+    street_1 VARCHAR(30),
+    street_2 VARCHAR(30),
+    city VARCHAR(15),
+    renewal DATE
+)
+PARTITION BY LIST COLUMNS(renewal) (
+    PARTITION pWeek_1 VALUES IN(&amp;#39;2010-02-01&amp;#39;, &amp;#39;2010-02-02&amp;#39;, &amp;#39;2010-02-03&amp;#39;,
+        &amp;#39;2010-02-04&amp;#39;, &amp;#39;2010-02-05&amp;#39;, &amp;#39;2010-02-06&amp;#39;, &amp;#39;2010-02-07&amp;#39;),
+    PARTITION pWeek_2 VALUES IN(&amp;#39;2010-02-08&amp;#39;, &amp;#39;2010-02-09&amp;#39;, &amp;#39;2010-02-10&amp;#39;,
+        &amp;#39;2010-02-11&amp;#39;, &amp;#39;2010-02-12&amp;#39;, &amp;#39;2010-02-13&amp;#39;, &amp;#39;2010-02-14&amp;#39;),
+    PARTITION pWeek_3 VALUES IN(&amp;#39;2010-02-15&amp;#39;, &amp;#39;2010-02-16&amp;#39;, &amp;#39;2010-02-17&amp;#39;,
+        &amp;#39;2010-02-18&amp;#39;, &amp;#39;2010-02-19&amp;#39;, &amp;#39;2010-02-20&amp;#39;, &amp;#39;2010-02-21&amp;#39;),
+    PARTITION pWeek_4 VALUES IN(&amp;#39;2010-02-22&amp;#39;, &amp;#39;2010-02-23&amp;#39;, &amp;#39;2010-02-24&amp;#39;,
+        &amp;#39;2010-02-25&amp;#39;, &amp;#39;2010-02-26&amp;#39;, &amp;#39;2010-02-27&amp;#39;, &amp;#39;2010-02-28&amp;#39;)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是这种情况在日期增长到非常大的时候是很复杂的, 所以这种还是使用RANGE 分区方式比较好。&lt;/p&gt;</content><category term="mysql分区"></category><category term="List分区"></category><category term="List Columns分区"></category><category term="列分区"></category><category term="数据库分区"></category></entry><entry><title>Mysql 分区介绍(九) —— 分区管理</title><link href="http://www.phpue.com/mysql/mysql-partition-manage.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-manage.html</id><summary type="html">&lt;p&gt;本文详细介绍一下关于Mysql分区的基本操作(新增、编辑、删除分区以及如何重新划分分区)、交换分区和分区的基本维护方式, 在实际应用中, 分区如何修剪优化, 分区的限制和性能&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、分区操作&lt;/h2&gt;
+&lt;h4&gt;1. 将没有分区的表改为分区表&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE trb3 PARTITION BY KEY(id) PARTITIONS 2;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 删除分区&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# 删除所有分区, 同时数据丢失
+ALTER TABLE es2 REMOVE PARTITIONING;
+
+# 删除指定分区, 数据丢失
+ALTER TABLE tr DROP PARTITION p2;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3. SELECT指定分区查询&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select * from daily_rank_1_1 partition (p2015_04_24) limit 10;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4. 添加分区&lt;/h4&gt;
+&lt;p&gt;如果设置了MAXVALUE则无法添加新分区, 会提示 MAXVALUE can only be used in last partition definition, 这时可以使用修改分区来解决&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE members ADD PARTITION (PARTITION p3 VALUES LESS THAN (2010));
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;5. 重新划分分区&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE table1 REORGANIZE PARTITION 要修改的分区名(可以多个, 逗号分隔) INTO (
+    PARTITION 新分区1的名字 VALUES LESS THAN (值),
+    PARTITION 新分区2的名字 VALUES LESS THAN (值)
+    ...
+)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;修改一个分区成两个分区&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;alter table daily_rank_1_1 reorganize partition p2015_04_28 into(
+partition p2015_04_28 values less than (to_days(&amp;#39;2015-04-28&amp;#39;)),
+partition pmax values less than(MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;重新划分多个分区&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE members REORGANIZE PARTITION p0,p1,p2,p3 INTO (
+    PARTITION m0 VALUES LESS THAN (1980),
+    PARTITION m1 VALUES LESS THAN (2000)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;分区修改的原则&lt;/code&gt;:&lt;br /&gt;
+- 1. 不能与原方案有重叠
+- 2. 同时对多个分区划分必须是连续的分区
+- 3. 分区类型不可以更改, 可以通过ALTER TABLE ... PARTITION BY ...实现&lt;/p&gt;
+&lt;h4&gt;6. 修改分区数量(HASH/Key分区)&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE clients COALESCE PARTITION 4;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;二、交换分区和子分区&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;支持交换分区的条件&lt;/code&gt;
+- 1. 表自身不是分区表
+- 2. 不是临时表
+- 3. 两个表的结构相同
+- 4. 表不包含外键
+- 5. 表的数据没有出界&lt;/p&gt;
+&lt;p&gt;如果要执行操作, 必须具有DROP权限&lt;br /&gt;
+- 1.  执行 ALTER TABLE ... EXCHANGE PARTITION不会在分区表或交换表上调用任何触发器
+- 2. auto_increment会发生重置&lt;/p&gt;
+&lt;p&gt;具体操作:
+pt是分区表, p是分区或子分区&lt;/p&gt;
+&lt;h4&gt;1. 与非分区表交换分区&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE e (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30)
+)
+    PARTITION BY RANGE (id) (
+        PARTITION p0 VALUES LESS THAN (50),
+        PARTITION p1 VALUES LESS THAN (100),
+        PARTITION p2 VALUES LESS THAN (150),
+        PARTITION p3 VALUES LESS THAN (MAXVALUE)
+);
+INSERT INTO e VALUES
+    (1669, &amp;quot;Jim&amp;quot;, &amp;quot;Smith&amp;quot;),
+    (337, &amp;quot;Mary&amp;quot;, &amp;quot;Jones&amp;quot;),
+    (16, &amp;quot;Frank&amp;quot;, &amp;quot;White&amp;quot;),
+    (2005, &amp;quot;Linda&amp;quot;, &amp;quot;Black&amp;quot;);
+mysql&amp;gt; CREATE TABLE e2 LIKE e;
+Query OK, 0 rows affected (1.34 sec)
+mysql&amp;gt; ALTER TABLE e2 REMOVE PARTITIONING;
+Query OK, 0 rows affected (0.90 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+# 将p0分区的数据写入e2
+ALTER TABLE e EXCHANGE PARTITION p0 WITH TABLE e2;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果没有匹配到数据, 则提示Found row that does not match the partition&lt;/p&gt;
+&lt;h4&gt;2. 交换一个子分区到一个没有分区的表&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE es (
+    -&amp;gt;     id INT NOT NULL,
+    -&amp;gt;     fname VARCHAR(30),
+    -&amp;gt;     lname VARCHAR(30)
+    -&amp;gt; )
+    -&amp;gt;     PARTITION BY RANGE (id)
+    -&amp;gt;     SUBPARTITION BY KEY (lname)
+    -&amp;gt;     SUBPARTITIONS 2 (
+    -&amp;gt;         PARTITION p0 VALUES LESS THAN (50),
+    -&amp;gt;         PARTITION p1 VALUES LESS THAN (100),
+    -&amp;gt;         PARTITION p2 VALUES LESS THAN (150),
+    -&amp;gt;         PARTITION p3 VALUES LESS THAN (MAXVALUE)
+    -&amp;gt;     );
+Query OK, 0 rows affected (2.76 sec)
+mysql&amp;gt; INSERT INTO es VALUES
+    -&amp;gt;     (1669, &amp;quot;Jim&amp;quot;, &amp;quot;Smith&amp;quot;),
+    -&amp;gt;     (337, &amp;quot;Mary&amp;quot;, &amp;quot;Jones&amp;quot;),
+    -&amp;gt;     (16, &amp;quot;Frank&amp;quot;, &amp;quot;White&amp;quot;),
+    -&amp;gt;     (2005, &amp;quot;Linda&amp;quot;, &amp;quot;Black&amp;quot;);
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql&amp;gt; CREATE TABLE es2 LIKE es;
+Query OK, 0 rows affected (1.27 sec)
+mysql&amp;gt; ALTER TABLE es2 REMOVE PARTITIONING;
+Query OK, 0 rows affected (0.70 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+# 将p3sp0的数据交换到es2表
+mysql&amp;gt; ALTER TABLE es EXCHANGE PARTITION p3sp0 WITH TABLE es2;
+Query OK, 0 rows affected (0.29 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果一个表拥有子分区, 则不能移动这个父分区到表中&lt;/p&gt;
+&lt;h2&gt;三、分区维护&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;重建分区
+删除所有记录存储在分区，然后重新插入它们。整理碎片&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE t1 REBUILD PARTITION p0, p1;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;优化分区
+优化分区来回收未使用的空间和整理的分区中的数据文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE t1 OPTIMIZE PARTITION p0, p1;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;分析分区&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE t1 ANALYZE PARTITION p3;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;检查分区&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE trb3 CHECK PARTITION p1;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;修复分区&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ALTER TABLE t1 REPAIR PARTITION p0,p1;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;获取分区有效信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SHOW CREATE TABLE trb3\G
+*************************** 1. row ***************************
+       Table: trb3
+Create Table: CREATE TABLE `trb3` (
+  `id` int(11) default NULL,
+  `name` varchar(50) default NULL,
+  `purchased` date default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
+PARTITION BY RANGE (YEAR(purchased)) (
+  PARTITION p0 VALUES LESS THAN (1990) ENGINE = MyISAM,
+  PARTITION p1 VALUES LESS THAN (1995) ENGINE = MyISAM,
+  PARTITION p2 VALUES LESS THAN (2000) ENGINE = MyISAM,
+  PARTITION p3 VALUES LESS THAN (2005) ENGINE = MyISAM
+)
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;select *
+from INFORMATION_SCHEMA.PARTITIONS
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;四、分区修剪&lt;/h2&gt;
+&lt;p&gt;在执行sql时, 优化器会自动根据分区的条件, 进行分区选择来提高性能。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;分区修剪的条件&lt;/code&gt;: &lt;br /&gt;
+- 1. partition_column = constant
+- 2. partition_column IN (constant1, constant2, ..., constantN)
+where条件中包含&amp;lt;，&amp;gt;，&amp;lt; =，&amp;gt; =，和&amp;lt; &amp;gt; 等之间范围查询的时候, 就可以使用分区修剪
+SELECT、UPDATE和DELETE都可以修剪分区, 但是INSERT无法修剪分区&lt;/p&gt;
+&lt;h2&gt;五、分区选择&lt;/h2&gt;
+&lt;p&gt;在执行操作的时候优化器会根据语句自动进行修剪, 但是在有些时候是不同的:
+1. 要检查的分区由语句的发布者指定，与分区剪枝不同，它是自动的。
+2. 而分区修剪仅适用于查询，分区明确的选择是查询和多个DML语句支持。
+支持的语句: SELECT、DELETE、INSERT、REPLACE、UPDATE、LOAD DATA.、LOAD XML.&lt;/p&gt;
+&lt;p&gt;具体的语句:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;      PARTITION (partition_names)
+
+      partition_names:
+          partition_name, ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SELECT * FROM employees PARTITION (p1);
+
+mysql&amp;gt; SELECT * FROM employees PARTITION (p0, p2)
+    -&amp;gt;     WHERE lname LIKE &amp;#39;S%&amp;#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+|  4 | Jim   | Smith |        2 |             4 |
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+2 rows in set (0.00 sec)
+
+mysql&amp;gt; SELECT id, CONCAT(fname, &amp;#39; &amp;#39;, lname) AS name
+    -&amp;gt;     FROM employees PARTITION (p0) ORDER BY lname;
++----+----------------+
+| id | name           |
++----+----------------+
+|  3 | Ellen Johnson  |
+|  4 | Jim Smith      |
+|  1 | Bob Taylor     |
+|  2 | Frank Williams |
++----+----------------+
+4 rows in set (0.06 sec)
+
+mysql&amp;gt; SELECT store_id, COUNT(department_id) AS c
+    -&amp;gt;     FROM employees PARTITION (p1,p2,p3)
+    -&amp;gt;     GROUP BY store_id HAVING c &amp;gt; 4;
++---+----------+
+| c | store_id |
++---+----------+
+| 5 |        2 |
+| 5 |        3 |
++---+----------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;你也可以使用PARTITION 在INSERT...SELECT语句上&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE employees_copy LIKE employees;
+Query OK, 0 rows affected (0.28 sec)
+
+mysql&amp;gt; INSERT INTO employees_copy
+    -&amp;gt;     SELECT * FROM employees PARTITION (p2);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql&amp;gt; SELECT * FROM employees_copy;
++----+--------+----------+----------+---------------+
+| id | fname  | lname    | store_id | department_id |
++----+--------+----------+----------+---------------+
+| 10 | Lou    | Waters   |        2 |             4 |
+| 11 | Jill   | Stone    |        1 |             4 |
+| 12 | Roger  | White    |        3 |             2 |
+| 13 | Howard | Andrews  |        1 |             2 |
+| 14 | Fred   | Goldberg |        3 |             3 |
++----+--------+----------+----------+---------------+
+5 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也可以在联表中使用&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE stores (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    city VARCHAR(30) NOT NULL
+)
+    PARTITION BY HASH(id)
+    PARTITIONS 2;
+
+INSERT INTO stores VALUES
+    (&amp;#39;&amp;#39;, &amp;#39;Nambucca&amp;#39;), (&amp;#39;&amp;#39;, &amp;#39;Uranga&amp;#39;),
+    (&amp;#39;&amp;#39;, &amp;#39;Bellingen&amp;#39;), (&amp;#39;&amp;#39;, &amp;#39;Grafton&amp;#39;);
+
+CREATE TABLE departments  (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
+)
+    PARTITION BY KEY(id)
+    PARTITIONS 2;
+
+INSERT INTO departments VALUES
+    (&amp;#39;&amp;#39;, &amp;#39;Sales&amp;#39;), (&amp;#39;&amp;#39;, &amp;#39;Customer Service&amp;#39;),
+    (&amp;#39;&amp;#39;, &amp;#39;Delivery&amp;#39;), (&amp;#39;&amp;#39;, &amp;#39;Accounting&amp;#39;);
+
+mysql&amp;gt; SELECT
+    -&amp;gt;     e.id AS &amp;#39;Employee ID&amp;#39;, CONCAT(e.fname, &amp;#39; &amp;#39;, e.lname) AS Name,
+    -&amp;gt;     s.city AS City, d.name AS department
+    -&amp;gt; FROM employees AS e
+    -&amp;gt;     JOIN stores PARTITION (p1) AS s ON e.store_id=s.id
+    -&amp;gt;     JOIN departments PARTITION (p0) AS d ON e.department_id=d.id
+    -&amp;gt; ORDER BY e.lname;
++-------------+---------------+-----------+------------+
+| Employee ID | Name          | City      | department |
++-------------+---------------+-----------+------------+
+|          14 | Fred Goldberg | Bellingen | Delivery   |
+|           5 | Mary Jones    | Nambucca  | Sales      |
+|          17 | Mark Morgan   | Bellingen | Delivery   |
+|           9 | Andy Smith    | Nambucca  | Delivery   |
+|           8 | June Wilson   | Bellingen | Sales      |
++-------------+---------------+-----------+------------+
+5 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;删除中使用分区选择&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT * FROM employees WHERE fname LIKE &amp;#39;j%&amp;#39;;
++----+-------+--------+----------+---------------+
+| id | fname | lname  | store_id | department_id |
++----+-------+--------+----------+---------------+
+|  4 | Jim   | Smith  |        2 |             4 |
+|  8 | June  | Wilson |        3 |             1 |
+| 11 | Jill  | Stone  |        1 |             4 |
++----+-------+--------+----------+---------------+
+3 rows in set (0.00 sec)
+
+mysql&amp;gt; DELETE FROM employees PARTITION (p0, p1)
+    -&amp;gt;     WHERE fname LIKE &amp;#39;j%&amp;#39;;
+Query OK, 2 rows affected (0.09 sec)
+
+mysql&amp;gt; SELECT * FROM employees WHERE fname LIKE &amp;#39;j%&amp;#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;更新中使用分区选择&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; UPDATE employees PARTITION (p0)
+    -&amp;gt;     SET store_id = 2 WHERE fname = &amp;#39;Jill&amp;#39;;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql&amp;gt; SELECT * FROM employees WHERE fname = &amp;#39;Jill&amp;#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        1 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+
+mysql&amp;gt; UPDATE employees PARTITION (p2)
+    -&amp;gt;     SET store_id = 2 WHERE fname = &amp;#39;Jill&amp;#39;;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&amp;gt; SELECT * FROM employees WHERE fname = &amp;#39;Jill&amp;#39;;
++----+-------+-------+----------+---------------+
+| id | fname | lname | store_id | department_id |
++----+-------+-------+----------+---------------+
+| 11 | Jill  | Stone |        2 |             4 |
++----+-------+-------+----------+---------------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;INSERT和REPLACE INTO使用分区选择&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO employees PARTITION (p2) VALUES (20, &amp;#39;Jan&amp;#39;, &amp;#39;Jones&amp;#39;, 1, 3);
+ERROR 1729 (HY000): Found a row not matching the given partition set
+mysql&amp;gt; INSERT INTO employees PARTITION (p3) VALUES (20, &amp;#39;Jan&amp;#39;, &amp;#39;Jones&amp;#39;, 1, 3);
+Query OK, 1 row affected (0.07 sec)
+
+mysql&amp;gt; REPLACE INTO employees PARTITION (p0) VALUES (20, &amp;#39;Jan&amp;#39;, &amp;#39;Jones&amp;#39;, 3, 2);
+ERROR 1729 (HY000): Found a row not matching the given partition set
+
+mysql&amp;gt; REPLACE INTO employees PARTITION (p3) VALUES (20, &amp;#39;Jan&amp;#39;, &amp;#39;Jones&amp;#39;, 3, 2);
+Query OK, 2 rows affected (0.09 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;六、分区的限制&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;无法使用存储过程、存储功能、UDF和插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;无法用户变量或声明变量&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;不允许位操作&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;七、性能影响&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;分区的创建、修改、删除取决于文件系统。应该确保large_files_support启用，open_files_limit设置正确&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;在执行分区操作时需要上写锁, 但是不影响查询, 分区操作完成后会立即执行插入和更新操作&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;分区操作， 查询、更新往往是MYISAM比INNODB更快&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;使用索引可以在非分区表提高性能, 使用分区修剪也可以显著的提高性能&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;加载数据使用缓冲来提高性能。您应该知道缓冲区每分区使用130KB内存来实现这一点。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;Mysql5.6.7之前, 分区最大数为1024个, 从5.6.7开始, 分区表的数最多是8192个, 包括子分区&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ol&gt;
+&lt;li&gt;分区表不支持查询缓存&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content><category term="mysql分区"></category><category term="数据库分区"></category><category term="分区管理"></category><category term="分区基本操作"></category><category term="交换分区"></category><category term="分区修剪优化"></category></entry><entry><title>Mysql分区表如何处理null</title><link href="http://www.phpue.com/mysql/mysql-partition-null.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-null.html</id><summary type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区在MySQL中没有不允许为空的分区表达式的值，它是否是一个列值或用户提供的表达式的值。尽管允许使用null作为表达式的值，否则必须产生一个整数，但要记住，null不是一个数字。MySQL的分区实现将null视为小于任何非空值，正如按顺序办事一样。&lt;/p&gt;
+&lt;h2&gt;1. RANGE 分区如何处理null.&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE t1 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE(c1) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (0),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN MAXVALUE
+    -&amp;gt; );
+Query OK, 0 rows affected (0.09 sec)
+mysql&amp;gt; CREATE TABLE t2 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE(c1) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (-5),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (0),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN (10),
+    -&amp;gt;     PARTITION p3 VALUES LESS THAN MAXVALUE
+    -&amp;gt; );
+Query OK, 0 rows affected (0.09 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;你可以看到创建的分区，这两个CREATE TABLE语句中使用下列查询在information_schema数据库分区表：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &amp;gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &amp;gt;   WHERE TABLE_SCHEMA = &amp;#39;p&amp;#39; AND TABLE_NAME LIKE &amp;#39;t_&amp;#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          0 |              0 |           0 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          0 |              0 |           0 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;写入测试数据&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO t1 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&amp;gt; INSERT INTO t2 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+Query OK, 1 row affected (0.00 sec)
+mysql&amp;gt; SELECT * FROM t1;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+mysql&amp;gt; SELECT * FROM t2;
++------+--------+
+| id   | name   |
++------+--------+
+| NULL | mothra |
++------+--------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT TABLE_NAME, PARTITION_NAME, TABLE_ROWS, AVG_ROW_LENGTH, DATA_LENGTH
+     &amp;gt;   FROM INFORMATION_SCHEMA.PARTITIONS
+     &amp;gt;   WHERE TABLE_SCHEMA = &amp;#39;p&amp;#39; AND TABLE_NAME LIKE &amp;#39;t_&amp;#39;;
++------------+----------------+------------+----------------+-------------+
+| TABLE_NAME | PARTITION_NAME | TABLE_ROWS | AVG_ROW_LENGTH | DATA_LENGTH |
++------------+----------------+------------+----------------+-------------+
+| t1         | p0             |          1 |             20 |          20 |
+| t1         | p1             |          0 |              0 |           0 |
+| t1         | p2             |          0 |              0 |           0 |
+| t2         | p0             |          1 |             20 |          20 |
+| t2         | p1             |          0 |              0 |           0 |
+| t2         | p2             |          0 |              0 |           0 |
+| t2         | p3             |          0 |              0 |           0 |
++------------+----------------+------------+----------------+-------------+
+7 rows in set (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;所以, null会被写入第一个分区中。&lt;/p&gt;
+&lt;h2&gt;二、LIST分区如何处理null&lt;/h2&gt;
+&lt;p&gt;一个被列表分隔的表，如果且仅当其中一个分区是使用包含null的值列表定义的，则允许空值。与此相反的是，列表中没有显式使用空值的表拒绝了导致分区表达式空值的行。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE ts1 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&amp;gt; INSERT INTO ts1 VALUES (9, &amp;#39;mothra&amp;#39;);
+ERROR 1504 (HY000): Table has no partition for value 9
+mysql&amp;gt; INSERT INTO ts1 VALUES (NULL, &amp;#39;mothra&amp;#39;);
+ERROR 1504 (HY000): Table has no partition for value NULL
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;只有行具有C1值0和8包括可插入TS1之间。null在这个范围之外，就像数字9。我们可以创建表TS2和TS3含有空值的列表，如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE ts2 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8),
+    -&amp;gt;     PARTITION p3 VALUES IN (NULL)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+mysql&amp;gt; CREATE TABLE ts3 (
+    -&amp;gt;     c1 INT,
+    -&amp;gt;     c2 VARCHAR(20)
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY LIST(c1) (
+    -&amp;gt;     PARTITION p0 VALUES IN (0, 3, 6),
+    -&amp;gt;     PARTITION p1 VALUES IN (1, 4, 7, NULL),
+    -&amp;gt;     PARTITION p2 VALUES IN (2, 5, 8)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.01 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、HASH和KEY如何处理null&lt;/h2&gt;
+&lt;p&gt;对于由哈希表或键分隔的表，NULL的处理方式有些不同。在这些情况下，任何产生空值的分区表达式都被视为返回值为零。&lt;/p&gt;</content><category term="mysql分区"></category><category term="mysql分区对null的处理"></category><category term="分区处理"></category><category term="分区管理"></category></entry><entry><title>Mysql 分区介绍(二) —— RANGE分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range.html</id><summary type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;/p&gt;</summary><content type="html">&lt;p&gt;通过范围的方式进行分区, 为每个分区给出一定的范围, 范围必须是连续的并且不能重复, 使用VALUES LESS THAN操作符&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;让我们先来创建一个range分区的表&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6),
+    PARTITION p1 VALUES LESS THAN (11),
+    PARTITION p2 VALUES LESS THAN (16),
+    PARTITION p3 VALUES LESS THAN (21)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;store_id 小于6的, 会被放入第一个分区, 小于11的会放入第二个分区。&lt;br&gt;
+&lt;code&gt;如果我的store_id大于21怎么办呢？&lt;/code&gt;, 所以我们得修改一下这个创建分区的方式。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT &amp;#39;1970-01-01&amp;#39;,
+    separated DATE NOT NULL DEFAULT &amp;#39;9999-12-31&amp;#39;,
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+)
+PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6),
+    PARTITION p1 VALUES LESS THAN (11),
+    PARTITION p2 VALUES LESS THAN (16),
+    PARTITION p3 VALUES LESS THAN (21),
+    PARTITION p4 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;增加了一个MAXVALUE, MAXVALUE的意思是, 大于21的数据都会放入这个分区, 当然, 还有另外一种方式去避免这个问题, 就是在INSERT的时候增加IGNORE关键字。&lt;br /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;分区键类型为时间转时间戳&lt;/code&gt; &lt;br /&gt;
+可以使用UNIX-TIMESTAMP()&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE quarterly_report_status (
+    report_id INT NOT NULL,
+    report_status VARCHAR(20) NOT NULL,
+    report_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
+PARTITION BY RANGE ( UNIX_TIMESTAMP(report_updated) ) (
+    PARTITION p0 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-01-01 00:00:00&amp;#39;) ),
+    PARTITION p1 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-04-01 00:00:00&amp;#39;) ),
+    PARTITION p2 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-07-01 00:00:00&amp;#39;) ),
+    PARTITION p3 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2008-10-01 00:00:00&amp;#39;) ),
+    PARTITION p4 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-01-01 00:00:00&amp;#39;) ),
+    PARTITION p5 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-04-01 00:00:00&amp;#39;) ),
+    PARTITION p6 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-07-01 00:00:00&amp;#39;) ),
+    PARTITION p7 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2009-10-01 00:00:00&amp;#39;) ),
+    PARTITION p8 VALUES LESS THAN ( UNIX_TIMESTAMP(&amp;#39;2010-01-01 00:00:00&amp;#39;) ),
+    PARTITION p9 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;除了UNIX_TIMESTAMP外,其他涉及到时间戳的表达式都是不被允许的&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;基于时间数字的分区&lt;/code&gt; &lt;br /&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE members (
+    firstname VARCHAR(25) NOT NULL,
+    lastname VARCHAR(25) NOT NULL,
+    username VARCHAR(16) NOT NULL,
+    email VARCHAR(35),
+    joined DATE NOT NULL
+)
+PARTITION BY RANGE(YEAR(joined) ) (
+    PARTITION p0 VALUES LESS THAN (1960),
+    PARTITION p1 VALUES LESS THAN (1970),
+    PARTITION p2 VALUES LESS THAN (1980),
+    PARTITION p3 VALUES LESS THAN (1990),
+    PARTITION p4 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql range分区"></category><category term="range分区"></category><category term="range columns 分区"></category></entry><entry><title>Mysql 分区介绍(四) —— RANGE COLUMNS分区</title><link href="http://www.phpue.com/mysql/mysql-partition-range-columns.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-range-columns.html</id><summary type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。Range Columns可以用在多列分区的分区结构中&lt;/p&gt;</summary><content type="html">&lt;p&gt;RANGE COLUMNS和RANGE分区是非常类似的, 但是这两个也有很多不同的地方。
+- 1. RANGE COLUMNS 不可以使用表达式, 只能使用列名
+- 2. RANGE COLUMNS 接受一个或多个字段的列表
+- 3. RANGE COLUMNS 分区列是不限制于数字列的;字符串, DATE和DATETIME 列也可以使用在分区列&lt;/p&gt;
+&lt;p&gt;基本定义:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE table_name
+PARTITIONED BY RANGE COLUMNS(column_list) (
+    PARTITION partition_name VALUES LESS THAN (value_list)[,
+    PARTITION partition_name VALUES LESS THAN (value_list)][,
+    ...]
+)
+column_list:
+    column_name[, column_name][, ...]
+value_list:
+    value[, value][, ...]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;column_list是一个或多个列名, value_list是和column_list相对应的一个或多个值&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; CREATE TABLE rcx (
+    -&amp;gt;     a INT,
+    -&amp;gt;     b INT,
+    -&amp;gt;     c CHAR(3),
+    -&amp;gt;     d INT
+    -&amp;gt; )
+    -&amp;gt; PARTITION BY RANGE COLUMNS(a,d,c) (
+    -&amp;gt;     PARTITION p0 VALUES LESS THAN (5,10,&amp;#39;ggg&amp;#39;),
+    -&amp;gt;     PARTITION p1 VALUES LESS THAN (10,20,&amp;#39;mmm&amp;#39;),
+    -&amp;gt;     PARTITION p2 VALUES LESS THAN (15,30,&amp;#39;sss&amp;#39;),
+    -&amp;gt;     PARTITION p3 VALUES LESS THAN (MAXVALUE,MAXVALUE,MAXVALUE)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.15 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们写入三条数据到这个表每个列的值是5, 三条数据都将存储在p1分区, 因为每个列的值都不小于5, 所以我们可以查询INFORMATION_SCHEMA.PARTITIONS:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO r1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;r1&amp;#39;;
++----------------+------------+
+| PARTITION_NAME | TABLE_ROWS |
++----------------+------------+
+| p0             |          0 |
+| p1             |          3 |
++----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;同样的, RANGE COLUMNS和RANGE分区一样, 也是支持MAXVALUE的。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE rc1 (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS(a, b) (
+    PARTITION p0 VALUES LESS THAN (5, 12),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE, MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是在此时, 写入的数据分布也会发生很大变化&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO rc1 VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;rc1&amp;#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          2 |
+| p            | p1             |          1 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;因为我们比较的是行数据而非标量值&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; SELECT (5,10) &amp;lt; (5,12), (5,11) &amp;lt; (5,12), (5,12) &amp;lt; (5,12);
++-----------------+-----------------+-----------------+
+| (5,10) &amp;lt; (5,12) | (5,11) &amp;lt; (5,12) | (5,12) &amp;lt; (5,12) |
++-----------------+-----------------+-----------------+
+|               1 |               1 |               0 |
++-----------------+-----------------+-----------------+
+1 row in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果是单个字段的RANGE COLUMNS分区, 那么和RANGE分区是一致的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE rx (
+    a INT,
+    b INT
+)
+PARTITION BY RANGE COLUMNS (a)  (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (MAXVALUE)
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果我们新增行(5,10), (5, 11)和(5,12)到表中, 我们可以看到他们存储的位置是一样的&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mysql&amp;gt; INSERT INTO rx VALUES (5,10), (5,11), (5,12);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql&amp;gt; SELECT PARTITION_NAME,TABLE_ROWS
+    -&amp;gt;     FROM INFORMATION_SCHEMA.PARTITIONS
+    -&amp;gt;     WHERE TABLE_NAME = &amp;#39;rx&amp;#39;;
++--------------+----------------+------------+
+| TABLE_SCHEMA | PARTITION_NAME | TABLE_ROWS |
++--------------+----------------+------------+
+| p            | p0             |          0 |
+| p            | p1             |          3 |
++--------------+----------------+------------+
+2 rows in set (0.00 sec)
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql range分区"></category><category term="range分区"></category><category term="range columns 分区"></category></entry><entry><title>Mysql 分区介绍(八) —— 子分区</title><link href="http://www.phpue.com/mysql/mysql-partition-subpartition.html" rel="alternate"></link><published>2017-10-02T00:00:00+08:00</published><updated>2017-10-02T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-02:/mysql/mysql-partition-subpartition.html</id><summary type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;</summary><content type="html">&lt;p&gt;分区也被称为复合分区在分区表中每个分区的进一步划分。子分区也必须是hash分区/key分区&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (
+id INT, purchased DATE
+)
+PARTITION BY RANGE( YEAR(purchased) )
+SUBPARTITION BY HASH( TO_DAYS(purchased) )
+SUBPARTITIONS 2 (
+    PARTITION p0 VALUES LESS THAN (1990),
+    PARTITION p1 VALUES LESS THAN (2000),
+    PARTITION p2 VALUES LESS THAN MAXVALUE
+);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;表TS有3个范围分区。这些partitions-p0，P1和P2，进一步划分为2个子。实际上，整个表被划分为3×2＝6个分区。然而，由于分区子句的作用，这些存储的前2个仅在列中的值小于1990的那些记录中存储。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;需要注意的是&lt;/strong&gt;:
+1. 每个分区必须有相同数量的子分区。
+2. 子分区的名称必须在整个表中是唯一的&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;为每个分区指定单独的磁盘&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CREATE TABLE ts (id INT, purchased DATE)
+    ENGINE = MYISAM
+    PARTITION BY RANGE(YEAR(purchased))
+    SUBPARTITION BY HASH( TO_DAYS(purchased) ) (
+        PARTITION p0 VALUES LESS THAN (1990) (
+            SUBPARTITION s0a
+                DATA DIRECTORY = &amp;#39;/disk0&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk1&amp;#39;,
+            SUBPARTITION s0b
+                DATA DIRECTORY = &amp;#39;/disk2&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk3&amp;#39;
+        ),
+        PARTITION p1 VALUES LESS THAN (2000) (
+            SUBPARTITION s1a
+                DATA DIRECTORY = &amp;#39;/disk4/data&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk4/idx&amp;#39;,
+            SUBPARTITION s1b
+                DATA DIRECTORY = &amp;#39;/disk5/data&amp;#39;
+                INDEX DIRECTORY = &amp;#39;/disk5/idx&amp;#39;
+        ),
+        PARTITION p2 VALUES LESS THAN MAXVALUE (
+            SUBPARTITION s2a,
+            SUBPARTITION s2b
+        )
+    );
+&lt;/pre&gt;&lt;/div&gt;</content><category term="mysql分区"></category><category term="mysql partition"></category><category term="mysql子分区"></category><category term="子分区的作用"></category></entry><entry><title>pt-archiver 数据删除、迁移工具使用</title><link href="http://www.phpue.com/mysql/pt-archiver.html" rel="alternate"></link><published>2017-10-01T00:00:00+08:00</published><updated>2017-10-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-01:/mysql/pt-archiver.html</id><summary type="html">&lt;p&gt;pt-archiver可以在不影响正常业务的情况下, 对数据进行删除, 迁移操作。效率高且出错率低&lt;/p&gt;</summary><content type="html">&lt;h2&gt;1. 数据库连接参数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;td&gt;字符编码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;D&lt;/td&gt;
+&lt;td&gt;库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F&lt;/td&gt;
+&lt;td&gt;从文件读取选项&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;L&lt;/td&gt;
+&lt;td&gt;加载数据本地文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P&lt;/td&gt;
+&lt;td&gt;端口&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;S&lt;/td&gt;
+&lt;td&gt;socket文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;a&lt;/td&gt;
+&lt;td&gt;执行查询的数据库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;b&lt;/td&gt;
+&lt;td&gt;如果是true, 禁用SQL_LOG_BIN&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;h&lt;/td&gt;
+&lt;td&gt;数据库地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;i&lt;/td&gt;
+&lt;td&gt;查询使用的索引&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;m&lt;/td&gt;
+&lt;td&gt;插件模块名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;p&lt;/td&gt;
+&lt;td&gt;数据库密码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;t&lt;/td&gt;
+&lt;td&gt;表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;u&lt;/td&gt;
+&lt;td&gt;用户名&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;2. 常用参数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;--limit 10000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;每次取1000行数据用pt-archive处理，Number of rows to fetch and archive per statement.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--txn-size  1000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;设置1000行为一个事务提交一次，Number of rows pertransaction.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--where 'id&amp;lt;3000'&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;设置操作条件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--progress 5000&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;每处理5000行输出一次处理信息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--statistics&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;输出执行过程及最后的操作统计&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--charset=UTF8&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;指定字符集为UTF8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--bulk-delete&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;批量删除source上的旧数据(例如每次1000行的批量删除操作)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--bulk-insert&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;批量插入数据到dest主机 (看dest的general log发现它是通过在dest主机上LOAD DATA LOCAL INFILE插入数据的)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--replace&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;将insert into 语句改成replace写入到dest库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--sleep 120&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;每次归档了limit个行记录后的休眠120秒（单位为秒）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--file '/root/test.txt'&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;导出的文件路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--purge&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;删除source数据库的相关匹配记录&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--header&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;输入列名称到首行（和--file一起使用）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-no-check-charset&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;不指定字符集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--check-columns&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;检验dest和source的表结构是否一致，不一致自动拒绝执行（不加这个参数也行。默认就是执行检查的）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--no-check-columns&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;不检验dest和source的表结构是否一致，不一致也执行（会导致dest上的无法与source匹配的列值被置为null或者0）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--chekc-interval&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;默认1s检查一次&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--local&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;不把optimize或analyze操作写入到binlog里面（防止造成主从延迟巨大）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--retries&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;超时或者出现死锁的话，pt-archiver进行重试的间隔（默认1s）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--no-version-check&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;目前为止，发现部分pt工具对阿里云RDS操作必须加这个参数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;--analyze=ds&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;操作结束后，优化表空间（d表示dest，s表示source）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;2. example&lt;/h2&gt;
+&lt;h3&gt;1. 删除老数据&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t \
+--no-check-charset --where ‘a&amp;lt;=376‘ --limit 10000 --txn-size 1000 --purge
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 复制数据到其他mysql实例，且不删除source的数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1\
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_bak \
+--progress 5000 --where &amp;#39;mc_id&amp;lt;=125&amp;#39; \
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 复制数据到其他mysql实例，并删source上的旧数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=localhost,u=root,p=1234,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &amp;quot;CreateDate &amp;lt;‘2017-05-01 00:00:00‘ &amp;quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --bulk-delete
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 复制数据到其他mysql实例，不删除source数据，但是使用批量插入dest上新的数据(指定字符集)：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=localhost,u=archiver,p=archiver,P=3306,D=test,t=t1 \
+
+--dest h=192.168.2.12,P=3306,u=archiver,p=archiver,D=test,t=t1_his \
+
+--progress 5000 --where &amp;quot;c &amp;lt;‘2017-05-01 00:00:00‘ &amp;quot; \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --no-delete  --bulk-insert
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;5. 导出数据到文件&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&amp;lt;12000‘ \
+
+--no-delete --statistics --charset=UTF8 --limit=10000 --txn-size 1000
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;6. 导出数据到文件并删除数据库的相关行：&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/bin/pt-archiver \
+
+--source h=10.0.20.26,u=root,p=1234,P=3306,D=test,t=t \
+
+--file ‘/root/test.txt‘ \
+
+--progress 5000 --where ‘a&amp;lt;12000‘ \
+
+--statistics --charset=UTF8 --limit=10000 --txn-size 1000 --purge
+&lt;/pre&gt;&lt;/div&gt;</content><category term="pt-archiver"></category><category term="percona-toolkit"></category><category term="mysql数据删除"></category><category term="mysql在线数据迁移"></category></entry></feed>

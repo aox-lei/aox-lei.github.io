@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>如何搭建稳定的代理ip池, 供爬虫使用</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/python.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/python/proxy-ip-pool.html" rel="bookmark"
+                   title="Permalink to 如何搭建稳定的代理ip池, 供爬虫使用">如何搭建稳定的代理ip池, 供爬虫使用</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2018-10-08T00:00:00+08:00">
+                Mon 08 October 2018
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>新型的代理ip池<a href="https://github.com/aox-lei/aox_proxy_pool">aox_proxy_pool</a></p>
+<p><img alt="java-version" src="http://www.phpue.com/upload/proxy-ip/1.png"></p>
+<p>在这篇文章之前, 应该不少人都看过很多搭建代理ip池的文章, 然后发现都是坑, 无法使用。说的比较多的
+1. <strong>推荐买xx家的代理ip, 贼稳定, 好使(广告)</strong>
+2. <strong>抓取xx免费代理ip, 然后自己写一个校验, 然后写一个api, 提供给爬虫使用</strong></p>
+<p>第一种方法就不说了, 真的存在几家不错的代理ip(别问我谁家的好, 我不知道, 我写这篇文章就为了推销我自己写的项目好伐)</p>
+<p>第二种, github上这种项目海了去了, 绝大部分, 在你搭建好以后, 发现爬虫还是爬不动, 免费代理ip根本无法使用的好伐！稍微好点的haipproxy, 我也用过, 但是不解决根本问题! 绝大部分ip失效太快了! 而且各种错误, 爬十个页面, 能成功一个都算烧高香了。</p>
+<p>那么, 到底为啥免费的代理ip不好使呢?
+还有很多人都问到, 那些代理ip商真的有那么多ip么？</p>
+<p>其实不是, 免费代理ip很多都是扫出来的, 扫ip段, 端口, 特征码。发现可以使用, 那就是代理ip。</p>
+<p>代理ip不好用, 一般是因为以下几个原因
+1. 扫到的代理ip是临时的
+2. 访问量太大, 服务器都挂了
+3. 本来就不是代理ip
+4. 有验证
+5. 本来是http的代理, 你用来访问https, 那当然不行了!
+6. 代理异常, 连接中断, 带宽被沾满, 返回错误。</p>
+<p>如果不想花钱, 那么就只能自己找到稳定的代理ip, 然后来使用。
+而一般的代理池, 都是拿百度、知乎阿、豆瓣阿啥的网址访问, 成了说明能用, 不成就是失败。最多加个分值计算什么的。</p>
+<p>之前看了下haipproxy的代码, 成功率高就得自己写验证, 说白了, 在爬虫使用之前, 先尝试访问下, 来提高成功率, 我觉得意义不大。</p>
+<p><strong>上面都废话, 以下才是主要的</strong>
+其实免费代理ip中, 有极少数的一部分, 是非常稳定的代理服务器, 所以这些服务器就可以长期用来使用。</p>
+<p>我抓取到的免费的代理ip, 中, 过滤后剩下的ip的访问成功率基本在90%+</p>
+<p>第一、其实最简单的方式就是根据服务器开放的端口来判断, 如果服务器有开放80, 3389, 3306, 22之类的端口, 那么说明服务器还有别的服务在运行, 挂掉的几率很小, 如果是政府、学校的服务器, 那么更加稳定。当然也有可能开放别的端口</p>
+<p>第二、服务器的访问速度判断, 需要访问多个不同的网址, 来取平均数, 这样的访问速度才比较稳</p>
+<p>第三、代理ip的存活时间, 越长越稳定, 当然这个是在你搭建抓取后, 来进行计算。</p>
+<p>第四、代理类型的重新检测, 通过访问不同的http和https网站, 判断代理到底是http还是https, 并且进行划分, http的代理, 那就访问http网址的时候使用, https的代理给https访问提供服务, 这样访问的几率才能提高。</p>
+<p>所以根据这几点, 我重新写了一套代理ip池的项目, 目前抓取ip 4500+, 长期稳定的ip在60+左右, 虽然少，但是相当稳定。</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>

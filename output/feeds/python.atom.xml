@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>aox's Blog - Python</title><link href="http://www.phpue.com/" rel="alternate"></link><link href="http://www.phpue.com/feeds/python.atom.xml" rel="self"></link><id>http://www.phpue.com/</id><updated>2018-10-08T00:00:00+08:00</updated><entry><title>如何搭建稳定的代理ip池, 供爬虫使用</title><link href="http://www.phpue.com/python/proxy-ip-pool.html" rel="alternate"></link><published>2018-10-08T00:00:00+08:00</published><updated>2018-10-08T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2018-10-08:/python/proxy-ip-pool.html</id><summary type="html">&lt;p&gt;如何搭建稳定的代理ip池, 提供给爬虫来使用呢? 对于封ip的网站, 一般要不然花钱购买代理, 要不然就是抓取免费的代理ip, 但是使用过一段时间后都会发现, 免费的代理ip很不稳定, github上的代理ip池的project的star很高, 但是然并卵。那么如何解决这个问题呢?&lt;/p&gt;</summary><content type="html">&lt;p&gt;新型的代理ip池&lt;a href="https://github.com/aox-lei/aox_proxy_pool"&gt;aox_proxy_pool&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="java-version" src="http://www.phpue.com/upload/proxy-ip/1.png"&gt;&lt;/p&gt;
+&lt;p&gt;在这篇文章之前, 应该不少人都看过很多搭建代理ip池的文章, 然后发现都是坑, 无法使用。说的比较多的
+1. &lt;strong&gt;推荐买xx家的代理ip, 贼稳定, 好使(广告)&lt;/strong&gt;
+2. &lt;strong&gt;抓取xx免费代理ip, 然后自己写一个校验, 然后写一个api, 提供给爬虫使用&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;第一种方法就不说了, 真的存在几家不错的代理ip(别问我谁家的好, 我不知道, 我写这篇文章就为了推销我自己写的项目好伐)&lt;/p&gt;
+&lt;p&gt;第二种, github上这种项目海了去了, 绝大部分, 在你搭建好以后, 发现爬虫还是爬不动, 免费代理ip根本无法使用的好伐！稍微好点的haipproxy, 我也用过, 但是不解决根本问题! 绝大部分ip失效太快了! 而且各种错误, 爬十个页面, 能成功一个都算烧高香了。&lt;/p&gt;
+&lt;p&gt;那么, 到底为啥免费的代理ip不好使呢?
+还有很多人都问到, 那些代理ip商真的有那么多ip么？&lt;/p&gt;
+&lt;p&gt;其实不是, 免费代理ip很多都是扫出来的, 扫ip段, 端口, 特征码。发现可以使用, 那就是代理ip。&lt;/p&gt;
+&lt;p&gt;代理ip不好用, 一般是因为以下几个原因
+1. 扫到的代理ip是临时的
+2. 访问量太大, 服务器都挂了
+3. 本来就不是代理ip
+4. 有验证
+5. 本来是http的代理, 你用来访问https, 那当然不行了!
+6. 代理异常, 连接中断, 带宽被沾满, 返回错误。&lt;/p&gt;
+&lt;p&gt;如果不想花钱, 那么就只能自己找到稳定的代理ip, 然后来使用。
+而一般的代理池, 都是拿百度、知乎阿、豆瓣阿啥的网址访问, 成了说明能用, 不成就是失败。最多加个分值计算什么的。&lt;/p&gt;
+&lt;p&gt;之前看了下haipproxy的代码, 成功率高就得自己写验证, 说白了, 在爬虫使用之前, 先尝试访问下, 来提高成功率, 我觉得意义不大。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;上面都废话, 以下才是主要的&lt;/strong&gt;
+其实免费代理ip中, 有极少数的一部分, 是非常稳定的代理服务器, 所以这些服务器就可以长期用来使用。&lt;/p&gt;
+&lt;p&gt;我抓取到的免费的代理ip, 中, 过滤后剩下的ip的访问成功率基本在90%+&lt;/p&gt;
+&lt;p&gt;第一、其实最简单的方式就是根据服务器开放的端口来判断, 如果服务器有开放80, 3389, 3306, 22之类的端口, 那么说明服务器还有别的服务在运行, 挂掉的几率很小, 如果是政府、学校的服务器, 那么更加稳定。当然也有可能开放别的端口&lt;/p&gt;
+&lt;p&gt;第二、服务器的访问速度判断, 需要访问多个不同的网址, 来取平均数, 这样的访问速度才比较稳&lt;/p&gt;
+&lt;p&gt;第三、代理ip的存活时间, 越长越稳定, 当然这个是在你搭建抓取后, 来进行计算。&lt;/p&gt;
+&lt;p&gt;第四、代理类型的重新检测, 通过访问不同的http和https网站, 判断代理到底是http还是https, 并且进行划分, http的代理, 那就访问http网址的时候使用, https的代理给https访问提供服务, 这样访问的几率才能提高。&lt;/p&gt;
+&lt;p&gt;所以根据这几点, 我重新写了一套代理ip池的项目, 目前抓取ip 4500+, 长期稳定的ip在60+左右, 虽然少，但是相当稳定。&lt;/p&gt;</content></entry><entry><title>安装sentry</title><link href="http://www.phpue.com/python/sentry-install.html" rel="alternate"></link><published>2017-12-01T00:00:00+08:00</published><updated>2017-12-01T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-12-01:/python/sentry-install.html</id><summary type="html">&lt;p&gt;Sentry 是一个开源的实时错误报告工具，支持 web 前后端、移动应用以及游戏，支持 Python、OC、Java、Go、Node、Django、RoR 等主流编程语言和框架 ，还提供了 GitHub、Slack、Trello 等常见开发工具的集成。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Sentry 是一个开源的实时错误报告工具，支持 web 前后端、移动应用以及游戏，支持 Python、OC、Java、Go、Node、Django、RoR 等主流编程语言和框架 ，还提供了 GitHub、Slack、Trello 等常见开发工具的集成。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/getsentry/sentry"&gt;github地址&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;一、环境准备&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;环境&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ubuntu16.04&lt;/td&gt;
+&lt;td&gt;ip: 10.211.55.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;二、安装必备组件&lt;/h2&gt;
+&lt;h3&gt;1. 安装PostgreSQL&lt;/h3&gt;
+&lt;h4&gt;1. apt 安装&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get -y install postgresql postgresql-contrib
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 修改Postgres角色的密码&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; sudo su
+&amp;gt; su - postgres
+&amp;gt; psql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;输入:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;postgres =# \password #修改当前用户密码
+Enter new password:
+Enter it again:
+postgres =# \q # 退出
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;运行exit离开postgres用户&lt;/p&gt;
+&lt;h3&gt;2. 安装redis&lt;/h3&gt;
+&lt;h4&gt;1. 安装&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+&amp;gt; sudo tar -zxvf redis-3.2.6.tar.gz
+&amp;gt; sudo cp -rf redis-3.2.6 /usr/local/redis
+&amp;gt; cd /usr/local/redis
+&amp;gt; sudo apt install gcc
+&amp;gt; sudo make
+&amp;gt; sudo make install
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果提示make test, 则输入make test&lt;/p&gt;
+&lt;h4&gt;2. 启动&lt;/h4&gt;
+&lt;p&gt;运行redis-server 启动redis&lt;/p&gt;
+&lt;h3&gt;3. 安装python, pip, 以及其他环境&lt;/h3&gt;
+&lt;h4&gt;1. 安装系统组件&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt install python-setuptools python-dev libxslt1-dev gcc libffi-dev libjpeg-dev libxml2-dev libxslt-dev libyaml-dev libpq-dev
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 安装pip&lt;/h4&gt;
+&lt;p&gt;下载get-pip.py&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; wget &amp;quot;https://bootstrap.pypa.io/get-pip.py&amp;quot;
+&amp;gt; sudo python get-pip.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3. 安装python库&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; pip install -U virtualenv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、安装sentry&lt;/h2&gt;
+&lt;h3&gt;1. 创建虚拟环境&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; sudo mkdir /var/www
+&amp;gt; sudo chmod -R 777 /var/www
+&amp;gt; cd /var/www/
+&amp;gt; mkdir sentry
+&amp;gt; cd sentry
+&amp;gt; virtualenv venv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 安装sentry&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; source venv/bin/activate
+&amp;gt; pip install -U sentry
+&amp;gt; sentry
+Usage: sentry [OPTIONS] COMMAND [ARGS]...
+
+  Sentry is cross-platform crash reporting built with love.
+
+  The configuration file is looked up in the `~/.sentry` config directory but this can
+  be overridden with the `SENTRY_CONF` environment variable or be explicitly provided
+  through the `--config` parameter.
+
+Options:
+  --config PATH  Path to configuration files.
+  --version      Show the version and exit.
+  --help         Show this message and exit.
+
+Commands:
+  celery      DEPRECATED see `sentry run` instead.
+  cleanup     Delete a portion of trailing data based on...
+  config      Manage runtime config options.
+  createuser  Create a new user.
+  devserver   Starts a lightweight web server for...
+  django      Execute Django subcommands.
+  dsym        Manage system symbols in Sentry.
+  export      Exports core metadata for the Sentry...
+  files       Manage files from filestore.
+  help        Show this message and exit.
+  import      Imports data from a Sentry export.
+  init        Initialize new configuration directory.
+  plugins     Manage Sentry plugins.
+  queues      Manage Sentry queues.
+  repair      Attempt to repair any invalid data.
+  run         Run a service.
+  shell       Run a Python interactive interpreter.
+  start       DEPRECATED see `sentry run` instead.
+  tsdb        Tools for interacting with the time series...
+  upgrade     Perform any pending database migrations and...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;四、配置sentry&lt;/h2&gt;
+&lt;h3&gt;1. 初始化&lt;/h3&gt;
+&lt;p&gt;sentry init 配置文件路径&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; sentry init /var/www/sentry/conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 修改postgreSQL的连接账号密码&lt;/h3&gt;
+&lt;p&gt;打开/var/www/sentry/conf/sentry.conf.py&lt;/p&gt;
+&lt;p&gt;修改下面这段&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DATABASES = {
+    &amp;#39;default&amp;#39;: {
+        &amp;#39;ENGINE&amp;#39;: &amp;#39;sentry.db.postgres&amp;#39;,
+        &amp;#39;NAME&amp;#39;: &amp;#39;sentry&amp;#39;,
+        &amp;#39;USER&amp;#39;: &amp;#39;postgres&amp;#39;,
+        &amp;#39;PASSWORD&amp;#39;: &amp;#39;123123&amp;#39;, # 刚才安装完postgreSQL 后你设置的密码
+        &amp;#39;HOST&amp;#39;: &amp;#39;&amp;#39;,
+        &amp;#39;PORT&amp;#39;: &amp;#39;&amp;#39;,
+        &amp;#39;AUTOCOMMIT&amp;#39;: True,
+        &amp;#39;ATOMIC_REQUESTS&amp;#39;: False,
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3. 初始化数据并且创建用户&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; createdb -E utf-8 sentry
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果提示&lt;code&gt;createdb: could not connect to database template1: FATAL:  role "lin" does not exist&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;则切换到postgre用户执行&lt;/p&gt;
+&lt;p&gt;执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果提示&lt;code&gt;OperationalError: FATAL:  Peer authentication failed for user "postgres"&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;解决方案:
+1. sudo vim /etc/postgresql/9.5/main/pg_hba.conf
+2. 修改&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;local   all             postgres                                peer
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# &amp;quot;local&amp;quot; is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;为&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;local   all             postgres                                md5
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# &amp;quot;local&amp;quot; is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;重启postgresql&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo service postgresql restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;再次执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果提示&lt;code&gt;sentry.exceptions.InvalidConfiguration: MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;解决方案:
+1. 进入redis redis-cli
+2. 执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;config set stop-writes-on-bgsave-error no
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;再次执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;再次执行 SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在这一步执行完成后可能提示你是否要创建用户,则按照要求创建用户即可, 没有提示的话执行以下语句创建&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;SENTRY_CONF=/var/www/sentry/conf/ sentry createuser
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;五、运行服务&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;gt; SENTRY_CONF=/var/www/sentry/conf/ sentry run web # 运行web服务
+&amp;gt; SENTRY_CONF=/var/www/sentry/conf/ sentry run worker # 运行日志搜集进程
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;六、配置项目&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器打开sentry的web管理, http://ip:9000&lt;/li&gt;
+&lt;li&gt;输入刚才设置的账号密码&lt;/li&gt;
+&lt;li&gt;点击New Project创建一个项目&lt;/li&gt;
+&lt;li&gt;平台选择php, 输入项目的名称, 点击创建&lt;/li&gt;
+&lt;li&gt;跳转的页面会显示连接的代码&lt;/li&gt;
+&lt;li&gt;测试错误&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;?&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;
+&lt;span class="n"&gt;require_once&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;vendor&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;autoload&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;php&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;Raven_Autoloader&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;register&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="cp"&gt;# 这里替换成你自己的项目id, 在显示连接帮助的页面&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Raven_Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nl"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//f2c047b856bb41fcbf486f467b7fcf5b:aa2a33c7176d4c1fb86a3aa8cb4728aa@10.211.55.14:9000/1&amp;#39;);&lt;/span&gt;
+
+
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Raven_ErrorHandler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;registerExceptionHandler&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;registerErrorHandler&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;registerShutdownFunction&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="n"&gt;set_error_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;handleError&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;span class="n"&gt;set_exception_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;error_handler&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;handleException&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+
+
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;captureMessage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;这里发生了一个错误&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;运行以后, 查看web端, 就会看到传输回来的错误了。&lt;/p&gt;</content><category term="sentry"></category><category term="日志收集系统"></category><category term="log"></category><category term="python 日志搜集系统"></category><category term="日志管理系统"></category></entry><entry><title>dnspod动态域名提交, 类似花生壳实现的功能</title><link href="http://www.phpue.com/python/dnspod-dynamic.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-11-10:/python/dnspod-dynamic.html</id><summary type="html">&lt;p&gt;通过dnspod的api接口, 可以把局域网内的ip解析到公网地址, 并且自动检测、自动绑定&lt;/p&gt;</summary><content type="html">&lt;p&gt;Powered by Lei&lt;/p&gt;
+&lt;h2&gt;1. dnspod动态提交域名解析记录&lt;/h2&gt;
+&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
+&lt;h2&gt;一、dnspod动态提交域名解析记录&lt;/h2&gt;
+&lt;p&gt;经常想把家里的电脑作为服务器绑定到外网使用, 但是ip是动态的, 这个脚本就是借助dnspod的解析api, 自动把域名解析到家里电脑的公网ip
+然后从路由器开启dmz主机, 就可以在外网用域名访问家里的电脑了&lt;/p&gt;
+&lt;p&gt;程序每15分钟会检测一次ip变化, 发生变化则提交到dnspod&lt;/p&gt;
+&lt;h3&gt;1. 安装&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install requests apscheduler argparse
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="https://support.dnspod.cn/Kb/showarticle/tsid/227/"&gt;如何获取自己的api_token&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;修改文件, 打开dnspod.py,
+修改 API_TOKEN = &amp;#39;登录的token&amp;#39; 为你的API_TOKEN, 方法是id, api_token
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 使用&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;获取你的域名列表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -d
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;获取指定域名的记录信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -r 123 # 从第一步查出来的域名的domain_id
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;填写要修改的记录id&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# 打开dnspod.py 找到:
+RECORD_IDS = [ # 记录id
+    1,
+    2,
+]
+改为要修改的记录id
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;运行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python dnspod.py -s 开始运行
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;有问题可以提交到这里: &lt;a href="https://github.com/mm333444/python_script/issues/new"&gt;ISSUE&lt;/a&gt;
+qq群:252799167&lt;/p&gt;</content><category term="dnspod"></category><category term="dnspod 动态域名"></category><category term="dynamic domain"></category><category term="局域网搭建外部服务器"></category></entry><entry><title>supervisor python的进程管理工具 使用教程 【持续更新】</title><link href="http://www.phpue.com/python/supervisor.html" rel="alternate"></link><published>2017-10-31T00:00:00+08:00</published><updated>2017-10-31T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-10-31:/python/supervisor.html</id><summary type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;</summary><content type="html">&lt;p&gt;Supervisor（http://supervisord.org/）是用Python开发的一个client/server服务，是Linux/Unix系统下的一个进程管理工具，不支持Windows系统。它可以很方便的监听、启动、停止、重启一个或多个进程。用Supervisor管理的进程，当一个进程意外被杀死，supervisort监听到进程死后，会自动将它重新拉起，很方便的做到进程自动恢复的功能，不再需要自己写shell脚本来控制。&lt;/p&gt;
+&lt;h2&gt;一、安装配置&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://www.supervisord.org/"&gt;文档地址&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;1. 安装&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;easy_install supervisor
+pip install supervisor
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 生成配置文件&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo echo_supervisord_conf &amp;gt; /etc/supervisor/supervisord.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3.修改配置项&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 找到&lt;/span&gt;
+&lt;span class="p"&gt;;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;relative&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;ini&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 改为&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;files&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;supervisor&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/*.&lt;/span&gt;&lt;span class="n"&gt;cnf&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. 启动&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;supervisord -c /etc/supervisor/supervisord.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;二、基本使用&lt;/h2&gt;
+&lt;h3&gt;1. 创建脚本&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# vim /etc/supervisor/conf.d/test.cnf
+
+[program:test]
+command=/usr/bin/python run.py # 要执行的目录
+directroy=/var/www/test # 执行脚本的家目录
+autostart=true # 是否自动开始
+autorestart=true # 是否自动重启
+stdout_logfile=/var/log/supervisor/%(program_name)s_out.log # 输出日志目录
+stderr_logfile=/var/log/supervisor/%(program_name)s_err.log # 进程错误日志目录
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. 进程管理命令 supervisorctl&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;选项&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-c, --configuration&lt;/td&gt;
+&lt;td&gt;配置文件路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-i, --interactive&lt;/td&gt;
+&lt;td&gt;在命令运行后启动一个交互shell&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-s, --serverurl URL&lt;/td&gt;
+&lt;td&gt;指定web管理界面的地址, 默认是 http://localhost:9001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-u, --username&lt;/td&gt;
+&lt;td&gt;指定运行服务的用户&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-p, --password&lt;/td&gt;
+&lt;td&gt;指定运行服务的用户的密码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-r, --history-file&lt;/td&gt;
+&lt;td&gt;写入历史文件记录&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;add [name]&lt;/td&gt;
+&lt;td&gt;激活配置文件中的一个任务到进程/组 中&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;remove [name]&lt;/td&gt;
+&lt;td&gt;从进程中移除一个任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;update&lt;/td&gt;
+&lt;td&gt;更新配置文件, 会重启所有任务进程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;clear [name]&lt;/td&gt;
+&lt;td&gt;清理指定名称的日志文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;clear all&lt;/td&gt;
+&lt;td&gt;清理所有进程的日志文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fg [name]&lt;/td&gt;
+&lt;td&gt;用前台模式连接一个进程, 按Ctrl+c 退出前台模式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pid&lt;/td&gt;
+&lt;td&gt;获取supervisord的pid&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pid [name]&lt;/td&gt;
+&lt;td&gt;获取指定任务的pid&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;reread&lt;/td&gt;
+&lt;td&gt;重新读取配置文件内容, 不重启任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;restart [name]&lt;/td&gt;
+&lt;td&gt;重启指定任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;restart [gname]:*&lt;/td&gt;
+&lt;td&gt;重启指定组任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;restart all&lt;/td&gt;
+&lt;td&gt;重启所有任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;start&lt;/td&gt;
+&lt;td&gt;所有start的命令同restart&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;stop&lt;/td&gt;
+&lt;td&gt;所有stop的命令同restart&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;status&lt;/td&gt;
+&lt;td&gt;所有status的命令同restart&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;3. 服务命令 supervisord&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令选项&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-c config_file&lt;/td&gt;
+&lt;td&gt;要加载的配置文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-n, --nodaemon&lt;/td&gt;
+&lt;td&gt;前台运行supervisor&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;4. web管理界面配置&lt;/h3&gt;
+&lt;p&gt;打开/etc/supervisor/supervisord.conf&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 找到&lt;/span&gt;
+&lt;span class="p"&gt;;[&lt;/span&gt;&lt;span class="n"&gt;inet_http_server&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;inet&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TCP&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;disabled&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;
+&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;127.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9001&lt;/span&gt;        &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;ip_address&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="n"&gt;specifier&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nb"&gt;all&lt;/span&gt; &lt;span class="n"&gt;iface&lt;/span&gt;
+&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;              &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;username&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;               &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# 改为&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;inet_http_server&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;inet&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TCP&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;disabled&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;
+&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;127.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9001&lt;/span&gt;        &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;访问的&lt;/span&gt;&lt;span class="n"&gt;ip和端口&lt;/span&gt;
+&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;              &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;认证用户&lt;/span&gt;
+&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;123&lt;/span&gt;               &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="err"&gt;认证密码&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后打开ip:9001 就可以访问web管理界面了&lt;/p&gt;
+&lt;h2&gt;三、高级应用&lt;/h2&gt;
+&lt;h2&gt;四、配置文件说明&lt;/h2&gt;
+&lt;h3&gt;1. program:x&lt;/h3&gt;
+&lt;p&gt;|配置项|说明|是否必须|默认值|
+|-|-|
+|command | 要执行的命令 | Y | No default |
+|process_name | 进程名 | N | %(program_name)s |
+|autostart | 自动启动 | N | true |
+|autorestart | 自动重启 | N | unexpected |&lt;/p&gt;
+&lt;h2&gt;五、插件&lt;/h2&gt;
+&lt;h3&gt;1. superlancede&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/Supervisor/superlance"&gt;点击查看源码&lt;/a&gt;
+&lt;a href="https://superlance.readthedocs.io/en/latest/index.html"&gt;点击查看文档&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;1. 安装&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;easy_install&lt;/span&gt; &lt;span class="n"&gt;superlance&lt;/span&gt;
+&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;superlance&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2. 工具集&lt;/h4&gt;
+&lt;h5&gt;1. httpok&lt;/h5&gt;
+&lt;p&gt;通过定时对一个HTTP接口进行GET请求，根据请求是否成功来判定一个进程是否处于正常状态，如果不正常则对进程进行重启。&lt;/p&gt;
+&lt;h5&gt;2. crashmail&lt;/h5&gt;
+&lt;p&gt;当一个进程意外退出时，发送邮件告警。&lt;/p&gt;
+&lt;h5&gt;3. memmon&lt;/h5&gt;
+&lt;p&gt;当一个进程的内存占用超过了设定阈值时，发送邮件告警。&lt;/p&gt;
+&lt;h6&gt;1. 基本命令&lt;/h6&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令选项&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;-c, --cumulative&lt;/td&gt;
+&lt;td&gt;检测累计RSS, 监控过程中也监听子进程[没明白啥意思, 以后研究]&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-p [name/size pair], --program=[name/size pair]&lt;/td&gt;
+&lt;td&gt;检测指定任务名称的内存大小, 格式为name=size, 支持单位(“KB”, “MB” or “GB”) , 可以同时写多个任务&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-g [name/size pair], --groupname=[name/size pair]&lt;/td&gt;
+&lt;td&gt;检测指定组任务名称的内存大小, 格式为gname=size, 支持单位((“KB”, “MB” or “GB”))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-a [size], --any=[size]&lt;/td&gt;
+&lt;td&gt;检测所有任务的内存大小, 达到任务则自动重启&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-s [command], --sendmail=[command]&lt;/td&gt;
+&lt;td&gt;如果发生意外则发送邮件通知, 默认是/usr/sbin/sendmail -t -i&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-m [email address], --email=[email address]&lt;/td&gt;
+&lt;td&gt;接收邮件的邮件地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;-u [email uptime limit], --uptime=[email uptime limit]&lt;/td&gt;
+&lt;td&gt;只发送一个邮件, 防止任务在重启后, 大量发送邮件, “m” for minutes, “h” for hours or “d” for days&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h6&gt;2. 内存超出预警&lt;/h6&gt;
+&lt;p&gt;以下代码存在内存泄露问题, 内存会越来越大, 要实现的目标为达到指定内存则自动重启&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/python&lt;/span&gt;
+&lt;span class="c1"&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+&lt;span class="c1"&gt;# Filename : memoryleak.py&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;LeakTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Object with id &lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt; born here.&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__del__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Object with id &lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt; dead here.&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doLeak&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;LeakTest&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;B&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;LeakTest&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;
+    &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;doLeak&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h5&gt;4. crashmailbatch&lt;/h5&gt;
+&lt;p&gt;类似于crashmail的告警，但是一段时间内的邮件将会被合成起来发送，以避免邮件轰炸。&lt;/p&gt;
+&lt;h5&gt;5. fatalmailbatch&lt;/h5&gt;
+&lt;p&gt;当一个进程没有成功启动多次后会进入FATAL状态，此时发送邮件告警。与crashmailbatch一样会进行合成报警。&lt;/p&gt;
+&lt;h5&gt;6. crashsms&lt;/h5&gt;
+&lt;p&gt;当一个进程意外退出时发送短信告警，这个短信也是通过email网关来发送的。&lt;/p&gt;</content><category term="supervisor"></category><category term="supervisord"></category><category term="python 进程管理"></category></entry><entry><title>Python 多进程和多线程的方案</title><link href="http://www.phpue.com/python/multiprocessing-threading.html" rel="alternate"></link><published>2017-09-22T00:00:00+08:00</published><updated>2017-09-22T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-09-22:/python/multiprocessing-threading.html</id><summary type="html">&lt;p&gt;python对多进程和多线程的使用, 以及多进程, 多线程的介绍。&lt;/p&gt;</summary><content type="html">&lt;h2&gt;一、进程&lt;/h2&gt;
+&lt;p&gt;对于电脑来说, 一个任务就是一个进程(Process), 而每个进程可能还要同时做多件事儿, 所以可以通过进程生成新的子进程&lt;/p&gt;
+&lt;h2&gt;二、线程&lt;/h2&gt;
+&lt;p&gt;线程是一种轻量级进程, 是程序执行流的最小单元。因为每个进程至少要做一件事儿, 所以每个进程必然有一个最小的进程。&lt;/p&gt;
+&lt;h2&gt;三、多任务的模式&lt;/h2&gt;
+&lt;h3&gt;一、多进程模式&lt;/h3&gt;
+&lt;p&gt;启动多个进程, 每个进程有一个线程去完成。因为python的多线程有GIL锁(全局锁), 在CPU密集型的情况下, 效率可能还不如单线程。
+CPU密集型的意思是cpu利用比较高, 大部分需要使用cpu来计算。&lt;/p&gt;
+&lt;h3&gt;二、多线程模式&lt;/h3&gt;
+&lt;p&gt;单个进程下, 多个进程去完成。这种情况下只推荐做IO密集型的操作, 比如爬虫&lt;/p&gt;
+&lt;h3&gt;三、多进程+多线程模式&lt;/h3&gt;
+&lt;p&gt;启动多个进程, 每个进程下再启动多个线程去完成, 这种在一般项目中都有可能采用, 比如一个项目有多个脚本, 分别启动进程去管理, 而在单个脚本任务中, 又启动多个线程去抓取数据等&lt;/p&gt;
+&lt;h2&gt;四、Python 多进程的方式&lt;/h2&gt;
+&lt;p&gt;Python 多进程采用的是multiprocessing, 兼容性好, 可以兼容windows平台&lt;/p&gt;
+&lt;h3&gt;一、基本使用&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;multiprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;hello&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bob&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;lis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;以上&lt;/span&gt;&lt;span class="n"&gt;demo会输出&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;bob&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;lis&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;二、 join的作用&lt;/h3&gt;
+&lt;p&gt;join的作用是用来阻塞, 增加了time.sleep()来暂停几秒&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;multiprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;hello&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bob&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;lis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;以上&lt;/span&gt;&lt;span class="n"&gt;demo会输出&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;bob&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;lis&lt;/span&gt;
+&lt;span class="err"&gt;停留&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="err"&gt;秒以后退出脚本&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;更改脚本以后再看一下效果&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;multiprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;hello&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;bob&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;lis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;p1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;以上&lt;/span&gt;&lt;span class="n"&gt;demo会输出&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;bob&lt;/span&gt;
+&lt;span class="err"&gt;停留&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="err"&gt;秒&lt;/span&gt;
+&lt;span class="n"&gt;hello&lt;/span&gt; &lt;span class="n"&gt;lis&lt;/span&gt;
+&lt;span class="err"&gt;停留&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="err"&gt;秒以后退出脚本&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;会发现先输出hello bob后停留了5秒, 才输出hello lis,之后又停留5秒, 才退出脚本。如果没有join, 则出现失误时, 可能会启动了无数个脚本, 而join可以保证, 无论何时, 都同时是这几个脚本。&lt;/p&gt;
+&lt;h3&gt;三、进程池(Pool)&lt;/h3&gt;
+&lt;p&gt;需要运行大量的进程时使用, 在使用时指定一个运行的进程数量, 当有进程退出的时候, 再启动进程池。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;multiprocessing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pool&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fun1&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;this is fun1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;fun1 finish&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fun2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;this is fun2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;fun2 finish&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;pool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Pool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;processes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 同时可以启动三个进程&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;pool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply_async&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+
+    &lt;span class="n"&gt;pool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# close()以后, 就不可以加入新的进程&lt;/span&gt;
+    &lt;span class="n"&gt;pool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 进程池阻塞&lt;/span&gt;
+    &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;finish&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;五、多线程的方式&lt;/h2&gt;
+&lt;p&gt;python的多线程用的是threading模块&lt;/p&gt;
+&lt;h3&gt;一、基本使用&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;threading&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="n"&gt;_thread&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;_thread&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;threading&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,)))&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_t&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;_thread&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;_t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_t&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;_thread&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;_t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;以上&lt;/span&gt;&lt;span class="n"&gt;demo输出&lt;/span&gt;
+&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="mi"&gt;4&lt;/span&gt;
+&lt;span class="mi"&gt;5&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="多进程"></category><category term="多线程"></category><category term="python 多进程"></category><category term="multiprocessing"></category><category term="threading"></category></entry><entry><title>ProxyTool代理池功能, 免费获取ip代理</title><link href="http://www.phpue.com/python/proxy-tool.html" rel="alternate"></link><published>2017-09-21T00:00:00+08:00</published><updated>2017-09-21T00:00:00+08:00</updated><author><name>aox</name></author><id>tag:www.phpue.com,2017-09-21:/python/proxy-tool.html</id><summary type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;</summary><content type="html">&lt;p&gt;在制作爬虫或者抓取别的网站的时候, 因为频率等稳定经常被封, 所以需要加代理ip, 但是因为各大网站的免费代理失效速度很快, 而且使用的时候抓取不方便, 所以开发了一个代理ip池, 免费获取代理ip,并且自动验证, 通过web接口, 直接可以获取到使用的代理ip。&lt;/p&gt;
+&lt;p&gt;项目地址:https://github.com/mm333444/ProxyTool/&lt;/p&gt;
+&lt;h1&gt;ProxyTool&lt;/h1&gt;
+&lt;p&gt;python3搭建的代理池功能, 免费获取代理ip 每10分钟自动抓取ip66、ip181、xici代理的脚本, 保存到mongo中, 并且提供web接口, 方便搭建调用
+环境: python3.6.2&lt;/p&gt;
+&lt;h2&gt;一、安装方法&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install -r requirements.txt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;二、使用方法&lt;/h2&gt;
+&lt;p&gt;-env 指定环境, 会读取app.config下指定的配置文件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;python run.py -env online
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;三、 基本逻辑&lt;/h2&gt;
+&lt;p&gt;整个项目分为三部分 抓取、验证和web接口&lt;/p&gt;
+&lt;h3&gt;一、抓取&lt;/h3&gt;
+&lt;p&gt;在app/crawl目录下, 每个网站对应的一个文件, 可以自己扩展, 基本代码可以查看app/crawl/下的文件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;bs4&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.util.function&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;now&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;app.crawl.base&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;base&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;xici&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="c1"&gt;# 最大抓取页数&lt;/span&gt;
+    &lt;span class="n"&gt;max_page&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+    &lt;span class="n"&gt;anonymous_proxy_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://www.xicidaili.com/nn/&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;common_proxy_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://www.xicidaili.com/nt/&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;https_proxy_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://www.xicidaili.com/wn/&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;http_proxy_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://www.xicidaili.com/wt/&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="err"&gt;要抓取的&lt;/span&gt;&lt;span class="n"&gt;url可以传入&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;抓取列表页调用&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_crawl_page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;抓取单页调用&lt;/span&gt;&lt;span class="n"&gt;_crawl_single&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_parse_html&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="err"&gt;抓取后&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;将页面中的内容解析出来&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;二、验证&lt;/h3&gt;
+&lt;p&gt;验证是在app/validate目录下, 目前只实现了请求百度验证的方式&lt;/p&gt;
+&lt;h3&gt;三、web接口&lt;/h3&gt;
+&lt;p&gt;web接口目前只实现的get接口, 默认绑定端口为8899
+访问地址:http://网址/get/&amp;lt;要获取的ip数量&amp;gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[
+    {
+        ip: &amp;quot;114.82.159.57&amp;quot;,
+        type: &amp;quot;HTTPS&amp;quot;, # type有三个值, https,http和all, all代表支持http和https两种
+        port: &amp;quot;8118&amp;quot;,
+        speed: 1 # 请求速度, 越小说明越快
+    },
+    {
+        ip: &amp;quot;223.150.73.245&amp;quot;,
+        type: &amp;quot;HTTP&amp;quot;,
+        port: &amp;quot;80&amp;quot;,
+        speed: 1
+    }
+]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如果在使用中有什么问题可以发issue, 如果真的对您有什么作用的话, 请给个star
+我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan?invite_code=2n310aji3veo4&lt;/p&gt;</content><category term="python 代理池"></category><category term="代理池"></category><category term="ip池"></category></entry></feed>

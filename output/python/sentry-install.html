@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>安装sentry</title>
+        <meta charset="utf-8" />
+        <link href="http://www.phpue.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Full Atom Feed" />
+        <link href="http://www.phpue.com/feeds/python.atom.xml" type="application/atom+xml" rel="alternate" title="aox's Blog Categories Atom Feed" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.phpue.com/theme/pygment.css" />
+
+        <script src="http://www.phpue.com/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.phpue.com/">aox's Blog <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.phpue.com/">Home</a></li>
+
+                  <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+                  <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+                  <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+                  <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+                  <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.phpue.com/python/sentry-install.html" rel="bookmark"
+                   title="Permalink to 安装sentry">安装sentry</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2017-12-01T00:00:00+08:00">
+                Fri 01 December 2017
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://www.phpue.com/author/aox.html"> aox</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Sentry 是一个开源的实时错误报告工具，支持 web 前后端、移动应用以及游戏，支持 Python、OC、Java、Go、Node、Django、RoR 等主流编程语言和框架 ，还提供了 GitHub、Slack、Trello 等常见开发工具的集成。</p>
+<p><a href="https://github.com/getsentry/sentry">github地址</a></p>
+<h2>一、环境准备</h2>
+<table>
+<thead>
+<tr>
+<th>环境</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ubuntu16.04</td>
+<td>ip: 10.211.55.14</td>
+</tr>
+</tbody>
+</table>
+<h2>二、安装必备组件</h2>
+<h3>1. 安装PostgreSQL</h3>
+<h4>1. apt 安装</h4>
+<div class="highlight"><pre><span></span>sudo apt-get -y install postgresql postgresql-contrib
+</pre></div>
+
+
+<h4>2. 修改Postgres角色的密码</h4>
+<div class="highlight"><pre><span></span>&gt; sudo su
+&gt; su - postgres
+&gt; psql
+</pre></div>
+
+
+<p>输入:</p>
+<div class="highlight"><pre><span></span>postgres =# \password #修改当前用户密码
+Enter new password:
+Enter it again:
+postgres =# \q # 退出
+</pre></div>
+
+
+<p>运行exit离开postgres用户</p>
+<h3>2. 安装redis</h3>
+<h4>1. 安装</h4>
+<div class="highlight"><pre><span></span>&gt; sudo wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+&gt; sudo tar -zxvf redis-3.2.6.tar.gz
+&gt; sudo cp -rf redis-3.2.6 /usr/local/redis
+&gt; cd /usr/local/redis
+&gt; sudo apt install gcc
+&gt; sudo make
+&gt; sudo make install
+</pre></div>
+
+
+<p>如果提示make test, 则输入make test</p>
+<h4>2. 启动</h4>
+<p>运行redis-server 启动redis</p>
+<h3>3. 安装python, pip, 以及其他环境</h3>
+<h4>1. 安装系统组件</h4>
+<div class="highlight"><pre><span></span>sudo apt install python-setuptools python-dev libxslt1-dev gcc libffi-dev libjpeg-dev libxml2-dev libxslt-dev libyaml-dev libpq-dev
+</pre></div>
+
+
+<h4>2. 安装pip</h4>
+<p>下载get-pip.py</p>
+<div class="highlight"><pre><span></span>&gt; wget &quot;https://bootstrap.pypa.io/get-pip.py&quot;
+&gt; sudo python get-pip.py
+</pre></div>
+
+
+<h4>3. 安装python库</h4>
+<div class="highlight"><pre><span></span>&gt; pip install -U virtualenv
+</pre></div>
+
+
+<h2>三、安装sentry</h2>
+<h3>1. 创建虚拟环境</h3>
+<div class="highlight"><pre><span></span>&gt; sudo mkdir /var/www
+&gt; sudo chmod -R 777 /var/www
+&gt; cd /var/www/
+&gt; mkdir sentry
+&gt; cd sentry
+&gt; virtualenv venv
+</pre></div>
+
+
+<h3>2. 安装sentry</h3>
+<div class="highlight"><pre><span></span>&gt; source venv/bin/activate
+&gt; pip install -U sentry
+&gt; sentry
+Usage: sentry [OPTIONS] COMMAND [ARGS]...
+
+  Sentry is cross-platform crash reporting built with love.
+
+  The configuration file is looked up in the `~/.sentry` config directory but this can
+  be overridden with the `SENTRY_CONF` environment variable or be explicitly provided
+  through the `--config` parameter.
+
+Options:
+  --config PATH  Path to configuration files.
+  --version      Show the version and exit.
+  --help         Show this message and exit.
+
+Commands:
+  celery      DEPRECATED see `sentry run` instead.
+  cleanup     Delete a portion of trailing data based on...
+  config      Manage runtime config options.
+  createuser  Create a new user.
+  devserver   Starts a lightweight web server for...
+  django      Execute Django subcommands.
+  dsym        Manage system symbols in Sentry.
+  export      Exports core metadata for the Sentry...
+  files       Manage files from filestore.
+  help        Show this message and exit.
+  import      Imports data from a Sentry export.
+  init        Initialize new configuration directory.
+  plugins     Manage Sentry plugins.
+  queues      Manage Sentry queues.
+  repair      Attempt to repair any invalid data.
+  run         Run a service.
+  shell       Run a Python interactive interpreter.
+  start       DEPRECATED see `sentry run` instead.
+  tsdb        Tools for interacting with the time series...
+  upgrade     Perform any pending database migrations and...
+</pre></div>
+
+
+<h2>四、配置sentry</h2>
+<h3>1. 初始化</h3>
+<p>sentry init 配置文件路径</p>
+<div class="highlight"><pre><span></span>&gt; sentry init /var/www/sentry/conf
+</pre></div>
+
+
+<h3>2. 修改postgreSQL的连接账号密码</h3>
+<p>打开/var/www/sentry/conf/sentry.conf.py</p>
+<p>修改下面这段</p>
+<div class="highlight"><pre><span></span>DATABASES = {
+    &#39;default&#39;: {
+        &#39;ENGINE&#39;: &#39;sentry.db.postgres&#39;,
+        &#39;NAME&#39;: &#39;sentry&#39;,
+        &#39;USER&#39;: &#39;postgres&#39;,
+        &#39;PASSWORD&#39;: &#39;123123&#39;, # 刚才安装完postgreSQL 后你设置的密码
+        &#39;HOST&#39;: &#39;&#39;,
+        &#39;PORT&#39;: &#39;&#39;,
+        &#39;AUTOCOMMIT&#39;: True,
+        &#39;ATOMIC_REQUESTS&#39;: False,
+    }
+}
+</pre></div>
+
+
+<h3>3. 初始化数据并且创建用户</h3>
+<div class="highlight"><pre><span></span>&gt; createdb -E utf-8 sentry
+</pre></div>
+
+
+<p>如果提示<code>createdb: could not connect to database template1: FATAL:  role "lin" does not exist</code></p>
+<p>则切换到postgre用户执行</p>
+<p>执行</p>
+<div class="highlight"><pre><span></span>SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+</pre></div>
+
+
+<p>如果提示<code>OperationalError: FATAL:  Peer authentication failed for user "postgres"</code></p>
+<p>解决方案:
+1. sudo vim /etc/postgresql/9.5/main/pg_hba.conf
+2. 修改</p>
+<div class="highlight"><pre><span></span>local   all             postgres                                peer
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# &quot;local&quot; is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+</pre></div>
+
+
+<p>为</p>
+<div class="highlight"><pre><span></span>local   all             postgres                                md5
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# &quot;local&quot; is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+</pre></div>
+
+
+<ol>
+<li>重启postgresql</li>
+</ol>
+<div class="highlight"><pre><span></span>sudo service postgresql restart
+</pre></div>
+
+
+<p>再次执行</p>
+<div class="highlight"><pre><span></span>SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+</pre></div>
+
+
+<p>如果提示<code>sentry.exceptions.InvalidConfiguration: MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.</code></p>
+<p>解决方案:
+1. 进入redis redis-cli
+2. 执行</p>
+<div class="highlight"><pre><span></span>config set stop-writes-on-bgsave-error no
+</pre></div>
+
+
+<p>再次执行</p>
+<div class="highlight"><pre><span></span>再次执行 SENTRY_CONF=/var/www/sentry/conf/ sentry upgrade
+</pre></div>
+
+
+<p>在这一步执行完成后可能提示你是否要创建用户,则按照要求创建用户即可, 没有提示的话执行以下语句创建</p>
+<div class="highlight"><pre><span></span>SENTRY_CONF=/var/www/sentry/conf/ sentry createuser
+</pre></div>
+
+
+<h2>五、运行服务</h2>
+<div class="highlight"><pre><span></span>&gt; SENTRY_CONF=/var/www/sentry/conf/ sentry run web # 运行web服务
+&gt; SENTRY_CONF=/var/www/sentry/conf/ sentry run worker # 运行日志搜集进程
+</pre></div>
+
+
+<h2>六、配置项目</h2>
+<ol>
+<li>浏览器打开sentry的web管理, http://ip:9000</li>
+<li>输入刚才设置的账号密码</li>
+<li>点击New Project创建一个项目</li>
+<li>平台选择php, 输入项目的名称, 点击创建</li>
+<li>跳转的页面会显示连接的代码</li>
+<li>测试错误</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="n">php</span>
+<span class="n">require_once</span> <span class="err">&#39;</span><span class="n">vendor</span><span class="o">/</span><span class="n">autoload</span><span class="p">.</span><span class="n">php</span><span class="err">&#39;</span><span class="p">;</span>
+<span class="n">Raven_Autoloader</span><span class="o">::</span><span class="k">register</span><span class="p">();</span>
+
+<span class="cp"># 这里替换成你自己的项目id, 在显示连接帮助的页面</span>
+<span class="err">$</span><span class="n">client</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Raven_Client</span><span class="p">(</span><span class="err">&#39;</span><span class="nl">http</span><span class="p">:</span><span class="c1">//f2c047b856bb41fcbf486f467b7fcf5b:aa2a33c7176d4c1fb86a3aa8cb4728aa@10.211.55.14:9000/1&#39;);</span>
+
+
+<span class="err">$</span><span class="n">error_handler</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Raven_ErrorHandler</span><span class="p">(</span><span class="err">$</span><span class="n">client</span><span class="p">);</span>
+<span class="err">$</span><span class="n">error_handler</span><span class="o">-&gt;</span><span class="n">registerExceptionHandler</span><span class="p">();</span>
+<span class="err">$</span><span class="n">error_handler</span><span class="o">-&gt;</span><span class="n">registerErrorHandler</span><span class="p">();</span>
+<span class="err">$</span><span class="n">error_handler</span><span class="o">-&gt;</span><span class="n">registerShutdownFunction</span><span class="p">();</span>
+
+<span class="n">set_error_handler</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="err">$</span><span class="n">error_handler</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">handleError</span><span class="err">&#39;</span><span class="p">));</span>
+<span class="n">set_exception_handler</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="err">$</span><span class="n">error_handler</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">handleException</span><span class="err">&#39;</span><span class="p">));</span>
+
+
+<span class="err">$</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">captureMessage</span><span class="p">(</span><span class="s">&quot;这里发生了一个错误&quot;</span><span class="p">);</span>
+
+<span class="err">$</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+
+
+<p>运行以后, 查看web端, 就会看到传输回来的错误了。</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+        <li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+        <li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+        <li><a href="http://www.phpue.com/category/php.html">php</a></li>
+        <li class="active"><a href="http://www.phpue.com/category/python.html">Python</a></li>
+        <li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://www.phpue.com/category/linux.html">linux</a></li>
+		<li><a href="http://www.phpue.com/category/mysql.html">Mysql</a></li>
+		<li><a href="http://www.phpue.com/category/php.html">php</a></li>
+		<li><a href="http://www.phpue.com/category/python.html">Python</a></li>
+		<li><a href="http://www.phpue.com/category/wechat.html">wechat</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="http://www.phpue.com">我的博客</a></li>
+    <li><a href="http://www.phpue.com/pages/about-me.html">关于我</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.phpue.com/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.phpue.com/theme/js/plugins.js"></script>
+</body>
+</html>
