@@ -5,6 +5,8 @@ Summary: 如何搭建稳定的代理ip池, 提供给爬虫来使用呢? 对于�
 
 新型的代理ip池[aox_proxy_pool](https://github.com/aox-lei/aox_proxy_pool)
 
+![java-version]({filename}/upload/proxy-ip/1.png)
+
 在这篇文章之前, 应该不少人都看过很多搭建代理ip池的文章, 然后发现都是坑, 无法使用。说的比较多的
 1. **推荐买xx家的代理ip, 贼稳定, 好使(广告)**
 2. **抓取xx免费代理ip, 然后自己写一个校验, 然后写一个api, 提供给爬虫使用**
